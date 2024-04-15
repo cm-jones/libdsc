@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -I include
+CFLAGS = -Wall -Wextra -I.
 LDFLAGS = -L. -ldsc
 
 LIBNAME = libdsc.a
@@ -24,9 +24,9 @@ $(SONAME): $(OBJS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 install: all
-	sudo install -m 644 $(LIBNAME) /usr/local/lib/
-	sudo install -m 644 $(SONAME) /usr/local/lib/
-	sudo install -m 644 include/*.h /usr/local/include/
+    sudo install -m 644 $(LIBNAME) /usr/local/lib/
+    sudo install -m 644 $(SONAME) /usr/local/lib/
+    sudo install -m 644 include/*.h /usr/local/include/
 
 clean:
 	rm -f $(OBJS) $(LIBNAME) $(SONAME)

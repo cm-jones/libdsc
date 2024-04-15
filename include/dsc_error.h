@@ -1,0 +1,13 @@
+#ifndef __DSC_ERROR_H__
+#define __DSC_ERROR_H__
+
+enum dsc_error_t {
+    DSC_ERROR_NONE,
+    DSC_ERROR_INVALID_ARGUMENT,
+    DSC_ERROR_OUT_OF_MEMORY,
+    DSC_ERROR_EMPTY_LIST,
+    DSC_ERROR_INDEX_OUT_OF_BOUNDS,
+    DSC_ERROR_VALUE_NOT_FOUND
+};
+
+#endif // __DSC_ERROR_H__
