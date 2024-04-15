@@ -1,5 +1,9 @@
 # Data Structures for C (DSC) Library
 
+[![C CI](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml)
+
+## Description
+
 This is a simple data structures library implemented in C, part of the "Data Structures for C" project.
 
 ## Usage
