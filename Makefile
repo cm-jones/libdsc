@@ -11,12 +11,10 @@ OBJS = $(SRCS:.c=.o)
 all: static shared
 
 static: $(LIBNAME)
-
-shared: $(SONAME)
-
 $(LIBNAME): $(OBJS)
 	ar rcs $@ $^
 
+shared: $(SONAME)
 $(SONAME): $(OBJS)
 	$(CC) -shared -o $@ $^
 
@@ -24,9 +22,9 @@ $(SONAME): $(OBJS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 install: all
-    sudo install -m 644 $(LIBNAME) /usr/local/lib/
-    sudo install -m 644 $(SONAME) /usr/local/lib/
-    sudo install -m 644 include/*.h /usr/local/include/
+	sudo install -m 644 $(LIBNAME) /usr/local/lib/
+	sudo install -m 644 $(SONAME) /usr/local/lib/
+	sudo install -m 644 include/*.h /usr/local/include/
 
 clean:
 	rm -f $(OBJS) $(LIBNAME) $(SONAME)
