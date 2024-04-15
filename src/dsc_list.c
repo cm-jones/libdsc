@@ -411,8 +411,8 @@ struct dsc_list_t *dsc_list_reverse(struct dsc_list_t *list)
 
 struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value)
 {
-    if (list == NULL) {
-        return NULL;
+     if (list == NULL) {
+        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
     }
 
     struct dsc_node_t *walk = list->head;
@@ -424,6 +424,8 @@ struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value)
 
         walk = walk->next;
     }
+
+    list->error = DSC_ERROR_NONE;
 
     return NULL;
 }
@@ -493,14 +495,20 @@ int dsc_list_get_length(struct dsc_list_t *list)
 
 struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
 {
-    if (list == NULL || position < 0) {
-        return NULL;
+     if (list == NULL) {
+        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
+
+    if (position < 0) {
+        list->error = DSC_ERROR_INDEX_OUT_OF_BOUNDS;
+        return list;
     }
 
     struct dsc_node_t *walk = list->head;
 
     while (position != 0) {
         if (walk == NULL) {
+            list->error = DSC_ERROR_INDEX_OUT_OF_BOUNDS;
             return NULL;
         }
 
@@ -508,22 +516,26 @@ struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
         position--;
     }
 
+    list->error = DSC_ERROR_NONE;
+
     return walk;
 }
 
 struct dsc_node_t *dsc_list_get_head(struct dsc_list_t *list)
 {
-    if (list == NULL) {
-        return NULL;
+     if (list == NULL) {
+        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
     }
+
+    list->error = DSC_ERROR_NONE;
 
     return list->head;
 }
 
 struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list)
 {
-    if (list == NULL) {
-        return NULL;
+     if (list == NULL) {
+        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
     }
 
     struct dsc_node_t *walk = list->head;
@@ -531,6 +543,8 @@ struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list)
     while (walk->next != NULL) {
         walk = walk->next;
     }
+
+    list->error = DSC_ERROR_NONE;
 
     return walk;
 }

@@ -1,5 +1,5 @@
-#include <check.h>
 #include <stdlib.h>
+#include <check.h>
 
 #include "../include/dsc_list.h"
 
