@@ -245,6 +245,40 @@ struct dsc_list_t *dsc_list_delete_tail(struct dsc_list_t *list)
     return list;
 }
 
+struct dsc_list_t *dsc_list_delete_at_position(struct dsc_list_t *list,
+                                               int position)
+{
+    if (list == NULL) {
+        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
+
+    // list is empty, so can't delete the node at 'position'
+    if (list->head == NULL) {
+        return dsc_list_create_with_error(DSC_ERROR_EMPTY_LIST);
+    }
+
+    if (position == 0) {
+        struct dsc_node_t *old_head = list->head;
+        list->head = list->head->next;
+        dsc_node_destroy(old_head);
+    }
+
+    struct dsc_node_t *prev = NULL;
+    struct dsc_node_t *walk = list->head;
+
+    while (position != 0) {
+        prev = walk;
+        walk = walk->next;
+        position--;
+    }
+
+    prev->next = walk->next;
+    dsc_node_destroy(walk);
+
+    list->error = DSC_ERROR_NONE;
+    return list;
+}
+
 struct dsc_list_t *dsc_list_remove_first_occurrence(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
