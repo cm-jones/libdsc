@@ -1,15 +1,34 @@
-exec = data-structures.out
-sources = $(wildcard src/*.c)
-objects = $(sources:.c=.o)
-flags = -g
+CC = gcc
+CFLAGS = -Wall -Wextra -I include
+LDFLAGS = -L. -ldsc
 
-$(exec): $(objects)
-	gcc $(objects) $(flags) -o $(exec)
+LIBNAME = libdsc.a
+SONAME = libdsc.so
 
-%.o: %.c include/%.h
-	gcc -c $(flags) $< -o $@
+SRCS = $(wildcard src/*.c)
+OBJS = $(SRCS:.c=.o)
+
+all: static shared
+
+static: $(LIBNAME)
+
+shared: $(SONAME)
+
+$(LIBNAME): $(OBJS)
+	ar rcs $@ $^
+
+$(SONAME): $(OBJS)
+	$(CC) -shared -o $@ $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+install: all
+	sudo install -m 644 $(LIBNAME) /usr/local/lib/
+	sudo install -m 644 $(SONAME) /usr/local/lib/
+	sudo install -m 644 include/*.h /usr/local/include/
 
 clean:
-	-rm *.out
-	-rm *.o
-	-rm src/*.o
+	rm -f $(OBJS) $(LIBNAME) $(SONAME)
+
+.PHONY: all static shared install clean
