@@ -34,7 +34,7 @@ clean:
 test: $(LIBNAME) test_list
 	./test_list
 
-test_list: tests/test_list.c $(LIBNAME)
+test_list: tests/test_dsc_list.c $(LIBNAME)
 	$(CC) $(CFLAGS) -o $@ $^ -lcheck
 
 .PHONY: test
