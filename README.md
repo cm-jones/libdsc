@@ -2,6 +2,8 @@
 
 [![C CI](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml)
 
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+
 ## Description
 
 A C library that implements commonly used data structures such as dynamic arrays (i.e., vectors), stacks, queues, linked lists, hash sets, and hash tables.
