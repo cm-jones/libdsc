@@ -1,10 +1,10 @@
-# libdsc: Data Structures for C Library
+# libdsc: Data Structures for C
 
 [![C CI](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml)
 
 ## Description
 
-This is a simple data structures library implemented in C, part of the "Data Structures for C" project.
+A C library that implements commonly used data structures such as dynamic arrays (i.e., vectors), stacks, queues, linked lists, hash sets, and hash tables.
 
 ## Usage
 
