@@ -1,19 +1,17 @@
-Apologies for the formatting issues. Here's the README.md file with the contents all in one file:
+# Data Structures for C (DSC) Library
 
-# DSC Linked List Library
-
-This is a simple linked list library implemented in C, part of the "Data Structures for C" project.
+This is a simple data structures library implemented in C, part of the "Data Structures for C" project.
 
 ## Usage
 
-To use the DSC Linked List library in your C project, follow these steps:
+To use the DSC library in your C project, follow these steps:
 
 1. Obtain the library files:
    - Either compile the library yourself (see "Building the Library" section below) or download the pre-compiled library files.
 
 2. Include the header file in your C source file:
    ```c
-   #include <list.h>
+   #include <dsc.h>
    ```
 
 3. Link against the library when compiling your program:
@@ -29,7 +27,7 @@ To use the DSC Linked List library in your C project, follow these steps:
 
 4. Use the library functions in your code, for example:
    ```c
-   dsc_list_t *list = dsc_list_create();
+   struct dsc_list_t *list = dsc_list_create();
    dsc_list_append(list, 10);
    dsc_list_prepend(list, 5);
    // Use other list functions as needed
@@ -37,16 +35,16 @@ To use the DSC Linked List library in your C project, follow these steps:
 
 ## Building the Library
 
-To build the DSC Linked List library yourself, follow these steps:
+To build the DSC data structures library yourself, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/your-username/dsc-linked-list.git
+   git clone https://github.com/cm-jones/dsc.git
    ```
 
 2. Change into the project directory:
    ```
-   cd dsc-linked-list
+   cd dsc
    ```
 
 3. Compile the library using the provided Makefile:
@@ -63,11 +61,11 @@ To build the DSC Linked List library yourself, follow these steps:
 
 ## API Documentation
 
-Detailed API documentation for the DSC Linked List library can be found in the `include/list.h` header file.
+Detailed API documentation for the DSC library can be found in the `include` directory.
 
 ## Contributing
 
-If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/your-username/dsc-linked-list).
+If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/cm-jones/dsc).
 
 ## License
 
