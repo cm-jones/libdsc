@@ -1,4 +1,4 @@
-# Data Structures for C (DSC) Library
+# libdsc: Data Structures for C Library
 
 [![C CI](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml)
 
