@@ -1,0 +1,16 @@
+name: C CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: brew install check
+    - name: Build
+      run: make
+    - name: Run tests
+      run: make test

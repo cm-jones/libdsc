@@ -30,3 +30,11 @@ clean:
 	rm -f $(OBJS) $(LIBNAME) $(SONAME)
 
 .PHONY: all static shared install clean
+
+test: $(LIBNAME) test_list
+	./test_list
+
+test_list: tests/test_list.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ -lcheck
+
+.PHONY: test
