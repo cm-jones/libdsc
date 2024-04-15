@@ -15,10 +15,10 @@
  * Data Structures for C. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __LIST_H__
-#define __LIST_H__
+#ifndef __DSC_LIST_H__
+#define __DSC_LIST_H__
 
-#include "error.h"
+#include "dsc_error.h"
 
 struct dsc_node_t {
     int value;
@@ -27,7 +27,7 @@ struct dsc_node_t {
 
 struct dsc_list_t {
     struct dsc_node_t *head;
-    enum error_t error;
+    enum dsc_error_t error;
 };
 
 /**
@@ -36,6 +36,8 @@ struct dsc_list_t {
  * @return Pointer to the newly created linked list. Null on failure.
  */
 struct dsc_list_t *list_create();
+
+struct dsc_list_t *list_create_with_error();
 
 /**
  * @brief Destroys a linked list and frees the memory allocated for it.
@@ -117,7 +119,7 @@ struct dsc_list_t *list_delete_at_position(struct dsc_list_t *list, int position
  * @param list Pointer to the linked list.
  * @param data Pointer to the data to be deleted.
  */
-struct dsc_list_t *list_delete_data(struct dsc_list_t *list, int value);
+struct dsc_list_t *list_delete_value(struct dsc_list_t *list, int value);
 
 /**
  * @brief Deletes all occurrences of the given data from the list.
