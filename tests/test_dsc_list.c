@@ -1,4 +1,5 @@
 #include <check.h>
+#include <stdlib.h>
 
 #include "../include/dsc_list.h"
 
@@ -118,6 +119,7 @@ Suite *list_suite(void) {
     tcase_add_test(tc_core, test_dsc_list_get_nth_node);
     tcase_add_test(tc_core, test_dsc_list_get_head);
     tcase_add_test(tc_core, test_dsc_list_get_tail);
+
     // Add more test cases to the test case
 
     suite_add_tcase(s, tc_core);
@@ -135,5 +137,5 @@ int main(void) {
     srunner_run_all(sr, CK_NORMAL);
     number_failed = srunner_ntests_failed(sr);
     srunner_free(sr);
-    return (number_failed == 0) ? 0 : 1;
+    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
