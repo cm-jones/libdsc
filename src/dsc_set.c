@@ -16,29 +16,120 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#include <stdlib.h>
+
 #include "../include/dsc_set.h"
 
-struct dsc_set_t *dsc_set_create();
+struct dsc_set_t *dsc_set_create()
+{
+    struct dsc_set_t *new_set = malloc(sizeof *new_set);
+    if (new_set == NULL) {
+        return dsc_set_create_with_error(DSC_ERROR_OUT_OF_MEMORY);
+    }
 
-struct dsc_set_t *dsc_set_create_with_error(enum dsc_error_t error);
+    new_set->buckets = NULL;
+    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
+    new_set->size = 0;
+    new_set->error = DSC_ERROR_NONE;
 
-// Destroy the hash set and free its memory
-void dsc_set_destroy(struct dsc_set_t *set);
+    return new_set;
+}
 
-// Add an element to the hash set
-struct dsc_set_t *dsc_set_add(struct dsc_set_t *set, int value);
+struct dsc_set_t *dsc_set_create_with_error(enum dsc_error_t error)
+{
+    struct dsc_set_t *new_set = malloc(sizeof *new_set);
+    if (new_set == NULL) {
+        return NULL;
+    }
 
-// Remove an element from the hash set
-struct dsc_set_t *dsc_set_remove(struct dsc_set_t *set, int value);
+    new_set->buckets = NULL;
+    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
+    new_set->size = 0;
+    new_set->error = error;
 
-// Check if an element exists in the hash set
-struct dsc_set_t *dsc_set_contains(struct dsc_set_t *set, int value);
+    return new_set;
+}
 
-// Get the size of the hash set
-int dsc_set_size(struct dsc_set_t *set);
+struct dsc_set_t *dsc_set_destroy(struct dsc_set_t *set)
+{
+    if (set == NULL) {
+        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
 
-// Check if the hash set is empty
-struct dsc_set_t *dsc_set_is_empty(struct dsc_set_t *set);
+    if (set->buckets == NULL) {
+        free(set);
+        return NULL;
+    }
 
-// Clear all elements from the hash set
-struct dsc_set_t *dsc_set_clear(struct dsc_set_t *set);
+    for (int i = 0; i < set->size; i++) {
+        struct dsc_set_entry_t *bucket = set->buckets[i];
+        free(bucket->next);
+        free(bucket);
+    }
+
+    free(set);
+    return NULL;
+}
+
+struct dsc_set_t *dsc_set_add(struct dsc_set_t *set, int value)
+{
+    if (set == NULL) {
+        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
+
+    set->error = DSC_ERROR_NONE;
+    return set;
+}
+
+struct dsc_set_t *dsc_set_remove(struct dsc_set_t *set, int value)
+{
+    if (set == NULL) {
+        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
+
+    set->error = DSC_ERROR_NONE;
+    return set;
+}
+
+bool dsc_set_contains(struct dsc_set_t *set, int value)
+{
+    if (set == NULL) {
+        return false;
+    }
+
+    return false;
+}
+
+int dsc_set_size(struct dsc_set_t *set)
+{
+    if (set == NULL) {
+        return -1;
+    }
+
+    set->error = DSC_ERROR_NONE;
+    return set->size;
+}
+
+struct dsc_set_t *dsc_set_is_empty(struct dsc_set_t *set)
+{
+    if (set == NULL) {
+        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
+
+    if (set->size == 0) {
+        return true;
+    }
+
+    return false;
+}
+
+struct dsc_set_t *dsc_set_clear(struct dsc_set_t *set)
+{
+    if (set == NULL) {
+        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    }
+
+    set->size = 0;
+    set->error = DSC_ERROR_NONE;
+    return set;
+}
