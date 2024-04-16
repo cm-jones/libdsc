@@ -10,7 +10,7 @@
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
  * Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * the Data Structures for C (DSC) library. If not, see
  * <https://www.gnu.org/licenses/>.
@@ -19,6 +19,19 @@
 #ifndef __DSC_ERROR_H__
 #define __DSC_ERROR_H__
 
+/**
+ * @enum dsc_error_t
+ * @brief Represents the error codes used in the DSC library.
+ *
+ * @constant DSC_ERROR_NONE No error occurred.
+ * @constant DSC_ERROR_INVALID_ARGUMENT An invalid argument was passed to a function.
+ * @constant DSC_ERROR_OUT_OF_MEMORY Failed to allocate memory.
+ * @constant DSC_ERROR_EMPTY_LIST The list is empty.
+ * @constant DSC_ERROR_EMPTY_SET The set is empty.
+ * @constant DSC_ERROR_VALUE_ALREADY_EXISTS The value already exists in the set.
+ * @constant DSC_ERROR_INDEX_OUT_OF_BOUNDS The index is out of bounds.
+ * @constant DSC_ERROR_VALUE_NOT_FOUND The value was not found.
+ */
 enum dsc_error_t {
     DSC_ERROR_NONE,
     DSC_ERROR_INVALID_ARGUMENT,
