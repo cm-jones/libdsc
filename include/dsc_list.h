@@ -19,217 +19,233 @@
 #define __DSC_LIST_H__
 
 #include <stdbool.h>
-
 #include "dsc_error.h"
 
+/**
+ * @struct dsc_node_t
+ * @brief Represents a node in the linked list.
+ *
+ * @param value The value stored in the node.
+ * @param next Pointer to the next node in the list.
+ */
 struct dsc_node_t {
     int value;
     struct dsc_node_t *next;
 };
 
+/**
+ * @struct dsc_list_t
+ * @brief Represents a linked list.
+ *
+ * @param head Pointer to the head node of the list.
+ * @param error The error status of the list.
+ */
 struct dsc_list_t {
     struct dsc_node_t *head;
     enum dsc_error_t error;
 };
 
 /**
- * @brief Creates a new empty linked list.
- * 
- * @return Pointer to the newly created linked list. Null on failure.
+ * @brief Creates a new linked list.
+ *
+ * @return A pointer to the newly created list, or NULL if memory allocation fails.
  */
 struct dsc_list_t *dsc_list_create();
 
 /**
- * @brief Creates a new empty linked list with an error.
- * 
- * @return Pointer to the newly created linked list. Null on failure.
+ * @brief Creates a new linked list with an error status.
+ *
+ * @param error The error status to set for the list.
+ * @return A pointer to the newly created list, or NULL if memory allocation fails.
  */
 struct dsc_list_t *dsc_list_create_with_error(enum dsc_error_t error);
 
 /**
- * @brief Destroys a linked list and frees the memory allocated for it.
- * 
- * @param list Pointer to the linked list to be destroyed.
+ * @brief Destroys the linked list and frees its memory.
+ *
+ * @param list The linked list to destroy.
+ * @return NULL.
  */
 struct dsc_list_t *dsc_list_destroy(struct dsc_list_t *list);
 
-// Insertion functions
 /**
- * @brief Inserts a new node with the given data at the beginning of the list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to be inserted.
+ * @brief Prepends a value to the linked list.
+ *
+ * @param list The linked list to prepend the value to.
+ * @param value The value to prepend.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_prepend(struct dsc_list_t *list, int value);
 
 /**
- * @brief Inserts a new node with the given data at the end of the list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to be inserted.
+ * @brief Appends a value to the linked list.
+ *
+ * @param list The linked list to append the value to.
+ * @param value The value to append.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_append(struct dsc_list_t *list, int value);
 
 /**
- * @brief Inserts a new node with the given data at the specified position in the list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to be inserted.
- * @param position Position where the data should be inserted (0-indexed).
+ * @brief Inserts a value at a specific position in the linked list.
+ *
+ * @param list The linked list to insert the value into.
+ * @param value The value to insert.
+ * @param position The position at which to insert the value.
+ * @return The updated linked list.
  */
-struct dsc_list_t *dsc_list_insert(struct dsc_list_t *list, int value,
-                                   int position);
+struct dsc_list_t *dsc_list_insert(struct dsc_list_t *list, int value, int position);
 
 /**
- * @brief Inserts a new node with the given data after the specified node in the list.
- * 
- * @param list Pointer to the linked list.
- * @param prev_node Pointer to the node after which the new node should be inserted.
- * @param data Pointer to the data to be inserted.
+ * @brief Inserts a value after a specific node in the linked list.
+ *
+ * @param list The linked list to insert the value into.
+ * @param prev_node The node after which to insert the value.
+ * @param value The value to insert.
+ * @return The updated linked list.
  */
-struct dsc_list_t *dsc_list_insert_after(struct dsc_list_t *list,
-                                         struct dsc_node_t *prev_node,
-                                         int value);
+struct dsc_list_t *dsc_list_insert_after(struct dsc_list_t *list, struct dsc_node_t *prev_node, int value);
 
 /**
- * @brief Inserts a new node with the given data before the specified node in the list.
- * 
- * @param list Pointer to the linked list.
- * @param next_node Pointer to the node before which the new node should be inserted.
- * @param data Pointer to the data to be inserted.
+ * @brief Inserts a value before a specific node in the linked list.
+ *
+ * @param list The linked list to insert the value into.
+ * @param next_node The node before which to insert the value.
+ * @param value The value to insert.
+ * @return The updated linked list.
  */
-struct dsc_list_t *dsc_list_insert_before(struct dsc_list_t *list,
-                                          struct dsc_node_t *next_node,
-                                          int value);
+struct dsc_list_t *dsc_list_insert_before(struct dsc_list_t *list, struct dsc_node_t *next_node, int value);
 
-// Deletion functions
 /**
- * @brief Deletes the first node from the beginning of the list.
- * 
- * @param list Pointer to the linked list.
+ * @brief Deletes the head node of the linked list.
+ *
+ * @param list The linked list to delete the head from.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_delete_head(struct dsc_list_t *list);
 
 /**
- * @brief Deletes the last node from the end of the list.
- * 
- * @param list Pointer to the linked list.
+ * @brief Deletes the tail node of the linked list.
+ *
+ * @param list The linked list to delete the tail from.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_delete_tail(struct dsc_list_t *list);
 
 /**
- * @brief Deletes the node at the specified position in the list.
- * 
- * @param list Pointer to the linked list.
- * @param position Position of the node to be deleted (0-indexed).
+ * @brief Deletes the node at a specific position in the linked list.
+ *
+ * @param list The linked list to delete the node from.
+ * @param position The position of the node to delete.
+ * @return The updated linked list.
  */
-struct dsc_list_t *dsc_list_delete_at_position(struct dsc_list_t *list,
-                                               int position);
+struct dsc_list_t *dsc_list_delete_at_position(struct dsc_list_t *list, int position);
 
 /**
- * @brief Deletes the first occurrence of the given data from the list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to be deleted.
+ * @brief Deletes the first occurrence of a value from the linked list.
+ *
+ * @param list The linked list to delete the value from.
+ * @param value The value to delete.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_delete_value(struct dsc_list_t *list, int value);
 
 /**
- * @brief Deletes all occurrences of the given data from the list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to be deleted.
+ * @brief Deletes all occurrences of a value from the linked list.
+ *
+ * @param list The linked list to delete the values from.
+ * @param value The value to delete.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_delete_all(struct dsc_list_t *list, int value);
 
 /**
- * @brief Prints the elements of the linked list.
- * 
- * @param list Pointer to the linked list.
- * @param print_func Pointer to the function used to print each data element.
+ * @brief Prints the values of the linked list.
+ *
+ * @param list The linked list to print.
+ * @return The linked list.
  */
 struct dsc_list_t *dsc_list_print(struct dsc_list_t *list);
 
 /**
- * @brief Reverses the order of elements in the linked list.
- * 
- * @param list Pointer to the linked list.
+ * @brief Reverses the linked list.
+ *
+ * @param list The linked list to reverse.
+ * @return The updated linked list.
  */
 struct dsc_list_t *dsc_list_reverse(struct dsc_list_t *list);
 
 /**
- * @brief Searches for the first occurrence of the given data in the linked list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to search for.
- * @return Pointer to the node containing the data, or NULL if not found.
+ * @brief Searches for a value in the linked list.
+ *
+ * @param list The linked list to search.
+ * @param value The value to search for.
+ * @return A pointer to the node containing the value, or NULL if not found.
  */
 struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value);
 
 /**
- * @brief Counts the number of occurrences of the given data in the linked list.
- * 
- * @param list Pointer to the linked list.
- * @param data Pointer to the data to count occurrences of.
- * @return Number of occurrences of the data in the list.
+ * @brief Counts the occurrences of a value in the linked list.
+ *
+ * @param list The linked list to count the occurrences in.
+ * @param value The value to count.
+ * @return The count of occurrences of the value in the list.
  */
 int dsc_list_count(struct dsc_list_t *list, int value);
 
-// Utility functions
 /**
  * @brief Checks if the linked list is empty.
- * 
- * @param list Pointer to the linked list.
- * @return 1 if the list is empty, 0 otherwise.
+ *
+ * @param list The linked list to check.
+ * @return true if the list is empty, false otherwise.
  */
 bool dsc_list_is_empty(struct dsc_list_t *list);
 
 /**
- * @brief Returns the number of elements in the linked list.
- * 
- * @param list Pointer to the linked list.
- * @return Number of elements in the list.
+ * @brief Gets the length of the linked list.
+ *
+ * @param list The linked list to get the length of.
+ * @return The length of the linked list.
  */
 int dsc_list_get_length(struct dsc_list_t *list);
 
 /**
- * @brief Returns the node at the specified position in the linked list.
- * 
- * @param list Pointer to the linked list.
- * @param position Position of the node to retrieve (0-indexed).
- * @return Pointer to the node at the specified position, or NULL if position is invalid.
+ * @brief Gets the node at a specific position in the linked list.
+ *
+ * @param list The linked list to get the node from.
+ * @param position The position of the node to get.
+ * @return A pointer to the node at the specified position, or NULL if not found.
  */
 struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position);
 
 /**
- * @brief Returns the head node of the linked list.
- * 
- * @param list Pointer to the linked list.
- * @return Pointer to the head node.
+ * @brief Gets the head node of the linked list.
+ *
+ * @param list The linked list to get the head from.
+ * @return A pointer to the head node of the list, or NULL if the list is empty.
  */
 struct dsc_node_t *dsc_list_get_head(struct dsc_list_t *list);
 
 /**
- * @brief Returns the tail node of the linked list.
- * 
- * @param list Pointer to the linked list.
- * @return Pointer to the tail node.
+ * @brief Gets the tail node of the linked list.
+ *
+ * @param list The linked list to get the tail from.
+ * @return A pointer to the tail node of the list, or NULL if the list is empty.
  */
 struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list);
 
-// Memory management functions
 /**
- * @brief Initializes a new node with the given data.
- * 
- * @param data Pointer to the data to be stored in the node.
- * @return Pointer to the newly initialized node.
+ * @brief Creates a new node with the specified value.
+ *
+ * @param value The value to store in the node.
+ * @return A pointer to the newly created node, or NULL if memory allocation fails.
  */
 struct dsc_node_t *dsc_node_create(int value);
 
 /**
- * @brief Frees the memory allocated for a node.
- * 
- * @param node Pointer to the node to be freed.
+ * @brief Destroys a node and frees its memory.
+ *
+ * @param node The node to destroy.
  */
 void dsc_node_destroy(struct dsc_node_t *node);
 
