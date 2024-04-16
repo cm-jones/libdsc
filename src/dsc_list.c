@@ -24,37 +24,23 @@ struct dsc_list_t *dsc_list_create()
 {
     struct dsc_list_t *new_list = malloc(sizeof *new_list);
     if (new_list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_OUT_OF_MEMORY);
-    }
-
-    new_list->head = NULL;
-    new_list->error = DSC_ERROR_NONE;
-
-    return new_list;
-}
-
-struct dsc_list_t *dsc_list_create_with_error(enum dsc_error_t error)
-{
-    struct dsc_list_t *new_list = malloc(sizeof *new_list);
-    if (new_list == NULL) {
         return NULL;
     }
 
     new_list->head = NULL;
-    new_list->error = error;
 
     return new_list;
 }
 
-struct dsc_list_t *dsc_list_destroy(struct dsc_list_t *list)
+enum dsc_error_t dsc_list_destroy(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (list->head == NULL) {
         free(list);
-        return NULL;
+        return DSC_ERROR_NONE;
     }
 
     struct dsc_node_t *prev = NULL;
@@ -67,43 +53,40 @@ struct dsc_list_t *dsc_list_destroy(struct dsc_list_t *list)
     }
 
     free(list);
-    return NULL;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_prepend(struct dsc_list_t *list, int value)
+enum dsc_error_t dsc_list_prepend(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     struct dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        list->error = DSC_ERROR_OUT_OF_MEMORY;
-        return list;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     new_node->next = list->head;
     list->head = new_node;
-    list->error = DSC_ERROR_NONE;
 
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_append(struct dsc_list_t *list, int value)
+enum dsc_error_t dsc_list_append(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     struct dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        list->error = DSC_ERROR_OUT_OF_MEMORY;
-        return list;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     if (list->head == NULL) {
         list->head = new_node;
-        return list;
+        return DSC_ERROR_NONE;
     }
 
     struct dsc_node_t *walk = list->head;
@@ -113,32 +96,34 @@ struct dsc_list_t *dsc_list_append(struct dsc_list_t *list, int value)
     }
 
     walk->next = new_node;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_insert(struct dsc_list_t *list, int value, int position)
+enum dsc_error_t dsc_list_insert(struct dsc_list_t *list, int value, int position)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     struct dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        list->error = DSC_ERROR_OUT_OF_MEMORY;
-        return list;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     if (position == 0) {
         new_node->next = list->head;
         list->head = new_node;
-        list->error = DSC_ERROR_NONE;
-        return list;
+        return DSC_ERROR_NONE;
     }
 
     struct dsc_node_t *prev = NULL;
     struct dsc_node_t *walk = list->head;
 
     while (position != 0) {
+        if (walk == NULL) {
+            dsc_node_destroy(new_node);
+            return DSC_ERROR_INDEX_OUT_OF_BOUNDS;
+        }
         prev = walk;
         walk = walk->next;
         position--;
@@ -146,92 +131,93 @@ struct dsc_list_t *dsc_list_insert(struct dsc_list_t *list, int value, int posit
 
     prev->next = new_node;
     new_node->next = walk;
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_insert_before(struct dsc_list_t *list,
-                                          struct dsc_node_t *next_node,
-                                          int value)
+enum dsc_error_t dsc_list_insert_before(struct dsc_list_t *list,
+                                        struct dsc_node_t *next_node,
+                                        int value)
 {
-    if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    if (list == NULL || next_node == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     struct dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        list->error = DSC_ERROR_OUT_OF_MEMORY;
-        return list;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     if (list->head == next_node) {
         new_node->next = list->head;
         list->head = new_node;
-        return list;
+        return DSC_ERROR_NONE;
     }
 
     struct dsc_node_t *prev = list->head;
 
     while (prev->next != next_node) {
+        if (prev->next == NULL) {
+            dsc_node_destroy(new_node);
+            return DSC_ERROR_VALUE_NOT_FOUND;
+        }
         prev = prev->next;
     }
 
     prev->next = new_node;
     new_node->next = next_node;
 
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_insert_after(struct dsc_list_t *list,
-                                         struct dsc_node_t *prev_node,
-                                         int value)
+enum dsc_error_t dsc_list_insert_after(struct dsc_list_t *list,
+                                       struct dsc_node_t *prev_node,
+                                       int value)
 {
-    if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+    if (list == NULL || prev_node == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     struct dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        list->error = DSC_ERROR_OUT_OF_MEMORY;
-        return list;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     new_node->next = prev_node->next;
     prev_node->next = new_node;
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_delete_head(struct dsc_list_t *list)
+enum dsc_error_t dsc_list_delete_head(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // list is empty, so can't delete the head
     if (list->head == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_EMPTY_LIST);
+        return DSC_ERROR_EMPTY_LIST;
     }
 
     struct dsc_node_t *old_head = list->head;
     list->head = old_head->next;
     dsc_node_destroy(old_head);
 
-    list->error = DSC_ERROR_NONE;
-
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_delete_tail(struct dsc_list_t *list)
+enum dsc_error_t dsc_list_delete_tail(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // list is empty, so can't delete the tail
     if (list->head == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_EMPTY_LIST);
+        return DSC_ERROR_EMPTY_LIST;
+    }
+
+    if (list->head->next == NULL) {
+        dsc_node_destroy(list->head);
+        list->head = NULL;
+        return DSC_ERROR_NONE;
     }
 
     struct dsc_node_t *prev = NULL;
@@ -245,57 +231,59 @@ struct dsc_list_t *dsc_list_delete_tail(struct dsc_list_t *list)
     prev->next = NULL;
     dsc_node_destroy(walk);
 
-    list->error = DSC_ERROR_NONE;
-
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_delete_at_position(struct dsc_list_t *list,
-                                               int position)
+enum dsc_error_t dsc_list_delete_at_position(struct dsc_list_t *list,
+                                             int position)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // list is empty, so can't delete the node at 'position'
     if (list->head == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_EMPTY_LIST);
+        return DSC_ERROR_EMPTY_LIST;
     }
 
     if (position == 0) {
         struct dsc_node_t *old_head = list->head;
         list->head = list->head->next;
         dsc_node_destroy(old_head);
+        return DSC_ERROR_NONE;
     }
 
     struct dsc_node_t *prev = NULL;
     struct dsc_node_t *walk = list->head;
 
     while (position != 0) {
+        if (walk == NULL) {
+            return DSC_ERROR_INDEX_OUT_OF_BOUNDS;
+        }
         prev = walk;
         walk = walk->next;
         position--;
     }
 
+    if (walk == NULL) {
+        return DSC_ERROR_INDEX_OUT_OF_BOUNDS;
+    }
+
     prev->next = walk->next;
     dsc_node_destroy(walk);
 
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_delete_value(struct dsc_list_t *list, int value)
+enum dsc_error_t dsc_list_delete_value(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // list is empty, so can't remove the value
     if (list->head == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_EMPTY_LIST);
+        return DSC_ERROR_EMPTY_LIST;
     }
 
-    // If the head node has the value, delete the head
     if (list->head->value == value) {
         return dsc_list_delete_head(list);
     }
@@ -307,27 +295,23 @@ struct dsc_list_t *dsc_list_delete_value(struct dsc_list_t *list, int value)
         if (walk->value == value) {
             prev->next = walk->next;
             dsc_node_destroy(walk);
-            list->error = DSC_ERROR_NONE;
-            return list;
+            return DSC_ERROR_NONE;
         }
         prev = walk;
         walk = walk->next;
     }
 
-    // Value not found in the list
-    list->error = DSC_ERROR_VALUE_NOT_FOUND;
-    return list;
+    return DSC_ERROR_VALUE_NOT_FOUND;
 }
 
-struct dsc_list_t *dsc_list_delete_all(struct dsc_list_t *list, int value)
+enum dsc_error_t dsc_list_delete_all(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // list is empty, so can't remove the values
     if (list->head == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_EMPTY_LIST);
+        return DSC_ERROR_EMPTY_LIST;
     }
 
     struct dsc_node_t *prev = NULL;
@@ -349,21 +333,18 @@ struct dsc_list_t *dsc_list_delete_all(struct dsc_list_t *list, int value)
         }
     }
 
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_print(struct dsc_list_t *list)
+enum dsc_error_t dsc_list_print(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // list is empty, so can't print values
     if (list->head == NULL) {
         printf("List is empty.\n");
-        list->error = DSC_ERROR_EMPTY_LIST;
-        return list;
+        return DSC_ERROR_EMPTY_LIST;
     }
 
     struct dsc_node_t *walk = list->head;
@@ -374,19 +355,17 @@ struct dsc_list_t *dsc_list_print(struct dsc_list_t *list)
     }
     printf("\n");
 
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_list_t *dsc_list_reverse(struct dsc_list_t *list)
+enum dsc_error_t dsc_list_reverse(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (list->head == NULL) {
-        list->error = DSC_ERROR_EMPTY_LIST;
-        return list;
+        return DSC_ERROR_EMPTY_LIST;
     }
 
     struct dsc_node_t *prev = NULL;
@@ -394,10 +373,7 @@ struct dsc_list_t *dsc_list_reverse(struct dsc_list_t *list)
     struct dsc_node_t *next = list->head->next;
 
     while (walk != NULL) {
-        // flip the current node's 'next' pointer
         walk->next = prev;
-
-        // move forward
         prev = walk;
         walk = next;
         next = next ? next->next : NULL;
@@ -405,8 +381,7 @@ struct dsc_list_t *dsc_list_reverse(struct dsc_list_t *list)
 
     list->head = prev;
 
-    list->error = DSC_ERROR_NONE;
-    return list;
+    return DSC_ERROR_NONE;
 }
 
 struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value)
@@ -425,15 +400,12 @@ struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value)
         walk = walk->next;
     }
 
-    list->error = DSC_ERROR_VALUE_NOT_FOUND;
-
     return NULL;
 }
 
 int dsc_list_count(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
-        list->error = DSC_ERROR_INVALID_ARGUMENT;
         return -1;
     }
 
@@ -448,35 +420,22 @@ int dsc_list_count(struct dsc_list_t *list, int value)
         walk = walk->next;
     }
 
-    list->error = DSC_ERROR_NONE;
     return count;
 }
 
 bool dsc_list_is_empty(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        list->error = DSC_ERROR_INVALID_ARGUMENT;
         return true;
     }
 
-    if (list->head == NULL) {
-        list->error = DSC_ERROR_EMPTY_LIST;
-        return true;
-    }
-
-    return false;
+    return list->head == NULL;
 }
 
 int dsc_list_get_length(struct dsc_list_t *list)
 {
     if (list == NULL) {
-        list->error = DSC_ERROR_INVALID_ARGUMENT;
         return -1;
-    }
-
-    if (list->head == NULL) {
-        list->error = DSC_ERROR_EMPTY_LIST;
-        return 0;
     }
 
     int length = 0;
@@ -487,7 +446,6 @@ int dsc_list_get_length(struct dsc_list_t *list)
         walk = walk->next;
     }
 
-    list->error = DSC_ERROR_NONE;
     return length;
 }
 
@@ -498,7 +456,6 @@ struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
     }
 
     if (position < 0) {
-        list->error = DSC_ERROR_INDEX_OUT_OF_BOUNDS;
         return NULL;
     }
 
@@ -506,7 +463,6 @@ struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
 
     while (position != 0) {
         if (walk == NULL) {
-            list->error = DSC_ERROR_INDEX_OUT_OF_BOUNDS;
             return NULL;
         }
 
@@ -514,7 +470,6 @@ struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
         position--;
     }
 
-    list->error = DSC_ERROR_NONE;
     return walk;
 }
 
@@ -524,7 +479,6 @@ struct dsc_node_t *dsc_list_get_head(struct dsc_list_t *list)
         return NULL;
     }
 
-    list->error = DSC_ERROR_NONE;
     return list->head;
 }
 
@@ -535,7 +489,6 @@ struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list)
     }
 
     if (list->head == NULL) {
-        list->error = DSC_ERROR_EMPTY_LIST;
         return NULL;
     }
 
@@ -545,7 +498,6 @@ struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list)
         walk = walk->next;
     }
 
-    list->error = DSC_ERROR_NONE;
     return walk;
 }
 

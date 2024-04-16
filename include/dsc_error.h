@@ -27,6 +27,8 @@
  * @constant DSC_ERROR_OUT_OF_MEMORY Failed to allocate memory.
  * @constant DSC_ERROR_EMPTY_LIST The list is empty.
  * @constant DSC_ERROR_EMPTY_SET The set is empty.
+ * @constant DSC_ERROR_EMPTY_STACK The stack is empty.
+ * @constant DSC_ERROR_EMPTY_QUEUE The queue is empty.
  * @constant DSC_ERROR_VALUE_ALREADY_EXISTS The value already exists in the set.
  * @constant DSC_ERROR_INDEX_OUT_OF_BOUNDS The index is out of bounds.
  * @constant DSC_ERROR_VALUE_NOT_FOUND The value was not found.
@@ -37,6 +39,8 @@ enum dsc_error_t {
     DSC_ERROR_OUT_OF_MEMORY,
     DSC_ERROR_EMPTY_LIST,
     DSC_ERROR_EMPTY_SET,
+    DSC_ERROR_EMPTY_STACK,
+    DSC_ERROR_EMPTY_QUEUE,
     DSC_ERROR_VALUE_ALREADY_EXISTS,
     DSC_ERROR_INDEX_OUT_OF_BOUNDS,
     DSC_ERROR_VALUE_NOT_FOUND
