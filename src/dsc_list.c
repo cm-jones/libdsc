@@ -184,8 +184,9 @@ struct dsc_list_t *dsc_list_insert_before(struct dsc_list_t *list,
     return list;
 }
 
-struct dsc_list_t *dsc_list_insert_after(struct dsc_list_t *list, struct dsc_node_t *prev_node,
-                                  int value)
+struct dsc_list_t *dsc_list_insert_after(struct dsc_list_t *list,
+                                         struct dsc_node_t *prev_node,
+                                         int value)
 {
     if (list == NULL) {
         return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);

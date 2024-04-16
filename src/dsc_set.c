@@ -16,20 +16,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __DSC_SET_H__
-#define __DSC_SET_H__
-
-#include "dsc_error.h"
-
-// Hash set structure
-struct dsc_hash_set {
-    /* data */
-};
-
-// Create a new hash set
 struct dsc_set_t *dsc_set_create();
 
-struct dsc_set_t *dsc_set_create_with_error(enum dsc_error_t error);
+struct dsc_set_t *dsc_set_create_with_error(enum error_t error);
 
 // Destroy the hash set and free its memory
 void dsc_set_destroy(struct dsc_set_t *set);
@@ -51,5 +40,3 @@ struct dsc_set_t *dsc_set_is_empty(struct dsc_set_t *set);
 
 // Clear all elements from the hash set
 struct dsc_set_t *dsc_set_clear(struct dsc_set_t *set);
-
-#endif // __DSC_SET_H__
