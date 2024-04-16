@@ -34,15 +34,15 @@ START_TEST(test_dsc_set_add)
 
     set = dsc_set_add(set, 10);
     ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    ck_assert_int_eq(dsc_set_get_size(set), 1);
 
     set = dsc_set_add(set, 20);
     ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_size(set), 2);
+    ck_assert_int_eq(dsc_set_get_size(set), 2);
 
     set = dsc_set_add(set, 10);
     ck_assert_int_eq(set->error, DSC_ERROR_VALUE_ALREADY_EXISTS);
-    ck_assert_int_eq(dsc_set_size(set), 2);
+    ck_assert_int_eq(dsc_set_get_size(set), 2);
 
     dsc_set_destroy(set);
 }
@@ -57,11 +57,11 @@ START_TEST(test_dsc_set_remove)
 
     set = dsc_set_remove(set, 10);
     ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    ck_assert_int_eq(dsc_set_get_size(set), 1);
 
     set = dsc_set_remove(set, 30);
     ck_assert_int_eq(set->error, DSC_ERROR_VALUE_NOT_FOUND);
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    ck_assert_int_eq(dsc_set_get_size(set), 1);
 
     dsc_set_destroy(set);
 }
@@ -87,17 +87,17 @@ START_TEST(test_dsc_set_contains)
 }
 END_TEST
 
-START_TEST(test_dsc_set_size)
+START_TEST(test_dsc_set_get_size)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    ck_assert_int_eq(dsc_set_size(set), 0);
+    ck_assert_int_eq(dsc_set_get_size(set), 0);
 
     set = dsc_set_add(set, 10);
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    ck_assert_int_eq(dsc_set_get_size(set), 1);
 
     set = dsc_set_add(set, 20);
-    ck_assert_int_eq(dsc_set_size(set), 2);
+    ck_assert_int_eq(dsc_set_get_size(set), 2);
 
     dsc_set_destroy(set);
 }
@@ -125,11 +125,11 @@ START_TEST(test_dsc_set_clear)
     set = dsc_set_add(set, 10);
     set = dsc_set_add(set, 20);
     set = dsc_set_add(set, 30);
-    ck_assert_int_eq(dsc_set_size(set), 3);
+    ck_assert_int_eq(dsc_set_get_size(set), 3);
 
     set = dsc_set_clear(set);
     ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_size(set), 0);
+    ck_assert_int_eq(dsc_set_get_size(set), 0);
 
     dsc_set_destroy(set);
 }
@@ -147,7 +147,7 @@ Suite *dsc_set_suite(void)
     tcase_add_test(tc_core, test_dsc_set_add);
     tcase_add_test(tc_core, test_dsc_set_remove);
     tcase_add_test(tc_core, test_dsc_set_contains);
-    tcase_add_test(tc_core, test_dsc_set_size);
+    tcase_add_test(tc_core, test_dsc_set_get_size);
     tcase_add_test(tc_core, test_dsc_set_is_empty);
     tcase_add_test(tc_core, test_dsc_set_clear);
 
