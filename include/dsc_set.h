@@ -22,8 +22,8 @@
 #include "dsc_error.h"
 
 // Hash set structure
-struct dsc_hash_set {
-    /* data */
+struct dsc_set_t {
+    enum dsc_error_t error;
 };
 
 // Create a new hash set
