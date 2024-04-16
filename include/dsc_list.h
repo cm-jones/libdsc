@@ -256,13 +256,13 @@ struct dsc_node_t *dsc_list_get_tail(const struct dsc_list_t *list);
  * @return A pointer to the newly created node, or NULL if memory allocation
  * fails.
  */
-struct dsc_node_t *dsc_node_create(int value);
+static struct dsc_node_t *dsc_node_create(int value);
 
 /**
  * @brief Destroys a node and frees its memory.
  *
  * @param node The node to destroy.
  */
-void dsc_node_destroy(struct dsc_node_t *node);
+static void dsc_node_destroy(struct dsc_node_t *node);
 
 #endif // __DSC_LIST_H__
