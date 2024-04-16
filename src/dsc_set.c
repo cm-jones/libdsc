@@ -16,9 +16,11 @@
  * <https://www.gnu.org/licenses/>.
  */
 
+#include "../include/dsc_set.h"
+
 struct dsc_set_t *dsc_set_create();
 
-struct dsc_set_t *dsc_set_create_with_error(enum error_t error);
+struct dsc_set_t *dsc_set_create_with_error(enum dsc_error_t error);
 
 // Destroy the hash set and free its memory
 void dsc_set_destroy(struct dsc_set_t *set);

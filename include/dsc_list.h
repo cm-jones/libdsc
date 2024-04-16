@@ -19,8 +19,6 @@
 #ifndef __DSC_LIST_H__
 #define __DSC_LIST_H__
 
-#include <stdbool.h>
-
 #include "dsc_error.h"
 
 struct dsc_node_t {
