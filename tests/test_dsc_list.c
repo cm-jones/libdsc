@@ -89,7 +89,8 @@ START_TEST(test_dsc_list_insert_before)
 {
     struct dsc_list_t *list = dsc_list_create();
     list = dsc_list_append(list, 1);
-    list = dsc_list_append(list, 2);    list = dsc_list_insert_before(list, list->head->next, 3);
+    list = dsc_list_append(list, 2);
+    list = dsc_list_insert_before(list, list->head->next, 3);
     ck_assert_int_eq(list->head->value, 1);
     ck_assert_int_eq(list->head->next->value, 3);
     ck_assert_int_eq(list->head->next->next->value, 2);
@@ -171,7 +172,7 @@ START_TEST(test_dsc_list_remove_all_occurrences)
     list = dsc_list_append(list, 3);
     list = dsc_list_remove_all_occurrences(list, 2);
     ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(dsc_list_get_tail(list), 3);
+    ck_assert_int_eq(list->head->next->value, 3);
     dsc_list_destroy(list);
 }
 END_TEST
