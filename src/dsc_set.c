@@ -16,113 +16,46 @@
  */
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "../include/dsc_set.h"
 
 struct dsc_set_t *dsc_set_create()
 {
-    struct dsc_set_t *new_set = malloc(sizeof *new_set);
-    if (new_set == NULL) {
-        return dsc_set_create_with_error(DSC_ERROR_OUT_OF_MEMORY);
-    }
-
-    new_set->buckets = NULL;
-    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
-    new_set->size = 0;
-    new_set->error = DSC_ERROR_NONE;
-
-    return new_set;
-}
-
-struct dsc_set_t *dsc_set_create_with_error(enum dsc_error_t error)
-{
-    struct dsc_set_t *new_set = malloc(sizeof *new_set);
-    if (new_set == NULL) {
-        return NULL;
-    }
-
-    new_set->buckets = NULL;
-    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
-    new_set->size = 0;
-    new_set->error = error;
-
-    return new_set;
-}
-
-struct dsc_set_t *dsc_set_destroy(struct dsc_set_t *set)
-{
-    if (set == NULL) {
-        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
-    }
-
-    if (set->buckets == NULL) {
-        free(set);
-        return NULL;
-    }
-
-    for (int i = 0; i < set->size; i++) {
-        struct dsc_set_entry_t *bucket = *(set->buckets + i);
-        free(bucket->next);
-        free(bucket);
-    }
-
-    free(set);
     return NULL;
 }
 
-struct dsc_set_t *dsc_set_add(struct dsc_set_t *set, int value)
+enum dsc_error_t dsc_set_destroy(struct dsc_set_t *set)
 {
-    if (set == NULL) {
-        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
-    }
-
-    set->error = DSC_ERROR_NONE;
-    return set;
+    return DSC_ERROR_NONE;
 }
 
-struct dsc_set_t *dsc_set_remove(struct dsc_set_t *set, int value)
+enum dsc_error_t dsc_set_add(struct dsc_set_t *set, int value)
 {
-    if (set == NULL) {
-        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
-    }
+    return DSC_ERROR_NONE;
+}
 
-    set->error = DSC_ERROR_NONE;
-    return set;
+enum dsc_error_t dsc_set_remove(struct dsc_set_t *set, int value)
+{
+    return DSC_ERROR_NONE;
 }
 
 bool dsc_set_contains(struct dsc_set_t *set, int value)
 {
-    if (set == NULL) {
-        return false;
-    }
-
     return false;
 }
 
-int dsc_set_size(struct dsc_set_t *set)
+int dsc_set_get_size(struct dsc_set_t *set)
 {
-    if (set == NULL) {
-        return -1;
-    }
-
-    set->error = DSC_ERROR_NONE;
-    return set->size;
+    return 0;
 }
 
 bool dsc_set_is_empty(struct dsc_set_t *set)
 {
-    if (set != NULL) {
-        return set->size == 0;
-    }
+    return false;
 }
 
-struct dsc_set_t *dsc_set_clear(struct dsc_set_t *set)
+enum dsc_error_t dsc_set_clear(struct dsc_set_t *set)
 {
-    if (set == NULL) {
-        return dsc_set_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
-    }
-
-    set->size = 0;
-    set->error = DSC_ERROR_NONE;
-    return set;
+    return DSC_ERROR_NONE;
 }
