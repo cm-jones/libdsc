@@ -40,6 +40,11 @@ struct dsc_list_t {
  */
 struct dsc_list_t *dsc_list_create();
 
+/**
+ * @brief Creates a new empty linked list with an error.
+ * 
+ * @return Pointer to the newly created linked list. Null on failure.
+ */
 struct dsc_list_t *dsc_list_create_with_error(enum dsc_error_t error);
 
 /**
