@@ -19,6 +19,7 @@
 #define __DSC_SET_H__
 
 #include <stdbool.h>
+
 #include "dsc_error.h"
 
 /**

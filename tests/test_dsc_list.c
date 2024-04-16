@@ -16,6 +16,7 @@
  */
 
 #include <check.h>
+
 #include "../include/dsc_list.h"
 
 START_TEST(test_dsc_list_create)
