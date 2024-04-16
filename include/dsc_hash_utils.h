@@ -18,6 +18,16 @@
 #ifndef __DSC_HASH_UTILS_H__
 #define __DSC_HASH_UTILS_H__
 
+/**
+ * @brief Calculates the hash value for a given key and capacity.
+ *
+ * This function uses a simple modulo-based hash function to calculate the hash
+ * value for a given key and capacity.
+ *
+ * @param key The key to calculate the hash value for.
+ * @param capacity The capacity of the hash table.
+ * @return The calculated hash value.
+ */
 int dsc_hash(int key, int capacity);
 
 #endif // __DSC_HASH_UTILS_H__
