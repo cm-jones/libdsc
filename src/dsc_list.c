@@ -336,7 +336,7 @@ enum dsc_error_t dsc_list_delete_all(struct dsc_list_t *list, int value)
     return DSC_ERROR_NONE;
 }
 
-enum dsc_error_t dsc_list_print(struct dsc_list_t *list)
+enum dsc_error_t dsc_list_print(const struct dsc_list_t *list)
 {
     if (list == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
@@ -384,7 +384,7 @@ enum dsc_error_t dsc_list_reverse(struct dsc_list_t *list)
     return DSC_ERROR_NONE;
 }
 
-struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value)
+struct dsc_node_t *dsc_list_search(const struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
         return NULL;
@@ -403,10 +403,10 @@ struct dsc_node_t *dsc_list_search(struct dsc_list_t *list, int value)
     return NULL;
 }
 
-int dsc_list_count(struct dsc_list_t *list, int value)
+unsigned int dsc_list_count(const struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
-        return -1;
+        return 0;
     }
 
     int count = 0;
@@ -423,16 +423,16 @@ int dsc_list_count(struct dsc_list_t *list, int value)
     return count;
 }
 
-bool dsc_list_is_empty(struct dsc_list_t *list)
+bool dsc_list_is_empty(const struct dsc_list_t *list)
 {
     if (list == NULL) {
-        return true;
+        return false;
     }
 
     return list->head == NULL;
 }
 
-int dsc_list_get_length(struct dsc_list_t *list)
+int dsc_list_get_length(const struct dsc_list_t *list)
 {
     if (list == NULL) {
         return -1;
@@ -449,7 +449,8 @@ int dsc_list_get_length(struct dsc_list_t *list)
     return length;
 }
 
-struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
+struct dsc_node_t *dsc_list_get_nth_node(const struct dsc_list_t *list,
+                                         int position)
 {
     if (list == NULL) {
         return NULL;
@@ -473,7 +474,7 @@ struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
     return walk;
 }
 
-struct dsc_node_t *dsc_list_get_head(struct dsc_list_t *list)
+struct dsc_node_t *dsc_list_get_head(const struct dsc_list_t *list)
 {
     if (list == NULL) {
         return NULL;
@@ -482,7 +483,7 @@ struct dsc_node_t *dsc_list_get_head(struct dsc_list_t *list)
     return list->head;
 }
 
-struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list)
+struct dsc_node_t *dsc_list_get_tail(const struct dsc_list_t *list)
 {
     if (list == NULL) {
         return NULL;
