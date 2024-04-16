@@ -1,4 +1,4 @@
-# libdsc: Data Structures for C
+# ```libdsc```: Data Structures for C
 
 [![build](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -45,7 +45,7 @@ To use ```libdsc``` in your C project, follow these steps:
 
 ## Building the Library
 
-To build libdsc yourself, follow these steps:
+To build ```libdsc``` yourself, follow these steps:
 
 1. Clone the repository:
    ```
@@ -71,7 +71,7 @@ To build libdsc yourself, follow these steps:
 
 ## API Documentation
 
-Detailed API documentation for libdsc can be found in the `include` directory.
+Detailed API documentation for ```libdsc``` can be found in the `include` directory.
 
 ## Contributing
 
