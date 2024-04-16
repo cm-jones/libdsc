@@ -61,7 +61,7 @@ struct dsc_set_t *dsc_set_destroy(struct dsc_set_t *set)
     }
 
     for (int i = 0; i < set->size; i++) {
-        struct dsc_set_entry_t *bucket = set->buckets[i];
+        struct dsc_set_entry_t *bucket = *(set->buckets + i);
         free(bucket->next);
         free(bucket);
     }
