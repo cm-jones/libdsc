@@ -571,9 +571,7 @@ struct dsc_node_t *dsc_node_create(int value)
 
 void dsc_node_destroy(struct dsc_node_t *node)
 {
-    if (node == NULL) {
-        return;
+    if (node != NULL) {
+        free(node);
     }
-
-    free(node);
 }
