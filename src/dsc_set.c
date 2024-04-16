@@ -110,7 +110,7 @@ int dsc_set_size(struct dsc_set_t *set)
     return set->size;
 }
 
-bool *dsc_set_is_empty(struct dsc_set_t *set)
+bool dsc_set_is_empty(struct dsc_set_t *set)
 {
     if (set != NULL) {
         return set->size == 0;
