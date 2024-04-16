@@ -59,7 +59,7 @@ bool dsc_set_contains(struct dsc_set_t *set, int value);
 int dsc_set_size(struct dsc_set_t *set);
 
 // Check if the hash set is empty
-struct dsc_set_t *dsc_set_is_empty(struct dsc_set_t *set);
+bool dsc_set_is_empty(struct dsc_set_t *set);
 
 // Clear all elements from the hash set
 struct dsc_set_t *dsc_set_clear(struct dsc_set_t *set);
