@@ -85,7 +85,7 @@ enum dsc_error_t dsc_set_destroy(struct dsc_set_t *set);
  * NULL, DSC_ERROR_OUT_OF_MEMORY if memory allocation fails,
  * DSC_ERROR_VALUE_ALREADY_EXISTS if the value is already in the set.
  */
-enum dsc_error_t dsc_set_add(struct dsc_set_t *set, int value);
+enum dsc_error_t dsc_set_add(struct dsc_set_t *set, const int value);
 
 /**
  * @brief Removes an element from the hash set.
