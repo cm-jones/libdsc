@@ -376,7 +376,6 @@ struct dsc_list_t *dsc_list_print(struct dsc_list_t *list)
     printf("\n");
 
     list->error = DSC_ERROR_NONE;
-
     return list;
 }
 
@@ -406,8 +405,8 @@ struct dsc_list_t *dsc_list_reverse(struct dsc_list_t *list)
     }
 
     list->head = prev;
-    list->error = DSC_ERROR_NONE;
 
+    list->error = DSC_ERROR_NONE;
     return list;
 }
 
@@ -451,7 +450,6 @@ int dsc_list_count(struct dsc_list_t *list, int value)
     }
 
     list->error = DSC_ERROR_NONE;
-
     return count;
 }
 
@@ -491,7 +489,6 @@ int dsc_list_get_length(struct dsc_list_t *list)
     }
 
     list->error = DSC_ERROR_NONE;
-
     return length;
 }
 
@@ -519,7 +516,6 @@ struct dsc_node_t *dsc_list_get_nth_node(struct dsc_list_t *list, int position)
     }
 
     list->error = DSC_ERROR_NONE;
-
     return walk;
 }
 
@@ -530,7 +526,6 @@ struct dsc_node_t *dsc_list_get_head(struct dsc_list_t *list)
     }
 
     list->error = DSC_ERROR_NONE;
-
     return list->head;
 }
 
@@ -552,7 +547,6 @@ struct dsc_node_t *dsc_list_get_tail(struct dsc_list_t *list)
     }
 
     list->error = DSC_ERROR_NONE;
-
     return walk;
 }
 
