@@ -16,8 +16,8 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#include "../include/dsc_set_utils.h"
+#include "../include/dsc_hash_utils.h"
 
-int dsc_set_hash(int key, int capacity) {
+int dsc_hash(int key, int capacity) {
     return key % capacity;
 }

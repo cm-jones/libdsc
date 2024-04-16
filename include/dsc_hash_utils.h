@@ -16,9 +16,9 @@
  * <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __DSC_SET_UTILS_H__
-#define __DSC_SET_UTILS_H__
+#ifndef __DSC_HASH_UTILS_H__
+#define __DSC_HASH_UTILS_H__
 
-int dsc_set_hash(int key, int capacity);
+int dsc_hash(int key, int capacity);
 
-#endif // __DSC_SET_UTILS_H__
+#endif // __DSC_HASH_UTILS_H__
