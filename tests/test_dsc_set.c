@@ -17,6 +17,7 @@
  */
 
 #include <check.h>
+
 #include "../include/dsc_set.h"
 
 START_TEST(test_dsc_set_create_destroy)
