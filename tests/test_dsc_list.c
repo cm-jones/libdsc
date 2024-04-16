@@ -148,14 +148,14 @@ START_TEST(test_dsc_list_delete_at_position)
 }
 END_TEST
 
-START_TEST(test_dsc_list_remove_first_occurrence)
+START_TEST(test_dsc_list_delete_value)
 {
     struct dsc_list_t *list = dsc_list_create();
     list = dsc_list_append(list, 1);
     list = dsc_list_append(list, 2);
     list = dsc_list_append(list, 2);
     list = dsc_list_append(list, 3);
-    list = dsc_list_remove_first_occurrence(list, 2);
+    list = dsc_list_delete_value(list, 2);
     ck_assert_int_eq(list->head->value, 1);
     ck_assert_int_eq(list->head->next->value, 2);
     ck_assert_int_eq(list->head->next->next->value, 3);
@@ -163,14 +163,14 @@ START_TEST(test_dsc_list_remove_first_occurrence)
 }
 END_TEST
 
-START_TEST(test_dsc_list_remove_all_occurrences)
+START_TEST(test_dsc_list_delete_all)
 {
     struct dsc_list_t *list = dsc_list_create();
     list = dsc_list_append(list, 1);
     list = dsc_list_append(list, 2);
     list = dsc_list_append(list, 2);
     list = dsc_list_append(list, 3);
-    list = dsc_list_remove_all_occurrences(list, 2);
+    list = dsc_list_delete_all(list, 2);
     ck_assert_int_eq(list->head->value, 1);
     ck_assert_int_eq(list->head->next->value, 3);
     dsc_list_destroy(list);
@@ -295,8 +295,8 @@ Suite *dsc_list_suite(void)
     tcase_add_test(tc_core, test_dsc_list_delete_head);
     tcase_add_test(tc_core, test_dsc_list_delete_tail);
     tcase_add_test(tc_core, test_dsc_list_delete_at_position);
-    tcase_add_test(tc_core, test_dsc_list_remove_first_occurrence);
-    tcase_add_test(tc_core, test_dsc_list_remove_all_occurrences);
+    tcase_add_test(tc_core, test_dsc_list_delete_value);
+    tcase_add_test(tc_core, test_dsc_list_delete_all);
     tcase_add_test(tc_core, test_dsc_list_reverse);
     tcase_add_test(tc_core, test_dsc_list_search);
     tcase_add_test(tc_core, test_dsc_list_count);
