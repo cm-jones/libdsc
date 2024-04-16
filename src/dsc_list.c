@@ -284,7 +284,7 @@ struct dsc_list_t *dsc_list_delete_at_position(struct dsc_list_t *list,
     return list;
 }
 
-struct dsc_list_t *dsc_list_remove_first_occurrence(struct dsc_list_t *list, int value)
+struct dsc_list_t *dsc_list_delete_value(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
         return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
@@ -319,7 +319,7 @@ struct dsc_list_t *dsc_list_remove_first_occurrence(struct dsc_list_t *list, int
     return list;
 }
 
-struct dsc_list_t *dsc_list_remove_all_occurrences(struct dsc_list_t *list, int value)
+struct dsc_list_t *dsc_list_delete_all(struct dsc_list_t *list, int value)
 {
     if (list == NULL) {
         return dsc_list_create_with_error(DSC_ERROR_INVALID_ARGUMENT);
