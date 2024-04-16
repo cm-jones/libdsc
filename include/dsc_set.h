@@ -19,10 +19,22 @@
 #ifndef __DSC_SET_H__
 #define __DSC_SET_H__
 
+#include <stdbool.h>
+
 #include "dsc_error.h"
 
-// Hash set structure
+#define DSC_SET_INITIAL_CAPACITY 16
+#define DSC_SET_LOAD_FACTOR 0.75
+
+struct dsc_set_entry_t {
+    int key;
+    struct dsc_set_entry_t *next;
+};
+
 struct dsc_set_t {
+    struct dsc_set_entry **buckets;
+    int capacity;
+    int size;
     enum dsc_error_t error;
 };
 
@@ -32,7 +44,7 @@ struct dsc_set_t *dsc_set_create();
 struct dsc_set_t *dsc_set_create_with_error(enum dsc_error_t error);
 
 // Destroy the hash set and free its memory
-void dsc_set_destroy(struct dsc_set_t *set);
+struct dsc_set_t *dsc_set_destroy(struct dsc_set_t *set);
 
 // Add an element to the hash set
 struct dsc_set_t *dsc_set_add(struct dsc_set_t *set, int value);
@@ -41,7 +53,7 @@ struct dsc_set_t *dsc_set_add(struct dsc_set_t *set, int value);
 struct dsc_set_t *dsc_set_remove(struct dsc_set_t *set, int value);
 
 // Check if an element exists in the hash set
-struct dsc_set_t *dsc_set_contains(struct dsc_set_t *set, int value);
+bool dsc_set_contains(struct dsc_set_t *set, int value);
 
 // Get the size of the hash set
 int dsc_set_size(struct dsc_set_t *set);
