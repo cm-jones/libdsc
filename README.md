@@ -1,14 +1,14 @@
-# ```libdsc```: Data Structures for C
+# libdsc: Data Structures for C
 
 [![build](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Description
 
-```libdsc``` is a C library that implements commonly used data structures such as dynamic arrays, stacks, queues, linked lists, hash sets, and hash tables.
+libdsc is a C library that implements commonly used data structures such as dynamic arrays, stacks, queues, linked lists, hash sets, and hash tables.
 
 ## Usage
 
-To use ```libdsc``` in your C project, follow these steps:
+To use libdsc in your C project, follow these steps:
 
 1. Obtain the library files:
    - Either compile the library yourself (see "Building the Library" section below) or download the pre-compiled library files.
@@ -45,7 +45,7 @@ To use ```libdsc``` in your C project, follow these steps:
 
 ## Building the Library
 
-To build ```libdsc``` yourself, follow these steps:
+To build libdsc yourself, follow these steps:
 
 1. Clone the repository:
    ```
@@ -71,7 +71,7 @@ To build ```libdsc``` yourself, follow these steps:
 
 ## API Documentation
 
-Detailed API documentation for ```libdsc``` can be found in the `include` directory.
+Detailed API documentation for libdsc can be found in the `include` directory.
 
 ## Contributing
 
