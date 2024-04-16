@@ -4,11 +4,11 @@
 
 ## Description
 
-A C library that implements commonly used data structures such as dynamic arrays (i.e., vectors), stacks, queues, linked lists, hash sets, and hash tables.
+```libdsc``` is a C library that implements commonly used data structures such as dynamic arrays, stacks, queues, linked lists, hash sets, and hash tables.
 
 ## Usage
 
-To use the DSC library in your C project, follow these steps:
+To use ```libdsc``` in your C project, follow these steps:
 
 1. Obtain the library files:
    - Either compile the library yourself (see "Building the Library" section below) or download the pre-compiled library files.
@@ -32,23 +32,29 @@ To use the DSC library in your C project, follow these steps:
 4. Use the library functions in your code, for example:
    ```c
    struct dsc_list_t *list = dsc_list_create();
-   dsc_list_append(list, 10);
-   dsc_list_prepend(list, 5);
-   // Use other list functions as needed
+
+   dsc_list_append(list, 10); // [10]
+   dsc_list_prepend(list, 5); // [5, 10]
+   dsc_list_insert(list, 3, 1); // [5, 3, 10]
+   dsc_list_get_length(list); // returns 3
+
+   // Use other list functions as needed ...
+
+   dsc_list_destroy(list);
    ```
 
 ## Building the Library
 
-To build the DSC data structures library yourself, follow these steps:
+To build libdsc yourself, follow these steps:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/cm-jones/dsc.git
+   git clone https://github.com/cm-jones/libdsc.git
    ```
 
 2. Change into the project directory:
    ```
-   cd dsc
+   cd libdsc
    ```
 
 3. Compile the library using the provided Makefile:
@@ -65,11 +71,11 @@ To build the DSC data structures library yourself, follow these steps:
 
 ## API Documentation
 
-Detailed API documentation for the DSC library can be found in the `include` directory.
+Detailed API documentation for libdsc can be found in the `include` directory.
 
 ## Contributing
 
-If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/cm-jones/dsc).
+If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/cm-jones/libdsc).
 
 ## License
 
