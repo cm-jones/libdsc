@@ -19,11 +19,12 @@
 #define __DSC_LIST_H__
 
 #include <stdbool.h>
+#include <stddef.h>
 
-#include "dsc_error.h"
-
-/* Forward declarations */
+/* Forward declaration of the node structure */
 struct dsc_node_t;
+
+/* Forward declaration of the list structure */
 struct dsc_list_t;
 
 /**
