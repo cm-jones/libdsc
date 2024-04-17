@@ -22,27 +22,9 @@
 
 #include "dsc_error.h"
 
-/**
- * @struct dsc_node_t
- * @brief Represents a node in the list.
- *
- * @param value The value stored in the node.
- * @param next Pointer to the next node in the list.
- */
-struct dsc_node_t {
-    int value;
-    struct dsc_node_t *next;
-};
-
-/**
- * @struct dsc_list_t
- * @brief Represents a list.
- *
- * @param head Pointer to the head node of the list.
- */
-struct dsc_list_t {
-    struct dsc_node_t *head;
-};
+/* Forward declarations */
+struct dsc_node_t;
+struct dsc_list_t;
 
 /**
  * @brief Creates a new list.
@@ -130,21 +112,5 @@ void dsc_list_print(const struct dsc_list_t *list);
  * or NULL.
  */
 struct dsc_node_t *dsc_list_get_head(const struct dsc_list_t *list);
-
-/**
- * @brief Creates a new node with the specified value.
- *
- * @param value The value to store in the node.
- * @return A pointer to the newly created node, or NULL if memory allocation
- * fails.
- */
-static struct dsc_node_t *dsc_node_create(int value);
-
-/**
- * @brief Destroys a node and frees its memory.
- *
- * @param node The node to destroy.
- */
-static void dsc_node_destroy(struct dsc_node_t *node);
 
 #endif // __DSC_LIST_H__

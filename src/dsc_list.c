@@ -21,6 +21,36 @@
 #include "../include/dsc_list.h"
 #include "../include/dsc_error.h"
 
+struct dsc_node_t {
+    int value;               /* The value stored in the node. */
+    struct dsc_node_t *next; /* Pointer to the next node in the list. */
+};
+
+struct dsc_list_t {
+    struct dsc_node_t *head; /* Pointer to the head node of the list. */
+};
+
+static struct dsc_node_t *dsc_node_create(int value)
+{
+    struct dsc_node_t *new_node = malloc(sizeof *new_node);
+    if (new_node == NULL) {
+        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        return NULL;
+    }
+
+    new_node->value = value;
+    new_node->next = NULL;
+
+    return new_node;
+}
+
+static void dsc_node_destroy(struct dsc_node_t *node)
+{
+    if (node != NULL) {
+        free(node);
+    }
+}
+
 struct dsc_list_t *dsc_list_create()
 {
     struct dsc_list_t *new_list = malloc(sizeof *new_list);
@@ -219,25 +249,4 @@ struct dsc_node_t *dsc_list_get_head(const struct dsc_list_t *list)
     }
 
     return list->head;
-}
-
-struct dsc_node_t *dsc_node_create(int value)
-{
-    struct dsc_node_t *new_node = malloc(sizeof *new_node);
-    if (new_node == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
-        return NULL;
-    }
-
-    new_node->value = value;
-    new_node->next = NULL;
-
-    return new_node;
-}
-
-void dsc_node_destroy(struct dsc_node_t *node)
-{
-    if (node != NULL) {
-        free(node);
-    }
 }
