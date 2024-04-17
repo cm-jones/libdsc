@@ -22,16 +22,28 @@
 #include "../include/dsc_utils.h"
 #include "../include/dsc_error.h"
 
-struct dsc_set_t *dsc_set_create()
-{
+/* Represents an entry in the hash set. */
+struct dsc_set_entry_t {
+    int key;                      /* The key of the entry. */
+    struct dsc_set_entry_t *next; /* Pointer to the next entry in case of collisions. */
+};
+
+/* Represents a hash set. */
+struct dsc_set_t {
+    struct dsc_set_entry_t **buckets; /* Array of pointers to entries. */
+    size_t size;                      /* The number of elements in the hash set. */
+    size_t capacity;                  /* The current capacity of the hash set. */
+};
+
+struct dsc_set_t *dsc_set_create() {
     struct dsc_set_t *new_set = calloc(1, sizeof *new_set);
     if (new_set == NULL) {
         dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
-    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
     new_set->size = 0;
+    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
 
     new_set->buckets = calloc(new_set->capacity, sizeof(struct dsc_set_entry_t *));
     if (new_set->buckets == NULL) {
@@ -40,11 +52,11 @@ struct dsc_set_t *dsc_set_create()
         return NULL;
     }
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return new_set;
 }
 
-void dsc_set_free(struct dsc_set_t *set)
-{
+void dsc_set_free(struct dsc_set_t *set) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -52,21 +64,21 @@ void dsc_set_free(struct dsc_set_t *set)
 
     // Free all the entries in the set
     for (int i = 0; i < set->capacity; i++) {
-        struct dsc_set_entry_t *entry = set->buckets[i];
-        while (entry != NULL) {
-            struct dsc_set_entry_t *next = entry->next;
-            free(entry);
-            entry = next;
+        struct dsc_set_entry_t *curr = set->buckets[i];
+        while (curr != NULL) {
+            struct dsc_set_entry_t *next = curr->next;
+            free(curr);
+            curr = next;
         }
     }
 
     // Free the buckets array and the set itself
     free(set->buckets);
     free(set);
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
-bool dsc_set_insert(struct dsc_set_t *set, int value)
-{
+bool dsc_set_insert(struct dsc_set_t *set, int value) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -80,6 +92,7 @@ bool dsc_set_insert(struct dsc_set_t *set, int value)
     // Resize the set if the load factor exceeds the threshold
     if ((float) set->size / set->capacity >= DSC_SET_LOAD_FACTOR) {
         int new_capacity = set->capacity * 2;
+
         struct dsc_set_entry_t **new_buckets = calloc(new_capacity, sizeof(struct dsc_set_entry_t *));
         if (new_buckets == NULL) {
             dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -87,14 +100,17 @@ bool dsc_set_insert(struct dsc_set_t *set, int value)
         }
 
         // Rehash all the elements into the new buckets
-        for (int i = 0; i < set->capacity; i++) {
-            struct dsc_set_entry_t *entry = set->buckets[i];
-            while (entry != NULL) {
-                struct dsc_set_entry_t *next = entry->next;
-                int index = dsc_hash(entry->key, new_capacity);
-                entry->next = new_buckets[index];
-                new_buckets[index] = entry;
-                entry = next;
+        for (size_t i = 0; i < set->capacity; ++i) {
+            struct dsc_set_entry_t *curr = set->buckets[i];
+            while (curr != NULL) {
+                struct dsc_set_entry_t *next = curr->next;
+                
+                // Rehash the value to determine the new index
+                int index = dsc_hash(curr->key, new_capacity);
+    
+                curr->next = new_buckets[index];
+                new_buckets[index] = curr;
+                curr = next;
             }
         }
 
@@ -122,11 +138,11 @@ bool dsc_set_insert(struct dsc_set_t *set, int value)
 
     set->size++;
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return true;
 }
 
-bool dsc_set_erase(struct dsc_set_t *set, int value)
-{
+bool dsc_set_erase(struct dsc_set_t *set, int value) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -146,6 +162,7 @@ bool dsc_set_erase(struct dsc_set_t *set, int value)
             }
             free(entry);
             set->size--;
+            dsc_set_last_error(DSC_ERROR_NONE);
             return true;
         }
         prev = entry;
@@ -156,8 +173,7 @@ bool dsc_set_erase(struct dsc_set_t *set, int value)
     return false;
 }
 
-bool dsc_set_contains(const struct dsc_set_t *set, int value)
-{
+bool dsc_set_contains(const struct dsc_set_t *set, int value) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -170,36 +186,37 @@ bool dsc_set_contains(const struct dsc_set_t *set, int value)
     struct dsc_set_entry_t *entry = set->buckets[index];
     while (entry != NULL) {
         if (entry->key == value) {
+            dsc_set_last_error(DSC_ERROR_NONE);
             return true;
         }
         entry = entry->next;
     }
 
+    dsc_set_last_error(DSC_ERROR_VALUE_NOT_FOUND);
     return false;
 }
 
-size_t dsc_set_size(const struct dsc_set_t *set)
-{
+size_t dsc_set_size(const struct dsc_set_t *set) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
     }
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return set->size;
 }
 
-bool dsc_set_empty(const struct dsc_set_t *set)
-{
+bool dsc_set_empty(const struct dsc_set_t *set) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return true;
     }
 
-    return (set->size == 0);
+    dsc_set_last_error(DSC_ERROR_NONE);
+    return set->size == 0;
 }
 
-void dsc_set_clear(struct dsc_set_t *set)
-{
+void dsc_set_clear(struct dsc_set_t *set) {
     if (set == NULL) {
         dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -217,4 +234,5 @@ void dsc_set_clear(struct dsc_set_t *set)
     }
 
     set->size = 0;
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
