@@ -21,6 +21,12 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+/**
+ * @def DSC_STACK_INITIAL_CAPACITY
+ * @brief The initial capacity of the stack.
+ */
+#define DSC_STACK_INITIAL_CAPACITY 16
+
 /* Forward declaration of the stack structure */
 struct dsc_stack_t;
 
