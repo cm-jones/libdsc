@@ -1,4 +1,3 @@
-```markdown
 # Hash Set
 
 The hash set is an implementation of the set data structure using a hash table. It provides constant-time average performance for insertion, deletion, and lookup operations.
@@ -221,5 +220,4 @@ dsc_set_insert(set, 42);
 dsc_set_insert(set, 73);
 dsc_set_clear(set);
 // The set is now empty
-```
 ```
