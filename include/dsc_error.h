@@ -47,6 +47,13 @@ enum dsc_error_t {
 };
 
 /**
+ * @brief Sets the last error code.
+ *
+ * @param error The error code to set.
+ */
+void dsc_set_last_error(enum dsc_error_t error);
+
+/**
  * @brief Gets the last error code.
  *
  * @return The last error code.
