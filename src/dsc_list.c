@@ -27,7 +27,7 @@ struct dsc_node_t {
 };
 
 struct dsc_list_t {
-    struct dsc_node_t *head; /* Pointer to the head node of the list. */
+    struct dsc_node_t *head; /* Pointer to the first node in the list. */
 };
 
 static struct dsc_node_t *dsc_node_create(int value)
@@ -41,6 +41,7 @@ static struct dsc_node_t *dsc_node_create(int value)
     new_node->value = value;
     new_node->next = NULL;
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return new_node;
 }
 
@@ -61,6 +62,7 @@ struct dsc_list_t *dsc_list_create()
 
     new_list->head = NULL;
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return new_list;
 }
 
@@ -81,6 +83,7 @@ void dsc_list_destroy(struct dsc_list_t *list)
     }
 
     free(list);
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
 void dsc_list_push_front(struct dsc_list_t *list, int value)
@@ -98,6 +101,7 @@ void dsc_list_push_front(struct dsc_list_t *list, int value)
 
     new_node->next = list->head;
     list->head = new_node;
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
 void dsc_list_insert_after(struct dsc_list_t *list, struct dsc_node_t *prev_node, int value)
@@ -115,6 +119,7 @@ void dsc_list_insert_after(struct dsc_list_t *list, struct dsc_node_t *prev_node
 
     new_node->next = prev_node->next;
     prev_node->next = new_node;
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
 void dsc_list_pop_front(struct dsc_list_t *list)
@@ -132,6 +137,7 @@ void dsc_list_pop_front(struct dsc_list_t *list)
     struct dsc_node_t *old_head = list->head;
     list->head = old_head->next;
     dsc_node_destroy(old_head);
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
 void dsc_list_remove(struct dsc_list_t *list, int value)
@@ -148,6 +154,7 @@ void dsc_list_remove(struct dsc_list_t *list, int value)
 
     if (list->head->value == value) {
         dsc_list_pop_front(list);
+        dsc_set_last_error(DSC_ERROR_NONE);
         return;
     }
 
@@ -158,6 +165,7 @@ void dsc_list_remove(struct dsc_list_t *list, int value)
         if (walk->value == value) {
             prev->next = walk->next;
             dsc_node_destroy(walk);
+            dsc_set_last_error(DSC_ERROR_NONE);
             return;
         }
         prev = walk;
@@ -197,6 +205,8 @@ void dsc_list_remove_all(struct dsc_list_t *list, int value)
             walk = walk->next;
         }
     }
+
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
 int dsc_list_front(const struct dsc_list_t *list)
@@ -206,6 +216,7 @@ int dsc_list_front(const struct dsc_list_t *list)
         return 0;
     }
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return list->head->value;
 }
 
@@ -216,6 +227,7 @@ bool dsc_list_empty(const struct dsc_list_t *list)
         return false;
     }
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return list->head == NULL;
 }
 
@@ -239,6 +251,8 @@ void dsc_list_print(const struct dsc_list_t *list)
         walk = walk->next;
     }
     printf("\n");
+
+    dsc_set_last_error(DSC_ERROR_NONE);
 }
 
 struct dsc_node_t *dsc_list_get_head(const struct dsc_list_t *list)
@@ -248,5 +262,6 @@ struct dsc_node_t *dsc_list_get_head(const struct dsc_list_t *list)
         return NULL;
     }
 
+    dsc_set_last_error(DSC_ERROR_NONE);
     return list->head;
 }
