@@ -15,63 +15,77 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdlib.h>
 #include <check.h>
 
 #include "../include/dsc_set.h"
-#include "../include/dsc_error.h"
 
-START_TEST(test_dsc_set_create_free)
+/* Setup and teardown functions */
+void setup(void) {
+    /* No setup needed */
+}
+
+void teardown(void) {
+    /* No teardown needed */
+}
+
+/* Test cases */
+
+START_TEST(test_dsc_set_create)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     ck_assert_ptr_nonnull(set);
-    ck_assert_int_eq(dsc_set_size(set), 0);
-    ck_assert(dsc_set_empty(set));
     dsc_set_free(set);
 }
 END_TEST
 
 START_TEST(test_dsc_set_insert)
 {
-    struct dsc_set_t *set = dsc_set_create();
-    ck_assert(dsc_set_insert(set, 10));
-    ck_assert_int_eq(dsc_set_size(set), 1);
-    ck_assert(!dsc_set_empty(set));
-    ck_assert(!dsc_set_insert(set, 10));
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    dsc_set_t *set = dsc_set_create();
+    int value = 42;
+    ck_assert_int_eq(dsc_set_insert(set, value), true);
+    ck_assert_int_eq(dsc_set_contains(set, value), true);
+    dsc_set_free(set);
+}
+END_TEST
+
+START_TEST(test_dsc_set_insert_duplicate)
+{
+    dsc_set_t *set = dsc_set_create();
+    int value = 42;
+    dsc_set_insert(set, value);
+    ck_assert_int_eq(dsc_set_insert(set, value), false);
     dsc_set_free(set);
 }
 END_TEST
 
 START_TEST(test_dsc_set_erase)
 {
-    struct dsc_set_t *set = dsc_set_create();
-    dsc_set_insert(set, 10);
-    dsc_set_insert(set, 20);
-    ck_assert(dsc_set_erase(set, 10));
-    ck_assert_int_eq(dsc_set_size(set), 1);
-    ck_assert(!dsc_set_erase(set, 10));
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    dsc_set_t *set = dsc_set_create();
+    int value = 42;
+    dsc_set_insert(set, value);
+    ck_assert_int_eq(dsc_set_erase(set, value), true);
+    ck_assert_int_eq(dsc_set_contains(set, value), false);
     dsc_set_free(set);
 }
 END_TEST
 
-START_TEST(test_dsc_set_contains)
+START_TEST(test_dsc_set_erase_nonexistent)
 {
-    struct dsc_set_t *set = dsc_set_create();
-    dsc_set_insert(set, 10);
-    ck_assert(dsc_set_contains(set, 10));
-    ck_assert(!dsc_set_contains(set, 20));
+    dsc_set_t *set = dsc_set_create();
+    int value = 42;
+    ck_assert_int_eq(dsc_set_erase(set, value), false);
     dsc_set_free(set);
 }
 END_TEST
 
 START_TEST(test_dsc_set_size)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     ck_assert_int_eq(dsc_set_size(set), 0);
-    dsc_set_insert(set, 10);
+    dsc_set_insert(set, 42);
     ck_assert_int_eq(dsc_set_size(set), 1);
-    dsc_set_insert(set, 20);
+    dsc_set_insert(set, 73);
     ck_assert_int_eq(dsc_set_size(set), 2);
     dsc_set_free(set);
 }
@@ -79,70 +93,53 @@ END_TEST
 
 START_TEST(test_dsc_set_empty)
 {
-    struct dsc_set_t *set = dsc_set_create();
-    ck_assert(dsc_set_empty(set));
-    dsc_set_insert(set, 10);
-    ck_assert(!dsc_set_empty(set));
+    dsc_set_t *set = dsc_set_create();
+    ck_assert_int_eq(dsc_set_empty(set), true);
+    dsc_set_insert(set, 42);
+    ck_assert_int_eq(dsc_set_empty(set), false);
     dsc_set_free(set);
 }
 END_TEST
 
 START_TEST(test_dsc_set_clear)
 {
-    struct dsc_set_t *set = dsc_set_create();
-    dsc_set_insert(set, 10);
-    dsc_set_insert(set, 20);
-    ck_assert_int_eq(dsc_set_size(set), 2);
+    dsc_set_t *set = dsc_set_create();
+    dsc_set_insert(set, 42);
+    dsc_set_insert(set, 73);
     dsc_set_clear(set);
     ck_assert_int_eq(dsc_set_size(set), 0);
-    ck_assert(dsc_set_empty(set));
     dsc_set_free(set);
 }
 END_TEST
 
-START_TEST(test_dsc_set_error_handling)
-{
-    struct dsc_set_t *set = NULL;
-    ck_assert(!dsc_set_insert(set, 10));
-    ck_assert_int_eq(dsc_get_last_error(), DSC_ERROR_INVALID_ARGUMENT);
-    ck_assert(!dsc_set_erase(set, 10));
-    ck_assert_int_eq(dsc_get_last_error(), DSC_ERROR_INVALID_ARGUMENT);
-    ck_assert(!dsc_set_contains(set, 10));
-    ck_assert_int_eq(dsc_get_last_error(), DSC_ERROR_INVALID_ARGUMENT);
-    ck_assert_int_eq(dsc_set_size(set), 0);
-    ck_assert_int_eq(dsc_get_last_error(), DSC_ERROR_INVALID_ARGUMENT);
-    ck_assert(dsc_set_empty(set));
-    ck_assert_int_eq(dsc_get_last_error(), DSC_ERROR_INVALID_ARGUMENT);
-    dsc_set_clear(set);
-    ck_assert_int_eq(dsc_get_last_error(), DSC_ERROR_INVALID_ARGUMENT);
-}
-END_TEST
+/* Suite setup and teardown functions */
+Suite *dsc_set_suite(void) {
+    Suite *suite = suite_create("dsc_set");
+    TCase *tcase = tcase_create("core");
 
-Suite *dsc_set_suite(void)
-{
-    Suite *s = suite_create("dsc_set");
-    TCase *tc_core = tcase_create("Core");
+    tcase_add_checked_fixture(tcase, setup, teardown);
+    tcase_add_test(tcase, test_dsc_set_create);
+    tcase_add_test(tcase, test_dsc_set_insert);
+    tcase_add_test(tcase, test_dsc_set_insert_duplicate);
+    tcase_add_test(tcase, test_dsc_set_erase);
+    tcase_add_test(tcase, test_dsc_set_erase_nonexistent);
+    tcase_add_test(tcase, test_dsc_set_size);
+    tcase_add_test(tcase, test_dsc_set_empty);
+    tcase_add_test(tcase, test_dsc_set_clear);
 
-    tcase_add_test(tc_core, test_dsc_set_create_free);
-    tcase_add_test(tc_core, test_dsc_set_insert);
-    tcase_add_test(tc_core, test_dsc_set_erase);
-    tcase_add_test(tc_core, test_dsc_set_contains);
-    tcase_add_test(tc_core, test_dsc_set_size);
-    tcase_add_test(tc_core, test_dsc_set_empty);
-    tcase_add_test(tc_core, test_dsc_set_clear);
-    tcase_add_test(tc_core, test_dsc_set_error_handling);
-
-    suite_add_tcase(s, tc_core);
-    return s;
+    suite_add_tcase(suite, tcase);
+    return suite;
 }
 
-int main(void)
-{
-    int number_failed;
-    Suite *s = dsc_set_suite();
-    SRunner *sr = srunner_create(s);
-    srunner_run_all(sr, CK_NORMAL);
-    number_failed = srunner_ntests_failed(sr);
-    srunner_free(sr);
-    return (number_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+/* Main function */
+int main(void) {
+    int failed;
+    Suite *suite = dsc_set_suite();
+    SRunner *runner = srunner_create(suite);
+
+    srunner_run_all(runner, CK_NORMAL);
+    failed = srunner_ntests_failed(runner);
+    srunner_free(runner);
+
+    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

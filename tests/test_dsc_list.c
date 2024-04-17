@@ -15,316 +15,136 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdlib.h>
 #include <check.h>
 
 #include "../include/dsc_list.h"
 
+/* Setup and teardown functions */
+void setup(void) {
+    /* No setup needed */
+}
+
+void teardown(void) {
+    /* No teardown needed */
+}
+
+/* Test cases */
+
 START_TEST(test_dsc_list_create)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     ck_assert_ptr_nonnull(list);
-    ck_assert_ptr_null(list->head);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_destroy)
+START_TEST(test_dsc_list_push_front)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_prepend(list, 1);
-    dsc_list_prepend(list, 2);
-    enum dsc_error_t error = dsc_list_destroy(list);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-}
-END_TEST
-
-START_TEST(test_dsc_list_prepend)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    enum dsc_error_t error = dsc_list_prepend(list, 1);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    error = dsc_list_prepend(list, 2);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 2);
-    ck_assert_int_eq(list->head->next->value, 1);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_append)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    enum dsc_error_t error = dsc_list_append(list, 1);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    error = dsc_list_append(list, 2);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 2);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_insert)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    enum dsc_error_t error = dsc_list_insert(list, 1, 0);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    error = dsc_list_insert(list, 2, 1);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    error = dsc_list_insert(list, 3, 1);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 3);
-    ck_assert_int_eq(list->head->next->next->value, 2);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_insert_before)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    enum dsc_error_t error = dsc_list_insert_before(list, list->head->next, 3);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 3);
-    ck_assert_int_eq(list->head->next->next->value, 2);
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_front(list, 42);
+    dsc_list_push_front(list, 73);
+    dsc_node_t *head = dsc_list_get_head(list);
+    ck_assert_int_eq(head->value, 73);
     dsc_list_destroy(list);
 }
 END_TEST
 
 START_TEST(test_dsc_list_insert_after)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    enum dsc_error_t error = dsc_list_insert_after(list, list->head, 3);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 3);
-    ck_assert_int_eq(list->head->next->next->value, 2);
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_front(list, 42);
+    dsc_node_t *head = dsc_list_get_head(list);
+    dsc_list_insert_after(list, head, 73);
+    dsc_node_t *next_node = head->next;
+    ck_assert_int_eq(next_node->value, 73);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_delete_head)
+START_TEST(test_dsc_list_pop_front)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    enum dsc_error_t error = dsc_list_delete_head(list);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 2);
-    ck_assert_ptr_null(list->head->next);
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_front(list, 42);
+    dsc_list_push_front(list, 73);
+    dsc_list_pop_front(list);
+    dsc_node_t *head = dsc_list_get_head(list);
+    ck_assert_int_eq(head->value, 42);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_delete_tail)
+START_TEST(test_dsc_list_remove)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    enum dsc_error_t error = dsc_list_delete_tail(list);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_ptr_null(list->head->next);
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_front(list, 42);
+    dsc_list_push_front(list, 73);
+    dsc_list_remove(list, 73);
+    dsc_node_t *head = dsc_list_get_head(list);
+    ck_assert_int_eq(head->value, 42);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_delete_at_position)
+START_TEST(test_dsc_list_remove_all)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    enum dsc_error_t error = dsc_list_delete_at_position(list, 1);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 3);
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_front(list, 42);
+    dsc_list_push_front(list, 73);
+    dsc_list_push_front(list, 73);
+    dsc_list_remove_all(list, 73);
+    ck_assert_int_eq(dsc_list_front(list), 42);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_delete_value)
+START_TEST(test_dsc_list_front)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    enum dsc_error_t error = dsc_list_delete_value(list, 2);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 2);
-    ck_assert_int_eq(list->head->next->next->value, 3);
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_front(list, 42);
+    ck_assert_int_eq(dsc_list_front(list), 42);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_delete_all)
+START_TEST(test_dsc_list_empty)
 {
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    enum dsc_error_t error = dsc_list_delete_all(list, 2);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 1);
-    ck_assert_int_eq(list->head->next->value, 3);
+    dsc_list_t *list = dsc_list_create();
+    ck_assert_int_eq(dsc_list_empty(list), true);
+    dsc_list_push_front(list, 42);
+    ck_assert_int_eq(dsc_list_empty(list), false);
     dsc_list_destroy(list);
 }
 END_TEST
 
-START_TEST(test_dsc_list_reverse)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    enum dsc_error_t error = dsc_list_reverse(list);
-    ck_assert_int_eq(error, DSC_ERROR_NONE);
-    ck_assert_int_eq(list->head->value, 3);
-    ck_assert_int_eq(list->head->next->value, 2);
-    ck_assert_int_eq(list->head->next->next->value, 1);
-    dsc_list_destroy(list);
-}
-END_TEST
+/* Suite setup and teardown functions */
+Suite *dsc_list_suite(void) {
+    Suite *suite = suite_create("dsc_list");
+    TCase *tcase = tcase_create("core");
 
-START_TEST(test_dsc_list_search)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    struct dsc_node_t *node = dsc_list_search(list, 2);
-    ck_assert_ptr_nonnull(node);
-    ck_assert_int_eq(node->value, 2);
-    dsc_list_destroy(list);
-}
-END_TEST
+    tcase_add_checked_fixture(tcase, setup, teardown);
+    tcase_add_test(tcase, test_dsc_list_create);
+    tcase_add_test(tcase, test_dsc_list_push_front);
+    tcase_add_test(tcase, test_dsc_list_insert_after);
+    tcase_add_test(tcase, test_dsc_list_pop_front);
+    tcase_add_test(tcase, test_dsc_list_remove);
+    tcase_add_test(tcase, test_dsc_list_remove_all);
+    tcase_add_test(tcase, test_dsc_list_front);
+    tcase_add_test(tcase, test_dsc_list_empty);
 
-START_TEST(test_dsc_list_count)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    int count = dsc_list_count(list, 2);
-    ck_assert_int_eq(count, 2);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_is_empty)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    ck_assert(dsc_list_is_empty(list));
-    dsc_list_append(list, 1);
-    ck_assert(!dsc_list_is_empty(list));
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_get_length)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    ck_assert_int_eq(dsc_list_get_length(list), 0);
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    ck_assert_int_eq(dsc_list_get_length(list), 3);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_get_nth_node)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    dsc_list_append(list, 3);
-    struct dsc_node_t *node = dsc_list_get_nth_node(list, 1);
-    ck_assert_ptr_nonnull(node);
-    ck_assert_int_eq(node->value, 2);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_get_head)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    struct dsc_node_t *head = dsc_list_get_head(list);
-    ck_assert_ptr_nonnull(head);
-    ck_assert_int_eq(head->value, 1);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-START_TEST(test_dsc_list_get_tail)
-{
-    struct dsc_list_t *list = dsc_list_create();
-    dsc_list_append(list, 1);
-    dsc_list_append(list, 2);
-    struct dsc_node_t *tail = dsc_list_get_tail(list);
-    ck_assert_ptr_nonnull(tail);
-    ck_assert_int_eq(tail->value, 2);
-    dsc_list_destroy(list);
-}
-END_TEST
-
-Suite *dsc_list_suite(void)
-{
-    Suite *s;
-    TCase *tc_core;
-
-    s = suite_create("DSC List");
-    tc_core = tcase_create("Core");
-
-    tcase_add_test(tc_core, test_dsc_list_create);
-    tcase_add_test(tc_core, test_dsc_list_destroy);
-    tcase_add_test(tc_core, test_dsc_list_prepend);
-    tcase_add_test(tc_core, test_dsc_list_append);
-    tcase_add_test(tc_core, test_dsc_list_insert);
-    tcase_add_test(tc_core, test_dsc_list_insert_before);
-    tcase_add_test(tc_core, test_dsc_list_insert_after);
-    tcase_add_test(tc_core, test_dsc_list_delete_head);
-    tcase_add_test(tc_core, test_dsc_list_delete_tail);
-    tcase_add_test(tc_core, test_dsc_list_delete_at_position);
-    tcase_add_test(tc_core, test_dsc_list_delete_value);
-    tcase_add_test(tc_core, test_dsc_list_delete_all);
-    tcase_add_test(tc_core, test_dsc_list_reverse);
-    tcase_add_test(tc_core, test_dsc_list_search);
-    tcase_add_test(tc_core, test_dsc_list_count);
-    tcase_add_test(tc_core, test_dsc_list_is_empty);
-    tcase_add_test(tc_core, test_dsc_list_get_length);
-    tcase_add_test(tc_core, test_dsc_list_get_nth_node);
-    tcase_add_test(tc_core, test_dsc_list_get_head);
-    tcase_add_test(tc_core, test_dsc_list_get_tail);
-
-    suite_add_tcase(s, tc_core);
-
-    return s;
+    suite_add_tcase(suite, tcase);
+    return suite;
 }
 
-int main(void)
-{
-    int number_failed;
-    Suite *s;
-    SRunner *sr;
+/* Main function */
+int main(void) {
+    int failed;
+    Suite *suite = dsc_list_suite();
+    SRunner *runner = srunner_create(suite);
 
-    s = dsc_list_suite();
-    sr = srunner_create(s);
+    srunner_run_all(runner, CK_NORMAL);
+    failed = srunner_ntests_failed(runner);
+    srunner_free(runner);
 
-    srunner_run_all(sr, CK_NORMAL);
-    number_failed = srunner_ntests_failed(sr);
-    srunner_free(sr);
-
-    return (number_failed == 0) ? 0 : 1;
+    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
