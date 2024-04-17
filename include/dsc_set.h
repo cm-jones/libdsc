@@ -33,32 +33,6 @@
 #define DSC_SET_LOAD_FACTOR 0.75
 
 /**
- * @struct dsc_set_entry_t
- * @brief Represents an entry in the hash set.
- *
- * @param key The key of the entry.
- * @param next Pointer to the next entry in case of collisions.
- */
-struct dsc_set_entry_t {
-    int key;
-    struct dsc_set_entry_t *next;
-};
-
-/**
- * @struct dsc_set_t
- * @brief Represents a hash set.
- *
- * @param buckets Array of pointers to entries.
- * @param capacity The current capacity of the hash set.
- * @param size The number of elements in the hash set.
- */
-struct dsc_set_t {
-    struct dsc_set_entry_t **buckets;
-    int capacity;
-    int size;
-};
-
-/**
  * @brief Creates a new hash set.
  *
  * @return A pointer to the newly created hash set, or NULL if memory allocation fails.
