@@ -46,4 +46,11 @@ enum dsc_error_t {
     DSC_ERROR_VALUE_NOT_FOUND
 };
 
+/**
+ * @brief Gets the last error code.
+ *
+ * @return The last error code.
+ */
+enum dsc_error_t dsc_get_last_error();
+
 #endif // __DSC_ERROR_H__
