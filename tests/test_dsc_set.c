@@ -23,8 +23,8 @@ START_TEST(test_dsc_set_create_destroy)
 {
     struct dsc_set_t *set = dsc_set_create();
     ck_assert_ptr_nonnull(set);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    dsc_set_destroy(set);
+    enum dsc_error_t error = dsc_set_destroy(set);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
 }
 END_TEST
 
@@ -32,17 +32,21 @@ START_TEST(test_dsc_set_add)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    set = dsc_set_add(set, 10);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_get_size(set), 1);
+    enum dsc_error_t error = dsc_set_add(set, 10);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    unsigned int size;
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 1);
 
-    set = dsc_set_add(set, 20);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_get_size(set), 2);
+    error = dsc_set_add(set, 20);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 2);
 
-    set = dsc_set_add(set, 10);
-    ck_assert_int_eq(set->error, DSC_ERROR_VALUE_ALREADY_EXISTS);
-    ck_assert_int_eq(dsc_set_get_size(set), 2);
+    error = dsc_set_add(set, 10);
+    ck_assert_int_eq(error, DSC_ERROR_VALUE_ALREADY_EXISTS);
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 2);
 
     dsc_set_destroy(set);
 }
@@ -52,16 +56,19 @@ START_TEST(test_dsc_set_remove)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    set = dsc_set_add(set, 10);
-    set = dsc_set_add(set, 20);
+    dsc_set_add(set, 10);
+    dsc_set_add(set, 20);
 
-    set = dsc_set_remove(set, 10);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_get_size(set), 1);
+    enum dsc_error_t error = dsc_set_remove(set, 10);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    unsigned int size;
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 1);
 
-    set = dsc_set_remove(set, 30);
-    ck_assert_int_eq(set->error, DSC_ERROR_VALUE_NOT_FOUND);
-    ck_assert_int_eq(dsc_set_get_size(set), 1);
+    error = dsc_set_remove(set, 30);
+    ck_assert_int_eq(error, DSC_ERROR_VALUE_NOT_FOUND);
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 1);
 
     dsc_set_destroy(set);
 }
@@ -71,17 +78,21 @@ START_TEST(test_dsc_set_contains)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    set = dsc_set_add(set, 10);
-    set = dsc_set_add(set, 20);
+    dsc_set_add(set, 10);
+    dsc_set_add(set, 20);
 
-    set = dsc_set_contains(set, 10);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
+    bool result;
+    enum dsc_error_t error = dsc_set_contains(set, 10, &result);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert(result);
 
-    set = dsc_set_contains(set, 20);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
+    error = dsc_set_contains(set, 20, &result);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert(result);
 
-    set = dsc_set_contains(set, 30);
-    ck_assert_int_eq(set->error, DSC_ERROR_VALUE_NOT_FOUND);
+    error = dsc_set_contains(set, 30, &result);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert(!result);
 
     dsc_set_destroy(set);
 }
@@ -91,13 +102,20 @@ START_TEST(test_dsc_set_get_size)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    ck_assert_int_eq(dsc_set_get_size(set), 0);
+    unsigned int size;
+    enum dsc_error_t error = dsc_set_get_size(set, &size);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert_int_eq(size, 0);
 
-    set = dsc_set_add(set, 10);
-    ck_assert_int_eq(dsc_set_get_size(set), 1);
+    dsc_set_add(set, 10);
+    error = dsc_set_get_size(set, &size);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert_int_eq(size, 1);
 
-    set = dsc_set_add(set, 20);
-    ck_assert_int_eq(dsc_set_get_size(set), 2);
+    dsc_set_add(set, 20);
+    error = dsc_set_get_size(set, &size);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert_int_eq(size, 2);
 
     dsc_set_destroy(set);
 }
@@ -107,12 +125,15 @@ START_TEST(test_dsc_set_is_empty)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    set = dsc_set_is_empty(set);
-    ck_assert_int_eq(set->error, DSC_ERROR_EMPTY_SET);
+    bool result;
+    enum dsc_error_t error = dsc_set_is_empty(set, &result);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert(result);
 
-    set = dsc_set_add(set, 10);
-    set = dsc_set_is_empty(set);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
+    dsc_set_add(set, 10);
+    error = dsc_set_is_empty(set, &result);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    ck_assert(!result);
 
     dsc_set_destroy(set);
 }
@@ -122,16 +143,37 @@ START_TEST(test_dsc_set_clear)
 {
     struct dsc_set_t *set = dsc_set_create();
 
-    set = dsc_set_add(set, 10);
-    set = dsc_set_add(set, 20);
-    set = dsc_set_add(set, 30);
-    ck_assert_int_eq(dsc_set_get_size(set), 3);
+    dsc_set_add(set, 10);
+    dsc_set_add(set, 20);
+    dsc_set_add(set, 30);
+    unsigned int size;
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 3);
 
-    set = dsc_set_clear(set);
-    ck_assert_int_eq(set->error, DSC_ERROR_NONE);
-    ck_assert_int_eq(dsc_set_get_size(set), 0);
+    enum dsc_error_t error = dsc_set_clear(set);
+    ck_assert_int_eq(error, DSC_ERROR_NONE);
+    dsc_set_get_size(set, &size);
+    ck_assert_int_eq(size, 0);
 
     dsc_set_destroy(set);
+}
+END_TEST
+
+START_TEST(test_dsc_set_null_parameter)
+{
+    bool result;
+    unsigned int size;
+
+    ck_assert_int_eq(dsc_set_destroy(NULL), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_add(NULL, 10), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_remove(NULL, 10), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_contains(NULL, 10, &result), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_contains(dsc_set_create(), 10, NULL), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_get_size(NULL, &size), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_get_size(dsc_set_create(), NULL), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_is_empty(NULL, &result), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_is_empty(dsc_set_create(), NULL), DSC_ERROR_INVALID_ARGUMENT);
+    ck_assert_int_eq(dsc_set_clear(NULL), DSC_ERROR_INVALID_ARGUMENT);
 }
 END_TEST
 
@@ -150,6 +192,7 @@ Suite *dsc_set_suite(void)
     tcase_add_test(tc_core, test_dsc_set_get_size);
     tcase_add_test(tc_core, test_dsc_set_is_empty);
     tcase_add_test(tc_core, test_dsc_set_clear);
+    tcase_add_test(tc_core, test_dsc_set_null_parameter);
 
     suite_add_tcase(s, tc_core);
 

@@ -42,17 +42,40 @@ struct dsc_set_t *dsc_set_create()
 
 enum dsc_error_t dsc_set_destroy(struct dsc_set_t *set)
 {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    // Free all the entries in the set
+    for (int i = 0; i < set->capacity; i++) {
+        struct dsc_set_entry_t *entry = set->buckets[i];
+        while (entry != NULL) {
+            struct dsc_set_entry_t *next = entry->next;
+            free(entry);
+            entry = next;
+        }
+    }
+
+    // Free the buckets array and the set itself
+    free(set->buckets);
+    free(set);
+
     return DSC_ERROR_NONE;
 }
 
-enum dsc_error_t dsc_set_add(struct dsc_set_t *set, const int value)
+enum dsc_error_t dsc_set_add(struct dsc_set_t *set, int value)
 {
     if (set == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     // Check if the value already exists in the set
-    if (dsc_set_contains(set, value)) {
+    bool result;
+    enum dsc_error_t error = dsc_set_contains(set, value, &result);
+    if (error != DSC_ERROR_NONE) {
+        return error;
+    }
+    if (result) {
         return DSC_ERROR_VALUE_ALREADY_EXISTS;
     }
 
@@ -104,25 +127,98 @@ enum dsc_error_t dsc_set_add(struct dsc_set_t *set, const int value)
 
 enum dsc_error_t dsc_set_remove(struct dsc_set_t *set, int value)
 {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    int index = dsc_hash(value, set->capacity);
+
+    struct dsc_set_entry_t *prev = NULL;
+    struct dsc_set_entry_t *entry = set->buckets[index];
+
+    while (entry != NULL) {
+        if (entry->key == value) {
+            if (prev == NULL) {
+                set->buckets[index] = entry->next;
+            } else {
+                prev->next = entry->next;
+            }
+            free(entry);
+            set->size--;
+            return DSC_ERROR_NONE;
+        }
+        prev = entry;
+        entry = entry->next;
+    }
+
+    return DSC_ERROR_VALUE_NOT_FOUND;
+}
+
+enum dsc_error_t dsc_set_contains(const struct dsc_set_t *set,
+                                  int value,
+                                  bool *result)
+{
+    if (set == NULL || result == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    // Hash the value to determine the bucket index
+    int index = dsc_hash(value, set->capacity);
+
+    // Search for the value in the bucket
+    struct dsc_set_entry_t *entry = set->buckets[index];
+    while (entry != NULL) {
+        if (entry->key == value) {
+            *result = true;
+            return DSC_ERROR_NONE;
+        }
+        entry = entry->next;
+    }
+
+    *result = false;
     return DSC_ERROR_NONE;
 }
 
-bool dsc_set_contains(struct dsc_set_t *set, int value)
+enum dsc_error_t dsc_set_get_size(const struct dsc_set_t *set,
+                                  unsigned int *result)
 {
-    return false;
+    if (set == NULL || result == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    *result = set->size;
+
+    return DSC_ERROR_NONE;
 }
 
-int dsc_set_get_size(struct dsc_set_t *set)
+enum dsc_error_t dsc_set_is_empty(const struct dsc_set_t *set, bool *result)
 {
-    return 0;
-}
+    if (set == NULL || result == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
 
-bool dsc_set_is_empty(struct dsc_set_t *set)
-{
-    return false;
+    *result = (set->size == 0);
+    return DSC_ERROR_NONE;
 }
 
 enum dsc_error_t dsc_set_clear(struct dsc_set_t *set)
 {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    // Free all the entries in the set
+    for (int i = 0; i < set->capacity; i++) {
+        struct dsc_set_entry_t *entry = set->buckets[i];
+        while (entry != NULL) {
+            struct dsc_set_entry_t *next = entry->next;
+            free(entry);
+            entry = next;
+        }
+        set->buckets[i] = NULL;
+    }
+
+    set->size = 0;
+
     return DSC_ERROR_NONE;
 }

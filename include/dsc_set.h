@@ -71,8 +71,8 @@ struct dsc_set_t *dsc_set_create();
  * @brief Destroys the hash set and frees its memory.
  *
  * @param set The hash set to destroy.
- * @return DSC_ERROR_NONE on success, DSC_ERROR_INVALID_ARGUMENT if the set is
- * NULL.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL.
  */
 enum dsc_error_t dsc_set_destroy(struct dsc_set_t *set);
 
@@ -81,19 +81,21 @@ enum dsc_error_t dsc_set_destroy(struct dsc_set_t *set);
  *
  * @param set The hash set to add the element to.
  * @param value The value to add.
- * @return DSC_ERROR_NONE on success, DSC_ERROR_INVALID_ARGUMENT if the set is
- * NULL, DSC_ERROR_OUT_OF_MEMORY if memory allocation fails,
- * DSC_ERROR_VALUE_ALREADY_EXISTS if the value is already in the set.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL,
+ *         DSC_ERROR_OUT_OF_MEMORY if memory allocation fails,
+ *         DSC_ERROR_VALUE_ALREADY_EXISTS if the value is already in the set.
  */
-enum dsc_error_t dsc_set_add(struct dsc_set_t *set, const int value);
+enum dsc_error_t dsc_set_add(struct dsc_set_t *set, int value);
 
 /**
  * @brief Removes an element from the hash set.
  *
  * @param set The hash set to remove the element from.
  * @param value The value to remove.
- * @return DSC_ERROR_NONE on success, DSC_ERROR_INVALID_ARGUMENT if the set is
- * NULL, DSC_ERROR_VALUE_NOT_FOUND if the value is not found in the set.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL,
+ *         DSC_ERROR_VALUE_NOT_FOUND if the value is not found in the set.
  */
 enum dsc_error_t dsc_set_remove(struct dsc_set_t *set, int value);
 
@@ -102,32 +104,44 @@ enum dsc_error_t dsc_set_remove(struct dsc_set_t *set, int value);
  *
  * @param set The hash set to check.
  * @param value The value to check for.
- * @return true if the element exists, false otherwise.
+ * @param[out] result Pointer to a bool variable to store the result of the
+ *                    membership check.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if set or result is NULL.
  */
-bool dsc_set_contains(struct dsc_set_t *set, int value);
+enum dsc_error_t dsc_set_contains(const struct dsc_set_t *set,
+                                  int value,
+                                  bool *result);
 
 /**
  * @brief Gets the size of the hash set.
  *
  * @param set The hash set to get the size of.
- * @return The size of the hash set, or -1 if the set is NULL.
+ * @param[out] result Pointer to an unsigned int variable to store the size of
+ *                    the set.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if set or result is NULL.
  */
-int dsc_set_get_size(struct dsc_set_t *set);
+enum dsc_error_t dsc_set_get_size(const struct dsc_set_t *set,
+                                  unsigned int *result);
 
 /**
  * @brief Checks if the hash set is empty.
  *
  * @param set The hash set to check.
- * @return true if the hash set is empty or NULL, false otherwise.
+ * @param[out] result Pointer to a bool variable to store the result of the
+ *                    emptiness check.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if set or result is NULL.
  */
-bool dsc_set_is_empty(struct dsc_set_t *set);
+enum dsc_error_t dsc_set_is_empty(const struct dsc_set_t *set, bool *result);
 
 /**
  * @brief Clears all elements from the hash set.
  *
  * @param set The hash set to clear.
- * @return DSC_ERROR_NONE on success, DSC_ERROR_INVALID_ARGUMENT if the set is
- * NULL.
+ * @return DSC_ERROR_NONE on success,
+ *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL.
  */
 enum dsc_error_t dsc_set_clear(struct dsc_set_t *set);
 
