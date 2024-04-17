@@ -62,8 +62,7 @@ struct dsc_set_t {
 /**
  * @brief Creates a new hash set.
  *
- * @return A pointer to the newly created hash set, or NULL if memory
- * allocation fails.
+ * @return A pointer to the newly created hash set, or NULL if memory allocation fails.
  */
 struct dsc_set_t *dsc_set_create();
 
@@ -71,78 +70,57 @@ struct dsc_set_t *dsc_set_create();
  * @brief Destroys the hash set and frees its memory.
  *
  * @param set The hash set to destroy.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL.
  */
-enum dsc_error_t dsc_set_destroy(struct dsc_set_t *set);
+void dsc_set_free(struct dsc_set_t *set);
 
 /**
- * @brief Adds an element to the hash set.
+ * @brief Inserts an element into the hash set.
  *
- * @param set The hash set to add the element to.
- * @param value The value to add.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL,
- *         DSC_ERROR_OUT_OF_MEMORY if memory allocation fails,
- *         DSC_ERROR_VALUE_ALREADY_EXISTS if the value is already in the set.
+ * @param set The hash set to insert the element into.
+ * @param value The value to insert.
+ * @return true if the element was inserted successfully, false if the element already exists.
  */
-enum dsc_error_t dsc_set_add(struct dsc_set_t *set, int value);
+bool dsc_set_insert(struct dsc_set_t *set, int value);
 
 /**
- * @brief Removes an element from the hash set.
+ * @brief Erases an element from the hash set.
  *
- * @param set The hash set to remove the element from.
- * @param value The value to remove.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL,
- *         DSC_ERROR_VALUE_NOT_FOUND if the value is not found in the set.
+ * @param set The hash set to erase the element from.
+ * @param value The value to erase.
+ * @return true if the element was erased successfully, false if the element was not found.
  */
-enum dsc_error_t dsc_set_remove(struct dsc_set_t *set, int value);
+bool dsc_set_erase(struct dsc_set_t *set, int value);
 
 /**
  * @brief Checks if an element exists in the hash set.
  *
  * @param set The hash set to check.
  * @param value The value to check for.
- * @param[out] result Pointer to a bool variable to store the result of the
- *                    membership check.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if set or result is NULL.
+ * @return true if the element exists, false otherwise.
  */
-enum dsc_error_t dsc_set_contains(const struct dsc_set_t *set,
-                                  int value,
-                                  bool *result);
+bool dsc_set_contains(const struct dsc_set_t *set, int value);
 
 /**
  * @brief Gets the size of the hash set.
  *
  * @param set The hash set to get the size of.
- * @param[out] result Pointer to an unsigned int variable to store the size of
- *                    the set.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if set or result is NULL.
+ * @return The size of the hash set.
  */
-enum dsc_error_t dsc_set_get_size(const struct dsc_set_t *set,
-                                  unsigned int *result);
+size_t dsc_set_size(const struct dsc_set_t *set);
 
 /**
  * @brief Checks if the hash set is empty.
  *
  * @param set The hash set to check.
- * @param[out] result Pointer to a bool variable to store the result of the
- *                    emptiness check.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if set or result is NULL.
+ * @return true if the hash set is empty, false otherwise.
  */
-enum dsc_error_t dsc_set_is_empty(const struct dsc_set_t *set, bool *result);
+bool dsc_set_empty(const struct dsc_set_t *set);
 
 /**
  * @brief Clears all elements from the hash set.
  *
  * @param set The hash set to clear.
- * @return DSC_ERROR_NONE on success,
- *         DSC_ERROR_INVALID_ARGUMENT if the set is NULL.
  */
-enum dsc_error_t dsc_set_clear(struct dsc_set_t *set);
+void dsc_set_clear(struct dsc_set_t *set);
 
 #endif // __DSC_SET_H__
