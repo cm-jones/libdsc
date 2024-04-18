@@ -1,12 +1,12 @@
-# libdsc: Data Structures for C
+# libdsc: Essential Data Structures for the C Programming Language
 
 [![build](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 ## Description
 
 libdsc is an open-source C library featuring robust and efficient implementations of essential data
-structures--including vectors, stacks, queues, lists, sets, and maps--with interfaces closely matching their
-counterparts in the C++ standard library for familiarity and ease of use.
+structures--including stacks, queues, vectors, lists, sets, maps, trees, and graphs--with APIs closely matching
+those found in the C++ Standard Library, providing familiarity and ease of use for developers.
 
 ## Usage
 
