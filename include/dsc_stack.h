@@ -28,7 +28,7 @@
 #define DSC_STACK_INITIAL_CAPACITY 16
 
 /* Forward declaration of the stack structure */
-struct dsc_stack_t;
+typedef struct dsc_stack_t dsc_stack_t;
 
 /**
  * @brief Creates a new empty stack.
