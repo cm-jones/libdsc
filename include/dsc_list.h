@@ -22,10 +22,10 @@
 #include <stddef.h>
 
 /* Forward declaration of the node structure */
-struct dsc_node_t;
+typedef struct dsc_node_t dsc_node_t;
 
 /* Forward declaration of the list structure */
-struct dsc_list_t;
+typedef struct dsc_list_t dsc_list_t;
 
 /**
  * @brief Creates a new list.
