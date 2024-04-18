@@ -15,9 +15,22 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stdint.h>
+
 #include "../include/dsc_utils.h"
 
-int dsc_hash(int key, int capacity)
-{
-    return key % capacity;
+#include <stdint.h>
+
+uint32_t dsc_hash(int key, int capacity) {
+    /* Cast the key to an unsigned 32-bit integer */
+    uint32_t hash = (uint32_t) key;
+
+    /* Mix the bits of the hash value */
+    /* Use a prime number (0x45d9f3b) for better distribution */
+    hash = ((hash >> 16) ^ hash) * 0x45d9f3b;
+    hash = ((hash >> 16) ^ hash) * 0x45d9f3b;
+    hash = (hash >> 16) ^ hash;
+
+    /* Ensure the hash value falls within the valid range */
+    return hash % capacity;
 }
