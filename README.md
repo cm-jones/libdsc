@@ -15,7 +15,7 @@ To use libdsc in your C project, follow these steps:
 
 2. Include the header file in your C source file:
    ```c
-   #include <dsc.h>
+   #include <libdsc.h>
    ```
 
 3. Link against the library when compiling your program:
