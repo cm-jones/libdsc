@@ -1,6 +1,6 @@
 # Vector
 
-The vector is a dynamic array data structure that provides flexible storage and efficient insertion and deletion of elements. It automatically manages memory allocation and deallocation, allowing the vector to grow and shrink as needed.
+A vector is a dynamic array data structure that provides flexible storage and efficient insertion and deletion of elements. It automatically manages memory allocation and deallocation, allowing the vector to grow and shrink as needed.
 
 ## Data Structures
 
