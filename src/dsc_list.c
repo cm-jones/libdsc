@@ -23,58 +23,54 @@
 
 struct dsc_node_t {
     int value;               /* The value stored in the node. */
-    struct dsc_node_t *next; /* Pointer to the next node in the list. */
+    dsc_node_t *next; /* Pointer to the next node in the list. */
 };
 
 struct dsc_list_t {
-    struct dsc_node_t *head; /* Pointer to the first node in the list. */
+    dsc_node_t *head; /* Pointer to the first node in the list. */
 };
 
-static struct dsc_node_t *dsc_node_create(int value)
-{
-    struct dsc_node_t *new_node = malloc(sizeof *new_node);
+static dsc_node_t *dsc_node_create(int value) {
+    dsc_node_t *new_node = malloc(sizeof *new_node);
     if (new_node == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
     new_node->value = value;
     new_node->next = NULL;
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return new_node;
 }
 
-static void dsc_node_destroy(struct dsc_node_t *node)
-{
+static void dsc_node_destroy(dsc_node_t *node) {
     if (node != NULL) {
         free(node);
     }
 }
 
-struct dsc_list_t *dsc_list_create()
-{
-    struct dsc_list_t *new_list = malloc(sizeof *new_list);
+dsc_list_t *dsc_list_create() {
+    dsc_list_t *new_list = malloc(sizeof *new_list);
     if (new_list == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
     new_list->head = NULL;
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return new_list;
 }
 
-void dsc_list_destroy(struct dsc_list_t *list)
-{
+void dsc_list_destroy(dsc_list_t *list) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    struct dsc_node_t *prev = NULL;
-    struct dsc_node_t *curr = list->head;
+    dsc_node_t *prev = NULL;
+    dsc_node_t *curr = list->head;
 
     while (curr != NULL) {
         prev = curr;
@@ -83,112 +79,107 @@ void dsc_list_destroy(struct dsc_list_t *list)
     }
 
     free(list);
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_push_front(struct dsc_list_t *list, int value)
-{
+void dsc_list_push_front(dsc_list_t *list, int value) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    struct dsc_node_t *new_node = dsc_node_create(value);
+    dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
     }
 
     new_node->next = list->head;
     list->head = new_node;
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_insert_after(struct dsc_list_t *list, struct dsc_node_t *prev_node, int value)
-{
+void dsc_list_insert_after(dsc_list_t *list, dsc_node_t *prev_node, int value) {
     if (list == NULL || prev_node == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    struct dsc_node_t *new_node = dsc_node_create(value);
+    dsc_node_t *new_node = dsc_node_create(value);
     if (new_node == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
     }
 
     new_node->next = prev_node->next;
     prev_node->next = new_node;
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_pop_front(struct dsc_list_t *list)
-{
+void dsc_list_pop_front(dsc_list_t *list) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
     if (list->head == NULL) {
-        dsc_set_last_error(DSC_ERROR_EMPTY_LIST);
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return;
     }
 
-    struct dsc_node_t *old_head = list->head;
+    dsc_node_t *old_head = list->head;
     list->head = old_head->next;
     dsc_node_destroy(old_head);
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_remove(struct dsc_list_t *list, int value)
-{
+void dsc_list_remove(dsc_list_t *list, int value) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
     if (list->head == NULL) {
-        dsc_set_last_error(DSC_ERROR_EMPTY_LIST);
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return;
     }
 
     if (list->head->value == value) {
         dsc_list_pop_front(list);
-        dsc_set_last_error(DSC_ERROR_NONE);
+        dsc_set_error(DSC_ERROR_NONE);
         return;
     }
 
-    struct dsc_node_t *prev = list->head;
-    struct dsc_node_t *walk = list->head->next;
+    dsc_node_t *prev = list->head;
+    dsc_node_t *walk = list->head->next;
 
     while (walk != NULL) {
         if (walk->value == value) {
             prev->next = walk->next;
             dsc_node_destroy(walk);
-            dsc_set_last_error(DSC_ERROR_NONE);
+            dsc_set_error(DSC_ERROR_NONE);
             return;
         }
         prev = walk;
         walk = walk->next;
     }
 
-    dsc_set_last_error(DSC_ERROR_VALUE_NOT_FOUND);
+    dsc_set_error(DSC_ERROR_KEY_NOT_FOUND);
 }
 
-void dsc_list_remove_all(struct dsc_list_t *list, int value)
-{
+void dsc_list_remove_all(dsc_list_t *list, int value) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
     if (list->head == NULL) {
-        dsc_set_last_error(DSC_ERROR_EMPTY_LIST);
+        dsc_set_error(DSC_ERROR_KEY_NOT_FOUND);
         return;
     }
 
-    struct dsc_node_t *prev = NULL;
-    struct dsc_node_t *walk = list->head;
+    dsc_node_t *prev = NULL;
+    dsc_node_t *walk = list->head;
 
     while (walk != NULL) {
         if (walk->value == value) {
@@ -197,7 +188,7 @@ void dsc_list_remove_all(struct dsc_list_t *list, int value)
             } else {
                 prev->next = walk->next;
             }
-            struct dsc_node_t *temp = walk;
+            dsc_node_t *temp = walk;
             walk = walk->next;
             dsc_node_destroy(temp);
         } else {
@@ -206,45 +197,42 @@ void dsc_list_remove_all(struct dsc_list_t *list, int value)
         }
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_list_front(const struct dsc_list_t *list)
-{
+int dsc_list_front(const dsc_list_t *list) {
     if (list == NULL || list->head == NULL) {
-        dsc_set_last_error(DSC_ERROR_EMPTY_LIST);
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return 0;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return list->head->value;
 }
 
-bool dsc_list_empty(const struct dsc_list_t *list)
-{
+bool dsc_list_empty(const dsc_list_t *list) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return list->head == NULL;
 }
 
-void dsc_list_print(const struct dsc_list_t *list)
-{
+void dsc_list_print(const dsc_list_t *list) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
     if (list->head == NULL) {
         printf("List is empty.\n");
-        dsc_set_last_error(DSC_ERROR_EMPTY_LIST);
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return;
     }
 
-    struct dsc_node_t *walk = list->head;
+    dsc_node_t *walk = list->head;
 
     while (walk != NULL) {
         printf("%d ", walk->value);
@@ -252,16 +240,15 @@ void dsc_list_print(const struct dsc_list_t *list)
     }
     printf("\n");
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-struct dsc_node_t *dsc_list_get_head(const struct dsc_list_t *list)
-{
+dsc_node_t *dsc_list_get_head(const dsc_list_t *list) {
     if (list == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return NULL;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return list->head;
 }

@@ -18,12 +18,12 @@
 #include "../include/dsc_error.h"
 
 // Global variable to store the last error code
-static enum dsc_error_t last_error = DSC_ERROR_NONE;
+static dsc_error_t error = DSC_ERROR_NONE;
 
-enum dsc_error_t dsc_get_last_error() {
-    return last_error;
+dsc_error_t dsc_get_error() {
+    return error;
 }
 
-void dsc_set_last_error(enum dsc_error_t error) {
-    last_error = error;
+void dsc_set_error(dsc_error_t error) {
+    error = error;
 }

@@ -29,15 +29,15 @@ struct dsc_stack_t {
     size_t capacity;
 };
 
-static void dsc_stack_resize(struct dsc_stack_t *stack, size_t new_capacity) {
+static void dsc_stack_resize(dsc_stack_t *stack, size_t new_capacity) {
     if (new_capacity > SIZE_MAX / sizeof(int)) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
     }
 
     int *new_values = malloc(new_capacity * sizeof(int));
     if (new_values == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
     }
 
@@ -50,10 +50,10 @@ static void dsc_stack_resize(struct dsc_stack_t *stack, size_t new_capacity) {
     stack->capacity = new_capacity;
 }
 
-struct dsc_stack_t *dsc_stack_create() {
-    struct dsc_stack_t *new_stack = malloc(sizeof *new_stack);
+dsc_stack_t *dsc_stack_create() {
+    dsc_stack_t *new_stack = malloc(sizeof *new_stack);
     if (new_stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
@@ -63,29 +63,29 @@ struct dsc_stack_t *dsc_stack_create() {
 
     if (new_stack->values == NULL) {
         free(new_stack);
-        dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return new_stack;
 }
 
-void dsc_stack_free(struct dsc_stack_t *stack) {
+void dsc_stack_free(dsc_stack_t *stack) {
     if (stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
     free(stack->values);
     free(stack);
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_stack_push(struct dsc_stack_t *stack, int value) {
+void dsc_stack_push(dsc_stack_t *stack, int value) {
     if (stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
@@ -94,62 +94,62 @@ void dsc_stack_push(struct dsc_stack_t *stack, int value) {
         size_t new_capacity = stack->capacity * 1.5; // Use a 1.5x growth factor
         dsc_stack_resize(stack, new_capacity);
         if (stack->values == NULL) {
-            dsc_set_last_error(DSC_ERROR_OUT_OF_MEMORY);
+            dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
             return;
         }
     }
 
     stack->values[stack->size] = value;
     stack->size++;
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_stack_pop(struct dsc_stack_t *stack) {
+void dsc_stack_pop(dsc_stack_t *stack) {
     if (stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
     if (dsc_stack_empty(stack)) {
-        dsc_set_last_error(DSC_ERROR_EMPTY_STACK);
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return;
     }
 
     stack->size--;
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_stack_top(const struct dsc_stack_t *stack) {
+int dsc_stack_top(const dsc_stack_t *stack) {
     if (stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
     }
 
     if (dsc_stack_empty(stack)) {
-        dsc_set_last_error(DSC_ERROR_EMPTY_STACK);
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return 0;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return stack->values[stack->size - 1];
 }
 
-bool dsc_stack_empty(const struct dsc_stack_t *stack) {
+bool dsc_stack_empty(const dsc_stack_t *stack) {
     if (stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return stack->size == 0;
 }
 
-size_t dsc_stack_size(const struct dsc_stack_t *stack) {
+size_t dsc_stack_size(const dsc_stack_t *stack) {
     if (stack == NULL) {
-        dsc_set_last_error(DSC_ERROR_INVALID_ARGUMENT);
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
     }
 
-    dsc_set_last_error(DSC_ERROR_NONE);
+    dsc_set_error(DSC_ERROR_NONE);
     return stack->size;
 }
