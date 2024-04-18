@@ -22,42 +22,40 @@
  * @enum dsc_error_t
  * @brief Represents the error codes used in the DSC library.
  *
- * @constant DSC_ERROR_NONE No error occurred.
- * @constant DSC_ERROR_INVALID_ARGUMENT An invalid argument was passed to a function.
- * @constant DSC_ERROR_OUT_OF_MEMORY Failed to allocate memory.
- * @constant DSC_ERROR_EMPTY_LIST The list is empty.
- * @constant DSC_ERROR_EMPTY_SET The set is empty.
- * @constant DSC_ERROR_EMPTY_STACK The stack is empty.
- * @constant DSC_ERROR_EMPTY_QUEUE The queue is empty.
- * @constant DSC_ERROR_VALUE_ALREADY_EXISTS The value already exists in the set.
- * @constant DSC_ERROR_INDEX_OUT_OF_BOUNDS The index is out of bounds.
- * @constant DSC_ERROR_VALUE_NOT_FOUND The value was not found.
+ * @constant DSC_ERROR_NONE                       No error occurred.
+ * @constant DSC_ERROR_INVALID_ARGUMENT           An invalid argument was passed to a function.
+ * @constant DSC_ERROR_OUT_OF_RANGE               The index is out of bounds.
+ * @constant DSC_ERROR_OUT_OF_MEMORY              Failed to allocate memory.
+ * @constant DSC_ERROR_EMPTY_CONTAINER            The container is empty.
+ * @constant DSC_ERROR_KEY_NOT_FOUND              The key was not found in the associative container.
+ * @constant DSC_ERROR_VECTOR_CAPACITY_EXCEEDED   The vector capacity has been exceeded.
+ * @constant DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS The key already exists in the hash map.
+ * @constant DSC_ERROR_QUEUE_FULL                 The queue is full.
  */
-enum dsc_error_t {
+typedef enum dsc_error_t {
     DSC_ERROR_NONE,
     DSC_ERROR_INVALID_ARGUMENT,
+    DSC_ERROR_OUT_OF_RANGE,
     DSC_ERROR_OUT_OF_MEMORY,
-    DSC_ERROR_EMPTY_LIST,
-    DSC_ERROR_EMPTY_SET,
-    DSC_ERROR_EMPTY_STACK,
-    DSC_ERROR_EMPTY_QUEUE,
-    DSC_ERROR_VALUE_ALREADY_EXISTS,
-    DSC_ERROR_INDEX_OUT_OF_BOUNDS,
-    DSC_ERROR_VALUE_NOT_FOUND
-};
+    DSC_ERROR_EMPTY_CONTAINER,
+    DSC_ERROR_KEY_NOT_FOUND,
+    DSC_ERROR_VECTOR_CAPACITY_EXCEEDED,
+    DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS,
+    DSC_ERROR_QUEUE_FULL
+} dsc_error_t;
 
 /**
  * @brief Sets the last error code.
  *
  * @param error The error code to set.
  */
-void dsc_set_last_error(enum dsc_error_t error);
+void dsc_set_error(dsc_error_t error);
 
 /**
  * @brief Gets the last error code.
  *
  * @return The last error code.
  */
-enum dsc_error_t dsc_get_last_error();
+dsc_error_t dsc_get_error();
 
 #endif // __DSC_ERROR_H__
