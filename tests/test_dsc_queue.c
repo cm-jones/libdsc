@@ -33,7 +33,7 @@ void teardown(void) {
 
 START_TEST(test_dsc_queue_create)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     ck_assert_ptr_nonnull(queue);
     dsc_queue_free(queue);
 }
@@ -41,7 +41,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_push)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     ck_assert_int_eq(dsc_queue_front(queue), 42);
@@ -52,7 +52,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_pop)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     dsc_queue_pop(queue);
@@ -63,7 +63,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_front)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     ck_assert_int_eq(dsc_queue_front(queue), 42);
     dsc_queue_free(queue);
@@ -72,7 +72,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_back)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     ck_assert_int_eq(dsc_queue_back(queue), 73);
@@ -82,7 +82,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_empty)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     ck_assert_int_eq(dsc_queue_empty(queue), true);
     dsc_queue_push(queue, 42);
     ck_assert_int_eq(dsc_queue_empty(queue), false);
@@ -92,7 +92,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_size)
 {
-    dsc_queue_t *queue = dsc_queue_create();
+    struct dsc_queue_t *queue = dsc_queue_create();
     ck_assert_int_eq(dsc_queue_size(queue), 0);
     dsc_queue_push(queue, 42);
     ck_assert_int_eq(dsc_queue_size(queue), 1);

@@ -33,7 +33,7 @@ void teardown(void) {
 
 START_TEST(test_dsc_list_create)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     ck_assert_ptr_nonnull(list);
     dsc_list_destroy(list);
 }
@@ -41,7 +41,7 @@ END_TEST
 
 START_TEST(test_dsc_list_push_front)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_node_t *head = dsc_list_get_head(list);
@@ -52,7 +52,7 @@ END_TEST
 
 START_TEST(test_dsc_list_insert_after)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_node_t *head = dsc_list_get_head(list);
     dsc_list_insert_after(list, head, 73);
@@ -64,7 +64,7 @@ END_TEST
 
 START_TEST(test_dsc_list_pop_front)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_pop_front(list);
@@ -76,7 +76,7 @@ END_TEST
 
 START_TEST(test_dsc_list_remove)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_remove(list, 73);
@@ -88,7 +88,7 @@ END_TEST
 
 START_TEST(test_dsc_list_remove_all)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_push_front(list, 73);
@@ -100,7 +100,7 @@ END_TEST
 
 START_TEST(test_dsc_list_front)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     ck_assert_int_eq(dsc_list_front(list), 42);
     dsc_list_destroy(list);
@@ -109,7 +109,7 @@ END_TEST
 
 START_TEST(test_dsc_list_empty)
 {
-    dsc_list_t *list = dsc_list_create();
+    struct dsc_list_t *list = dsc_list_create();
     ck_assert_int_eq(dsc_list_empty(list), true);
     dsc_list_push_front(list, 42);
     ck_assert_int_eq(dsc_list_empty(list), false);
