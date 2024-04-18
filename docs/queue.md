@@ -1,6 +1,6 @@
 # Queue
 
-The queue is a linear data structure that follows the First-In-First-Out (FIFO) principle. It provides operations to insert elements at the back and remove elements from the front.
+A queue is a linear data structure that follows the First-In-First-Out (FIFO) principle. It provides operations to insert elements at the back and remove elements from the front.
 
 ## Data Structures
 

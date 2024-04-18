@@ -1,6 +1,6 @@
 # Hash Map
 
-The hash map is an implementation of the associative array data structure, which provides constant-time average performance for insertion, deletion, and lookup operations. It associates keys with values and allows for efficient retrieval and modification of the associated values based on their keys.
+A hash map is an implementation of the associative array data structure, which provides constant-time average performance for insertion, deletion, and lookup operations. It associates keys with values and allows for efficient retrieval and modification of the associated values based on their keys.
 
 ## Data Structures
 

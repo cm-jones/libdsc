@@ -1,6 +1,6 @@
 # Hash Set
 
-The hash set is an implementation of the set data structure using a hash table. It provides constant-time average performance for insertion, deletion, and lookup operations.
+A hash set is an implementation of the set data structure using a hash table. It provides constant-time average performance for insertion, deletion, and lookup operations.
 
 ## Data Structures
 
