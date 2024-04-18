@@ -17,7 +17,6 @@
 
 #include <stdlib.h>
 #include <stdbool.h>
-#include <limits.h>
 #include <string.h>
 
 #include "../include/dsc_stack.h"

@@ -28,6 +28,6 @@
  * @param capacity The capacity of the hash table.
  * @return The calculated hash value.
  */
-int dsc_hash(int key, int capacity);
+uint32_t dsc_hash(int key, int capacity);
 
 #endif // __DSC_UTILS_H__
