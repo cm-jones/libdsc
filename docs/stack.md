@@ -1,6 +1,6 @@
 # Stack
 
-The stack is a linear data structure that follows the Last-In-First-Out (LIFO) principle. It provides operations to push elements onto the top of the stack and pop elements from the top of the stack.
+A stack is a linear data structure that follows the Last-In-First-Out (LIFO) principle. It provides operations to push elements onto the top of the stack and pop elements from the top of the stack.
 
 ## Data Structures
 
