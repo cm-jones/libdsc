@@ -21,11 +21,12 @@
 #include "../include/dsc_list.h"
 #include "../include/dsc_error.h"
 
+/* Represents a list node. */
 struct dsc_node_t {
-    int value;               /* The value stored in the node. */
+    int value;        /* The value stored in the node. */
     dsc_node_t *next; /* Pointer to the next node in the list. */
 };
-
+/* Represents a list. */
 struct dsc_list_t {
     dsc_node_t *head; /* Pointer to the first node in the list. */
 };
