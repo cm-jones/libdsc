@@ -19,6 +19,7 @@
 #include <check.h>
 
 #include "../include/dsc_list.h"
+#include "../include/dsc_node.h"
 
 /* Setup and teardown functions */
 void setup(void) {
