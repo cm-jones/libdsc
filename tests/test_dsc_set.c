@@ -33,7 +33,7 @@ void teardown(void) {
 
 START_TEST(test_dsc_set_create)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     ck_assert_ptr_nonnull(set);
     dsc_set_free(set);
 }
@@ -41,7 +41,7 @@ END_TEST
 
 START_TEST(test_dsc_set_insert)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     int value = 42;
     ck_assert_int_eq(dsc_set_insert(set, value), true);
     ck_assert_int_eq(dsc_set_contains(set, value), true);
@@ -51,7 +51,7 @@ END_TEST
 
 START_TEST(test_dsc_set_insert_duplicate)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
     ck_assert_int_eq(dsc_set_insert(set, value), false);
@@ -61,7 +61,7 @@ END_TEST
 
 START_TEST(test_dsc_set_erase)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
     ck_assert_int_eq(dsc_set_erase(set, value), true);
@@ -72,7 +72,7 @@ END_TEST
 
 START_TEST(test_dsc_set_erase_nonexistent)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     int value = 42;
     ck_assert_int_eq(dsc_set_erase(set, value), false);
     dsc_set_free(set);
@@ -81,7 +81,7 @@ END_TEST
 
 START_TEST(test_dsc_set_size)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     ck_assert_int_eq(dsc_set_size(set), 0);
     dsc_set_insert(set, 42);
     ck_assert_int_eq(dsc_set_size(set), 1);
@@ -93,7 +93,7 @@ END_TEST
 
 START_TEST(test_dsc_set_empty)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     ck_assert_int_eq(dsc_set_empty(set), true);
     dsc_set_insert(set, 42);
     ck_assert_int_eq(dsc_set_empty(set), false);
@@ -103,7 +103,7 @@ END_TEST
 
 START_TEST(test_dsc_set_clear)
 {
-    struct dsc_set_t *set = dsc_set_create();
+    dsc_set_t *set = dsc_set_create();
     dsc_set_insert(set, 42);
     dsc_set_insert(set, 73);
     dsc_set_clear(set);

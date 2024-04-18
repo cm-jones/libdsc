@@ -33,7 +33,7 @@ void teardown(void) {
 
 START_TEST(test_dsc_stack_create)
 {
-    struct dsc_stack_t *stack = dsc_stack_create();
+    dsc_stack_t *stack = dsc_stack_create();
     ck_assert_ptr_nonnull(stack);
     dsc_stack_free(stack);
 }
@@ -41,37 +41,37 @@ END_TEST
 
 START_TEST(test_dsc_stack_push)
 {
-    struct dsc_stack_t *stack = dsc_stack_create();
+    dsc_stack_t *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
-    ck_assert_int_eq(struct dsc_stack_top(stack), 73);
+    ck_assert_int_eq(dsc_stack_top(stack), 73);
     dsc_stack_free(stack);
 }
 END_TEST
 
 START_TEST(test_dsc_stack_pop)
 {
-    struct dsc_stack_t *stack = dsc_stack_create();
+    dsc_stack_t *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
     dsc_stack_pop(stack);
-    ck_assert_int_eq(struct dsc_stack_top(stack), 42);
+    ck_assert_int_eq(dsc_stack_top(stack), 42);
     dsc_stack_free(stack);
 }
 END_TEST
 
-START_TEST(test_struct dsc_stack_top)
+START_TEST(test_dsc_stack_top)
 {
-    struct dsc_stack_t *stack = dsc_stack_create();
+    dsc_stack_t *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
-    ck_assert_int_eq(struct dsc_stack_top(stack), 42);
+    ck_assert_int_eq(dsc_stack_top(stack), 42);
     dsc_stack_free(stack);
 }
 END_TEST
 
 START_TEST(test_dsc_stack_empty)
 {
-    struct dsc_stack_t *stack = dsc_stack_create();
+    dsc_stack_t *stack = dsc_stack_create();
     ck_assert_int_eq(dsc_stack_empty(stack), true);
     dsc_stack_push(stack, 42);
     ck_assert_int_eq(dsc_stack_empty(stack), false);
@@ -81,7 +81,7 @@ END_TEST
 
 START_TEST(test_dsc_stack_size)
 {
-    struct dsc_stack_t *stack = dsc_stack_create();
+    dsc_stack_t *stack = dsc_stack_create();
     ck_assert_int_eq(dsc_stack_size(stack), 0);
     dsc_stack_push(stack, 42);
     ck_assert_int_eq(dsc_stack_size(stack), 1);
@@ -100,7 +100,7 @@ Suite *dsc_stack_suite(void) {
     tcase_add_test(tcase, test_dsc_stack_create);
     tcase_add_test(tcase, test_dsc_stack_push);
     tcase_add_test(tcase, test_dsc_stack_pop);
-    tcase_add_test(tcase, test_struct dsc_stack_top);
+    tcase_add_test(tcase, test_dsc_stack_top);
     tcase_add_test(tcase, test_dsc_stack_empty);
     tcase_add_test(tcase, test_dsc_stack_size);
 

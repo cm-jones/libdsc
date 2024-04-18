@@ -33,7 +33,7 @@ void teardown(void) {
 
 START_TEST(test_dsc_map_create)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     ck_assert_ptr_nonnull(map);
     dsc_map_free(map);
 }
@@ -41,7 +41,7 @@ END_TEST
 
 START_TEST(test_dsc_map_insert)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value = 73;
     ck_assert_int_eq(dsc_map_insert(map, key, value), true);
@@ -52,7 +52,7 @@ END_TEST
 
 START_TEST(test_dsc_map_insert_duplicate)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value1 = 73;
     int value2 = 84;
@@ -65,7 +65,7 @@ END_TEST
 
 START_TEST(test_dsc_map_erase)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value = 73;
     dsc_map_insert(map, key, value);
@@ -77,7 +77,7 @@ END_TEST
 
 START_TEST(test_dsc_map_erase_nonexistent)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     int key = 42;
     ck_assert_int_eq(dsc_map_erase(map, key), false);
     dsc_map_free(map);
@@ -86,7 +86,7 @@ END_TEST
 
 START_TEST(test_dsc_map_contains)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value = 73;
     dsc_map_insert(map, key, value);
@@ -98,7 +98,7 @@ END_TEST
 
 START_TEST(test_dsc_map_size)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     ck_assert_int_eq(dsc_map_size(map), 0);
     dsc_map_insert(map, 42, 73);
     ck_assert_int_eq(dsc_map_size(map), 1);
@@ -110,7 +110,7 @@ END_TEST
 
 START_TEST(test_dsc_map_empty)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     ck_assert_int_eq(dsc_map_empty(map), true);
     dsc_map_insert(map, 42, 73);
     ck_assert_int_eq(dsc_map_empty(map), false);
@@ -120,7 +120,7 @@ END_TEST
 
 START_TEST(test_dsc_map_clear)
 {
-    struct dsc_map_t *map = dsc_map_create();
+    dsc_map_t *map = dsc_map_create();
     dsc_map_insert(map, 42, 73);
     dsc_map_insert(map, 84, 21);
     dsc_map_clear(map);

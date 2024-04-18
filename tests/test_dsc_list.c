@@ -34,7 +34,7 @@ void teardown(void) {
 
 START_TEST(test_dsc_list_create)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     ck_assert_ptr_nonnull(list);
     dsc_list_destroy(list);
 }
@@ -42,10 +42,10 @@ END_TEST
 
 START_TEST(test_dsc_list_push_front)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
-    struct dsc_node_t *head = dsc_list_get_head(list);
+    dsc_node_t *head = dsc_list_get_head(list);
     ck_assert_int_eq(head->value, 73);
     dsc_list_destroy(list);
 }
@@ -53,11 +53,11 @@ END_TEST
 
 START_TEST(test_dsc_list_insert_after)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
-    struct dsc_node_t *head = dsc_list_get_head(list);
+    dsc_node_t *head = dsc_list_get_head(list);
     dsc_list_insert_after(list, head, 73);
-    struct dsc_node_t *next_node = head->next;
+    dsc_node_t *next_node = head->next;
     ck_assert_int_eq(next_node->value, 73);
     dsc_list_destroy(list);
 }
@@ -65,11 +65,11 @@ END_TEST
 
 START_TEST(test_dsc_list_pop_front)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_pop_front(list);
-    struct dsc_node_t *head = dsc_list_get_head(list);
+    dsc_node_t *head = dsc_list_get_head(list);
     ck_assert_int_eq(head->value, 42);
     dsc_list_destroy(list);
 }
@@ -77,11 +77,11 @@ END_TEST
 
 START_TEST(test_dsc_list_remove)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_remove(list, 73);
-    struct dsc_node_t *head = dsc_list_get_head(list);
+    dsc_node_t *head = dsc_list_get_head(list);
     ck_assert_int_eq(head->value, 42);
     dsc_list_destroy(list);
 }
@@ -89,7 +89,7 @@ END_TEST
 
 START_TEST(test_dsc_list_remove_all)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_push_front(list, 73);
@@ -101,7 +101,7 @@ END_TEST
 
 START_TEST(test_dsc_list_front)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     ck_assert_int_eq(dsc_list_front(list), 42);
     dsc_list_destroy(list);
@@ -110,7 +110,7 @@ END_TEST
 
 START_TEST(test_dsc_list_empty)
 {
-    struct dsc_list_t *list = dsc_list_create();
+    dsc_list_t *list = dsc_list_create();
     ck_assert_int_eq(dsc_list_empty(list), true);
     dsc_list_push_front(list, 42);
     ck_assert_int_eq(dsc_list_empty(list), false);
