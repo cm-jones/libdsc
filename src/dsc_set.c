@@ -63,7 +63,7 @@ void dsc_set_free(struct dsc_set_t *set) {
     }
 
     // Free all the entries in the set
-    for (int i = 0; i < set->capacity; i++) {
+    for (size_t i = 0; i < set->capacity; ++i) {
         struct dsc_set_entry_t *curr = set->buckets[i];
         while (curr != NULL) {
             struct dsc_set_entry_t *next = curr->next;
@@ -223,7 +223,7 @@ void dsc_set_clear(struct dsc_set_t *set) {
     }
 
     // Free all the entries in the set
-    for (int i = 0; i < set->capacity; i++) {
+    for (size_t i = 0; i < set->capacity; i++) {
         struct dsc_set_entry_t *entry = set->buckets[i];
         while (entry != NULL) {
             struct dsc_set_entry_t *next = entry->next;
