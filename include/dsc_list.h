@@ -21,10 +21,10 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-/* Forward declaration of the node structure */
+/* Forward declaration of the node structure. */
 typedef struct dsc_node_t dsc_node_t;
 
-/* Forward declaration of the list structure */
+/* Forward declaration of the list structure. */
 typedef struct dsc_list_t dsc_list_t;
 
 /**
