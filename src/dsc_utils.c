@@ -19,8 +19,6 @@
 
 #include "../include/dsc_utils.h"
 
-#include <stdint.h>
-
 uint32_t dsc_hash(int key, int capacity) {
     /* Cast the key to an unsigned 32-bit integer */
     uint32_t hash = (uint32_t) key;

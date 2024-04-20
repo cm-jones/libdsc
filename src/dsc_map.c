@@ -16,8 +16,6 @@
 */
 
 #include <stdlib.h>
-#include <stdbool.h>
-#include <stddef.h>
 
 #include "../include/dsc_map.h"
 #include "../include/dsc_utils.h"
@@ -101,7 +99,7 @@ void dsc_map_free(dsc_map_t *map) {
        }
    }
 
-   /* Free the buckets array and the map itself */
+   /* Free the buckets array and the map itself. */
    free(map->buckets);
    free(map);
    dsc_set_error(DSC_ERROR_NONE);
