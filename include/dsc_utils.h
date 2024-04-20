@@ -18,6 +18,8 @@
 #ifndef __DSC_UTILS_H__
 #define __DSC_UTILS_H__
 
+#include <stdint.h>
+
 /**
  * @brief Calculates the hash value for a given key and capacity.
  *

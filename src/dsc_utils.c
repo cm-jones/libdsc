@@ -15,8 +15,6 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-
 #include "../include/dsc_utils.h"
 
 uint32_t dsc_hash(int key, int capacity) {
