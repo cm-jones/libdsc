@@ -1,4 +1,4 @@
-# libdsc: Essential Data Structures for C
+# libdsc: Data Structures for C
 
 [![build](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -41,16 +41,18 @@ To use libdsc in your C project, follow these steps:
 4. Use the library functions in your code, for example:
    ```c
    dsc_set_t *set = dsc_set_create();
+   if (set == NULL) {
+      // Handle memory allocation error ...
+   }
 
-   for (int i = 0; i < 100; i++) {
+   for (int i = 0; i < 100; ++i) {
       dsc_set_insert(set, i);
    }
    
-   dsc_set_insert(set, 0);   // returns false
-   dsc_set_contains(set, 3); // returns true
-   dsc_set_erase(set, 53);   // returns true
-
-   dsc_set_size(set);        // returns 99
+   dsc_set_insert(set, 0);    // Returns false
+   dsc_set_contains(set, 99); // Returns true
+   dsc_set_erase(set, 53);    // Returns true
+   dsc_set_size(set);         // Returns 99
 
    // Use other set functions as needed ...
 
