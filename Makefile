@@ -61,10 +61,10 @@ tests/test_dsc_map: tests/test_dsc_map.c $(LIBNAME)
 tests/test_dsc_set: tests/test_dsc_set.c $(LIBNAME)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-dist: clean deb rpm dmg
+dist: clean
 	mkdir -p $(DIST_NAME)
 	cp -r include src tests docs Makefile README.md CHANGELOG.md LICENSE $(DIST_NAME)/
-	tar -czvf $(DIST_NAME).tar.gz $(DIST_NAME)
+	tar -czf $(DIST_NAME).tar.gz $(DIST_NAME)
 	zip -r $(DIST_NAME).zip $(DIST_NAME)
 	rm -rf $(DIST_NAME)
 
@@ -73,18 +73,23 @@ deb: $(DIST_NAME).tar.gz
 	mkdir -p $(DIST_NAME)/DEBIAN
 	cp packaging/debian/control $(DIST_NAME)/DEBIAN/
 	dpkg-deb --build $(DIST_NAME)
-	mv $(DIST_NAME).deb $(DIST_NAME)-$(shell dpkg --print-architecture).deb
+	mv $(DIST_NAME).deb $(DIST_NAME)_$(shell dpkg --print-architecture).deb
+	mv $(DIST_NAME)_$(shell dpkg --print-architecture).deb $(DIST_NAME).deb
 	rm -rf $(DIST_NAME)
 
-rpm: dist
+rpm: $(DIST_NAME).tar.gz
+	tar -xzf $(DIST_NAME).tar.gz
 	mkdir -p $(DIST_NAME)/SPECS
 	cp packaging/rpm/libdsc.spec $(DIST_NAME)/SPECS/
 	rpmbuild -bb --define "_topdir $(PWD)/$(DIST_NAME)" $(DIST_NAME)/SPECS/libdsc.spec
 	mv $(DIST_NAME)/RPMS/*/*.rpm .
+	rm -rf $(DIST_NAME)
 
-dmg: dist
+dmg: $(DIST_NAME).tar.gz
+	tar -xzf $(DIST_NAME).tar.gz
 	mkdir -p $(DIST_NAME)/package
 	cp -r $(DIST_NAME)/* $(DIST_NAME)/package/
 	hdiutil create -volname "libdsc" -srcfolder $(DIST_NAME)/package -ov -format UDZO "libdsc-0.1.0.dmg"
+	rm -rf $(DIST_NAME)
 
 .PHONY: test dist deb rpm dmg
