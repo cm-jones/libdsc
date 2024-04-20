@@ -4,7 +4,7 @@ LDFLAGS = -L. -ldsc -lm -lcheck
 
 LIBNAME = libdsc.a
 SONAME = libdsc.so
-DIST_NAME = libdsc-0.1.0
+DIST_NAME = libdsc-0.1.0-alpha
 
 SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
