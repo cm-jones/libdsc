@@ -111,18 +111,19 @@ bool dsc_map_insert(dsc_map_t *map, int key, int value) {
        return false;
    }
 
-   /* Check if the key already exists */
-   dsc_map_entry_t *entry = map->buckets[dsc_hash(key, map->capacity)];
+   /* Check if the key already exists. */
+   int index = dsc_hash(key, map->capacity);
+   dsc_map_entry_t *entry = map->buckets[index];
    while (entry != NULL) {
        if (entry->key == key) {
-           entry->value = value;
+           entry->value = value;  // Update the value if the key already exists.
            dsc_set_error(DSC_ERROR_NONE);
            return false;
        }
        entry = entry->next;
    }
 
-   /* Create a new entry */
+   /* Create a new entry. */
    entry = malloc(sizeof(dsc_map_entry_t));
    if (entry == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -131,13 +132,12 @@ bool dsc_map_insert(dsc_map_t *map, int key, int value) {
    entry->key = key;
    entry->value = value;
 
-   /* Insert the entry into the appropriate bucket */
-   int index = dsc_hash(key, map->capacity);
+   /* Insert the entry into the appropriate bucket. */
    entry->next = map->buckets[index];
    map->buckets[index] = entry;
    map->size++;
 
-   /* Rehash if the load factor exceeds the threshold */
+   /* Rehash if the load factor exceeds the threshold. */
    if (map->size > DSC_MAP_LOAD_FACTOR * map->capacity) {
        dsc_map_rehash(map, map->capacity * 2);
    }
