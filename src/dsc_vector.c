@@ -28,26 +28,22 @@ struct dsc_vector_t {
     size_t capacity; /* The current capacity of the vector. */
 };
 
-static void dsc_vector_resize(dsc_vector_t *vector, size_t new_capacity) {
+static bool dsc_vector_resize(dsc_vector_t *vector, size_t new_capacity) {
     /* Check for integer overflow.*/
     if (new_capacity > SIZE_MAX / sizeof(int)) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return;
+        return false;
     }
 
-    int *new_values = malloc(new_capacity * sizeof(int));
+    int *new_values = realloc(vector->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return;
-    }
-
-    if (vector->values != NULL) {
-        memcpy(new_values, vector->values, vector->size * sizeof(int));
-        free(vector->values);
+        return false;
     }
 
     vector->values = new_values;
     vector->capacity = new_capacity;
+    return true;
 }
 
 dsc_vector_t *dsc_vector_create() {
@@ -59,7 +55,7 @@ dsc_vector_t *dsc_vector_create() {
 
     new_vector->size = 0;
     new_vector->capacity = DSC_VECTOR_INITIAL_CAPACITY;
-    dsc_vector_resize(new_vector, new_vector->capacity);
+    new_vector->values = malloc(new_vector->capacity * sizeof(int));
 
     if (new_vector->values == NULL) {
         free(new_vector);
@@ -92,9 +88,7 @@ void dsc_vector_push_back(dsc_vector_t *vector, int value) {
     /* Resize the vector if the size exceeds the capacity. */
     if (vector->size >= vector->capacity) {
         size_t new_capacity = vector->capacity * 1.5;
-        dsc_vector_resize(vector, new_capacity);
-        if (vector->values == NULL) {
-            dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+        if (!dsc_vector_resize(vector, new_capacity)) {
             return;
         }
     }
@@ -133,9 +127,7 @@ size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value
     /* Resize the vector if the size exceeds the capacity. */
     if (vector->size >= vector->capacity) {
         size_t new_capacity = vector->capacity * 1.5;
-        dsc_vector_resize(vector, new_capacity);
-        if (vector->values == NULL) {
-            dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+        if (!dsc_vector_resize(vector, new_capacity)) {
             return 0;
         }
     }
@@ -228,9 +220,7 @@ void dsc_vector_reserve(dsc_vector_t *vector, size_t new_capacity) {
         return;
     }
 
-    dsc_vector_resize(vector, new_capacity);
-    if (vector->values == NULL) {
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+    if (!dsc_vector_resize(vector, new_capacity)) {
         return;
     }
 
