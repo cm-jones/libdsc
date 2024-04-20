@@ -3,12 +3,34 @@ name: build
 on: [push]
 
 jobs:
-  build_linux:
+  build_ubuntu:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: sudo apt-get install check
+      - name: Build
+        run: make
+      - name: Run tests
+        run: make test
+
+  build_debian:
+    runs-on: debian-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo apt-get install check
+      - name: Build
+        run: make
+      - name: Run tests
+        run: make test
+
+  build_fedora:
+    runs-on: fedora-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo dnf install check
       - name: Build
         run: make
       - name: Run tests
