@@ -17,6 +17,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "../include/dsc_vector.h"
 #include "../include/dsc_error.h"
