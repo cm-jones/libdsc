@@ -12,8 +12,11 @@ BuildRequires:  make
 BuildRequires:  check-devel
 
 %description
-libdsc is an open-source C library featuring robust and efficient implementations
-of essential data structures, including vectors, stacks, queues, lists, sets, and maps.
+libdsc is an open-source C library featuring robust and efficient
+implementations of essential data structures—including vectors, stacks, queues,
+lists, sets, and maps—with interfaces that closely resemble those found in the
+C++ standard library, which provides familiarity and ease of use to C++
+developers.
 
 %prep
 %setup -q
@@ -31,5 +34,5 @@ of essential data structures, including vectors, stacks, queues, lists, sets, an
 %{_includedir}/dsc_*.h
 
 %changelog
-* Mon Jun 05 2023 Your Name <your.email@example.com> - 0.1.0-1
+* Sat Apr 20 2024 Cody Michael Jones <codymjones@pm.me> - 0.1.0-1
 - Initial release of libdsc
