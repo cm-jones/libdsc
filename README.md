@@ -84,7 +84,7 @@ To build libdsc yourself, follow these steps:
 
 ## Documentation
 
-Detailed documentation for libdsc can be found in the `docs` directory.
+Detailed documentation for libdsc can be found in the [docs/](docs/) directory.
 
 ## Contributing
 
