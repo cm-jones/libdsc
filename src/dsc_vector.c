@@ -30,12 +30,6 @@ struct dsc_vector_t {
 };
 
 static bool dsc_vector_resize(dsc_vector_t *vector, size_t new_capacity) {
-    /* Check for integer overflow.*/
-    if (new_capacity > SIZE_MAX / sizeof(int)) {
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return false;
-    }
-
     int *new_values = realloc(vector->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);

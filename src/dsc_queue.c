@@ -30,12 +30,6 @@ struct dsc_queue_t {
 };
 
 static bool dsc_queue_resize(dsc_queue_t *queue, size_t new_capacity) {
-    /* Check for integer overflow. */
-    if (new_capacity > SIZE_MAX / sizeof(int)) {
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return false;
-    }
-
     int *new_values = realloc(queue->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
