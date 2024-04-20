@@ -28,26 +28,22 @@ struct dsc_stack_t {
     size_t capacity; /* The current capacity of the stack. */
 };
 
-static void dsc_stack_resize(dsc_stack_t *stack, size_t new_capacity) {
+static bool dsc_stack_resize(dsc_stack_t *stack, size_t new_capacity) {
     /* Check for integer overflow. */
     if (new_capacity > SIZE_MAX / sizeof(int)) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return;
+        return false;
     }
 
-    int *new_values = malloc(new_capacity * sizeof(int));
+    int *new_values = realloc(stack->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return;
-    }
-
-    if (stack->values != NULL) {
-        memcpy(new_values, stack->values, stack->size * sizeof(int));
-        free(stack->values);
+        return false;
     }
 
     stack->values = new_values;
     stack->capacity = new_capacity;
+    return true;
 }
 
 dsc_stack_t *dsc_stack_create() {
@@ -59,11 +55,10 @@ dsc_stack_t *dsc_stack_create() {
 
     new_stack->size = 0;
     new_stack->capacity = DSC_STACK_INITIAL_CAPACITY;
-    dsc_stack_resize(new_stack, new_stack->capacity);
+    new_stack->values = NULL;
 
-    if (new_stack->values == NULL) {
+    if (!dsc_stack_resize(new_stack, new_stack->capacity)) {
         free(new_stack);
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
@@ -92,9 +87,7 @@ void dsc_stack_push(dsc_stack_t *stack, int value) {
     /* Resize the stack if the size exceeds the capacity. */
     if (stack->size >= stack->capacity) {
         size_t new_capacity = stack->capacity * 1.5;
-        dsc_stack_resize(stack, new_capacity);
-        if (stack->values == NULL) {
-            dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+        if (!dsc_stack_resize(stack, new_capacity)) {
             return;
         }
     }
