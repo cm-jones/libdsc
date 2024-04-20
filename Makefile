@@ -28,7 +28,7 @@ $(SONAME): $(OBJS)
 install: all
 	sudo install -m 644 $(LIBNAME) /usr/local/lib/
 	sudo install -m 644 $(SONAME) /usr/local/lib/
-	sudo install -m 644 include/*.h /usr/local/include/
+	sudo install -m 644 include/libdsc.h /usr/local/include/
 
 clean:
 	rm -f $(OBJS) $(LIBNAME) $(SONAME) $(TESTS)
