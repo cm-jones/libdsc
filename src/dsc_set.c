@@ -16,7 +16,6 @@
  */
 
 #include <stdlib.h>
-#include <stdbool.h>
 
 #include "../include/dsc_set.h"
 #include "../include/dsc_utils.h"
