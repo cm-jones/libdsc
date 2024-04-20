@@ -1,12 +1,15 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I.
-LDFLAGS = -L. -ldsc
+LDFLAGS = -L. -ldsc -lcheck
 
 LIBNAME = libdsc.a
 SONAME = libdsc.so
 
 SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
+
+TEST_SRCS = $(wildcard tests/test_*.c)
+TESTS = $(TEST_SRCS:.c=)
 
 all: static shared
 
@@ -27,14 +30,29 @@ install: all
 	sudo install -m 644 include/*.h /usr/local/include/
 
 clean:
-	rm -f $(OBJS) $(LIBNAME) $(SONAME)
+	rm -f $(OBJS) $(LIBNAME) $(SONAME) $(TESTS)
 
-.PHONY: all static shared install clean
+.PHONY: all static shared install clean test
 
-test: $(LIBNAME) test_list
-	./test_list
+test: $(TESTS)
+	for test in $(TESTS); do ./$$test; done
 
-test_list: tests/test_dsc_list.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ -lcheck
+tests/test_dsc_list: tests/test_dsc_list.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+tests/test_dsc_vector: tests/test_dsc_vector.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+tests/test_dsc_stack: tests/test_dsc_stack.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+tests/test_dsc_queue: tests/test_dsc_queue.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+tests/test_dsc_map: tests/test_dsc_map.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+tests/test_dsc_set: tests/test_dsc_set.c $(LIBNAME)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 .PHONY: test
