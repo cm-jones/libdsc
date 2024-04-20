@@ -17,7 +17,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
+#include
 
 #include "../include/dsc_vector.h"
 #include "../include/dsc_error.h"
@@ -120,7 +120,7 @@ size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value
         return 0;
     }
 
-    if (position < 0 || position > vector->size) {
+    if (position > vector->size) {
         dsc_set_error(DSC_ERROR_OUT_OF_RANGE);
         return 0;
     }
@@ -151,7 +151,7 @@ void dsc_vector_erase(struct dsc_vector_t *vector, size_t position) {
         return;
     }
 
-    if (position < 0 || position >= vector->size) {
+    if (position >= vector->size) {
         dsc_set_error(DSC_ERROR_OUT_OF_RANGE);
         return;
     }
