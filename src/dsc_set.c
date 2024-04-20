@@ -42,13 +42,13 @@ static void dsc_set_rehash(dsc_set_t *set, size_t new_capacity) {
         return;
     }
 
-    // Rehash all the elements into the new buckets
+    /* Rehash all the elements into the new buckets. */
     for (size_t i = 0; i < set->capacity; ++i) {
         dsc_set_entry_t *entry = set->buckets[i];
         while (entry != NULL) {
             dsc_set_entry_t *next = entry->next;
 
-            // Rehash the value to determine the new index
+            /* Rehash the value to determine the new index. */
             int index = dsc_hash(entry->key, new_capacity);
 
             entry->next = new_buckets[index];
@@ -202,7 +202,7 @@ bool dsc_set_contains(const dsc_set_t *set, int value) {
 size_t dsc_set_size(const dsc_set_t *set) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return 0;
+        return -1;
     }
 
     dsc_set_error(DSC_ERROR_NONE);
@@ -225,8 +225,8 @@ void dsc_set_clear(dsc_set_t *set) {
         return;
     }
 
-    /* Free all the entries in the set */
-    for (size_t i = 0; i < set->capacity; i++) {
+    /* Free all the entries in the set. */
+    for (size_t i = 0; i < set->capacity; ++i) {
         dsc_set_entry_t *entry = set->buckets[i];
         while (entry != NULL) {
             dsc_set_entry_t *next = entry->next;
