@@ -44,7 +44,7 @@ To use libdsc in your C project, follow these steps:
 
 4. Use the library functions in your code, for example:
    ```c
-   struct dsc_list_t *list = dsc_list_create();
+   dsc_list_t *list = dsc_list_create();
 
    dsc_list_append(list, 10); // [10]
    dsc_list_prepend(list, 5); // [5, 10]
