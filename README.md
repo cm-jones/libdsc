@@ -4,8 +4,7 @@
 
 ## Description
 
-libdsc is an open-source C library that features robust and efficient implementations of essential data
-structures&mdash;including stacks, queues, vectors, lists, sets, maps, trees, and graphs&mdash;with APIs that closely match those found in the C++ Standard Library, which provides familiarity and ease of use to C developers.
+libdsc is an open-source C library featuring robust and efficient implementations of essential data structures&mdash;including vectors, stacks, queues, lists, sets, and maps&mdash;with interfaces that closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
 
 ## Usage
 
