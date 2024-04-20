@@ -1,0 +1,14 @@
+Source: libdsc
+Section: libs
+Priority: optional
+Maintainer: Your Name <your.email@example.com>
+Build-Depends: debhelper (>= 11), libcheck-dev
+Standards-Version: 4.5.0
+Homepage: https://github.com/cm-jones/libdsc
+
+Package: libdsc
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Essential Data Structures for C
+ libdsc is an open-source C library featuring robust and efficient implementations
+ of essential data structures, including vectors, stacks, queues, lists, sets, and maps.
