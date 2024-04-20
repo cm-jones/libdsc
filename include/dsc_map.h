@@ -21,8 +21,23 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+/**
+ * @def DSC_MAP_INITIAL_CAPACITY
+ * @brief The initial capacity of the hash map.
+ */
+#define DSC_MAP_INITIAL_CAPACITY 16
+
+/**
+ * @def DSC_MAP_LOAD_FACTOR
+ * @brief The load factor threshold for resizing the hash map.
+ */
+#define DSC_MAP_LOAD_FACTOR 0.75
+
+/* Forward declaration of the map entry structure */
+typedef struct dsc_map_entry_t dsc_map_entry_t;
+
 /* Forward declaration of the map structure */
-struct dsc_map_t;
+typedef struct dsc_map_t dsc_map_t;
 
 /**
  * @brief Creates a new empty map.
