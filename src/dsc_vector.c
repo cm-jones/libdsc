@@ -165,7 +165,7 @@ int dsc_vector_at(const dsc_vector_t *vector, size_t index) {
         return 0;
     }
 
-    if (index < 0 || index >= vector->size) {
+    if (index >= vector->size) {
         dsc_set_error(DSC_ERROR_OUT_OF_RANGE);
         return 0;
     }
