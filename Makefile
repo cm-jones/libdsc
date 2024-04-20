@@ -33,7 +33,7 @@ install: all
 clean:
 	rm -f $(OBJS) $(LIBNAME) $(SONAME) $(TESTS)
 	rm -f $(DIST_NAME).tar.gz $(DIST_NAME).zip
-	rm -f $(DIST_NAME)-*.deb
+	rm -f $(DIST_NAME)*.deb
 	rm -f *.rpm
 	rm -f *.dmg
 	rm -rf $(DIST_NAME)
