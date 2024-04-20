@@ -152,17 +152,17 @@ void dsc_list_remove(dsc_list_t *list, int value) {
     }
 
     dsc_node_t *prev = list->head;
-    dsc_node_t *walk = list->head->next;
+    dsc_node_t *curr = list->head->next;
 
-    while (walk != NULL) {
-        if (walk->value == value) {
-            prev->next = walk->next;
-            dsc_node_destroy(walk);
+    while (curr != NULL) {
+        if (curr->value == value) {
+            prev->next = curr->next;
+            dsc_node_destroy(curr);
             dsc_set_error(DSC_ERROR_NONE);
             return;
         }
-        prev = walk;
-        walk = walk->next;
+        prev = curr;
+        curr = curr->next;
     }
 
     dsc_set_error(DSC_ERROR_KEY_NOT_FOUND);
@@ -180,21 +180,21 @@ void dsc_list_remove_all(dsc_list_t *list, int value) {
     }
 
     dsc_node_t *prev = NULL;
-    dsc_node_t *walk = list->head;
+    dsc_node_t *curr = list->head;
 
-    while (walk != NULL) {
-        if (walk->value == value) {
+    while (curr != NULL) {
+        if (curr->value == value) {
             if (prev == NULL) {
-                list->head = walk->next;
+                list->head = curr->next;
             } else {
-                prev->next = walk->next;
+                prev->next = curr->next;
             }
-            dsc_node_t *temp = walk;
-            walk = walk->next;
+            dsc_node_t *temp = curr;
+            curr = curr->next;
             dsc_node_destroy(temp);
         } else {
-            prev = walk;
-            walk = walk->next;
+            prev = curr;
+            curr = curr->next;
         }
     }
 
@@ -233,11 +233,11 @@ void dsc_list_print(const dsc_list_t *list) {
         return;
     }
 
-    dsc_node_t *walk = list->head;
+    dsc_node_t *curr = list->head;
 
-    while (walk != NULL) {
-        printf("%d ", walk->value);
-        walk = walk->next;
+    while (curr != NULL) {
+        printf("%d ", curr->value);
+        curr = curr->next;
     }
     printf("\n");
 
