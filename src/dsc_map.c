@@ -116,8 +116,7 @@ bool dsc_map_insert(dsc_map_t *map, int key, int value) {
    dsc_map_entry_t *entry = map->buckets[index];
    while (entry != NULL) {
        if (entry->key == key) {
-           entry->value = value;  // Update the value if the key already exists.
-           dsc_set_error(DSC_ERROR_NONE);
+           dsc_set_error(DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS);
            return false;
        }
        entry = entry->next;
