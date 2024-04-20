@@ -21,8 +21,14 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+/**
+ * @def DSC_VECTOR_INITIAL_CAPACITY
+ * @brief The initial capacity of the vector.
+ */
+#define DSC_VECTOR_INITIAL_CAPACITY 16
+
 /* Forward declaration of the vector structure */
-struct dsc_vector_t;
+typedef struct dsc_vector_t dsc_vector_t;
 
 /**
  * @brief Creates a new empty vector.
@@ -54,19 +60,23 @@ void dsc_vector_push_back(struct dsc_vector_t *vector, int value);
 void dsc_vector_pop_back(struct dsc_vector_t *vector);
 
 /**
- * @brief Inserts an element at the beginning of the vector.
+ * @brief Inserts an element at the specified position in the vector.
  *
  * @param vector The vector to insert the element into.
+ * @param position The position at which to insert the element.
  * @param value The value to insert.
+ *
+ * @return The position of the inserted element.
  */
-void dsc_vector_insert(struct dsc_vector_t *vector, int value);
+size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value);
 
 /**
- * @brief Removes the first element from the vector.
+ * @brief Removes the element at the specified position from the vector.
  *
- * @param vector The vector to remove the first element from.
+ * @param vector The vector to erase the element from.
+ * @param position The position of the element to erase.
  */
-void dsc_vector_erase(struct dsc_vector_t *vector);
+void dsc_vector_erase(struct dsc_vector_t *vector, size_t position);
 
 /**
  * @brief Retrieves the value of the element at the specified index.
