@@ -69,9 +69,9 @@ To build libdsc yourself, follow these steps:
    ```
    This will copy the library files to `/usr/local/lib` and the header file to `/usr/local/include`.
 
-## API Documentation
+## Documentation
 
-Detailed API documentation for libdsc can be found in the `include` directory.
+Detailed documentation for libdsc can be found in the `docs` directory.
 
 ## Contributing
 
