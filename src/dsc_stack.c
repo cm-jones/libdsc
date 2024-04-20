@@ -122,12 +122,12 @@ void dsc_stack_pop(dsc_stack_t *stack) {
 int dsc_stack_top(const dsc_stack_t *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return 0;
+        return -1;
     }
 
     if (dsc_stack_empty(stack)) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
-        return 0;
+        return -1;
     }
 
     dsc_set_error(DSC_ERROR_NONE);
@@ -137,7 +137,7 @@ int dsc_stack_top(const dsc_stack_t *stack) {
 bool dsc_stack_empty(const dsc_stack_t *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return false;
+        return true;
     }
 
     dsc_set_error(DSC_ERROR_NONE);
