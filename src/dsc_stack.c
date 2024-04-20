@@ -22,13 +22,15 @@
 #include "../include/dsc_stack.h"
 #include "../include/dsc_error.h"
 
+/* Represents a stack. */
 struct dsc_stack_t {
-    int *values;
-    size_t size;
-    size_t capacity;
+    int *values;     /* Array of values stored in the stack. */
+    size_t size;     /* The number of elements in the stack. */
+    size_t capacity; /* The current capacity of the stack. */
 };
 
 static void dsc_stack_resize(dsc_stack_t *stack, size_t new_capacity) {
+    /* Check for integer overflow. */
     if (new_capacity > SIZE_MAX / sizeof(int)) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
@@ -88,9 +90,9 @@ void dsc_stack_push(dsc_stack_t *stack, int value) {
         return;
     }
 
-    // Resize the stack if the size exceeds the capacity
+    /* Resize the stack if the size exceeds the capacity. */
     if (stack->size >= stack->capacity) {
-        size_t new_capacity = stack->capacity * 1.5; // Use a 1.5x growth factor
+        size_t new_capacity = stack->capacity * 1.5;
         dsc_stack_resize(stack, new_capacity);
         if (stack->values == NULL) {
             dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
