@@ -6,12 +6,16 @@
 
 libdsc is an open-source C library featuring robust and efficient implementations of essential data structures&mdash;including vectors, stacks, queues, lists, sets, and maps&mdash;with interfaces that closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
 
+## Version
+
+The current version of libdsc is 0.1.0.
+
 ## Usage
 
 To use libdsc in your C project, follow these steps:
 
 1. Obtain the library files:
-   - Either compile the library yourself (see "Building the Library" section below) or download the pre-compiled library files.
+   - Either compile the library yourself (see "Build" section below) or download the pre-compiled library files.
 
 2. Include the header file in your C source file:
    ```c
@@ -43,7 +47,7 @@ To use libdsc in your C project, follow these steps:
    dsc_list_destroy(list);
    ```
 
-## Building the Library
+## Build
 
 To build libdsc yourself, follow these steps:
 
