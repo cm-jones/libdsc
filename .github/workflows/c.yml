@@ -3,14 +3,24 @@ name: build
 on: [push]
 
 jobs:
-  build:
-    runs-on: macos-latest
-
+  build_linux:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: brew install check
-    - name: Build
-      run: make
-    - name: Run tests
-      run: make test
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: sudo apt-get install check
+      - name: Build
+        run: make
+      - name: Run tests
+        run: make test
+
+  build_macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: brew install check
+      - name: Build
+        run: make
+      - name: Run tests
+        run: make test
