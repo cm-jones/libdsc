@@ -21,8 +21,14 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-/* Forward declaration of the queue structure */
-struct dsc_queue_t;
+/**
+ * @def DSC_QUEUE_INITIAL_CAPACITY
+ * @brief The initial capacity of the queue.
+ */
+#define DSC_QUEUE_INITIAL_CAPACITY 16
+
+/* Forward declaration of the queue structure. */
+typedef struct dsc_queue_t dsc_queue_t;
 
 /**
  * @brief Creates a new empty queue.
