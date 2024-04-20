@@ -28,26 +28,22 @@ struct dsc_queue_t {
     size_t capacity; /* The current capacity of the queue. */
 };
 
-static void dsc_queue_resize(dsc_queue_t *queue, size_t new_capacity) {
+static bool dsc_queue_resize(dsc_queue_t *queue, size_t new_capacity) {
     /* Check for integer overflow. */
     if (new_capacity > SIZE_MAX / sizeof(int)) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return;
+        return false;
     }
 
-    int *new_values = malloc(new_capacity * sizeof(int));
+    int *new_values = realloc(queue->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-        return;
-    }
-
-    if (queue->values != NULL) {
-        memcpy(new_values, queue->values, queue->size * sizeof(int));
-        free(queue->values);
+        return false;
     }
 
     queue->values = new_values;
     queue->capacity = new_capacity;
+    return true;
 }
 
 dsc_queue_t *dsc_queue_create() {
@@ -59,11 +55,10 @@ dsc_queue_t *dsc_queue_create() {
 
     new_queue->size = 0;
     new_queue->capacity = DSC_QUEUE_INITIAL_CAPACITY;
-    dsc_queue_resize(new_queue, new_queue->capacity);
+    new_queue->values = NULL;
 
-    if (new_queue->values == NULL) {
+    if (!dsc_queue_resize(new_queue, new_queue->capacity)) {
         free(new_queue);
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
     }
 
@@ -92,9 +87,7 @@ void dsc_queue_push(dsc_queue_t *queue, int value) {
     /* Resize the queue if the size exceeds the capacity. */
     if (queue->size >= queue->capacity) {
         size_t new_capacity = queue->capacity * 1.5;
-        dsc_queue_resize(queue, new_capacity);
-        if (queue->values == NULL) {
-            dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+        if (!dsc_queue_resize(queue, new_capacity)) {
             return;
         }
     }
