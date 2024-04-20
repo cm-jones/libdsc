@@ -6,14 +6,14 @@
 
 libdsc is an open-source C library featuring robust and efficient implementations of the following data structures:
 
-- Vectors
-- Stacks
-- Queues
-- Linked Lists
-- Hash Sets
-- Hash Maps
+- Vectors (a.k.a. dynamic arrays): equivalent to `std::vector`
+- Stacks (LIFO): equivalent to `std::stack`
+- Queues (FIFO): equivalent to `std::queue`
+- (Singly) Linked Lists: equivalent to `std::forward_list`
+- Hash Sets: equivalent to `std::unordered_set`
+- Hash Maps (a.k.a. associative arrays): equivalent to `std::unordered_map`
 
-Their interfaces closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
+The interfaces closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
 
 ## Version
 
@@ -32,11 +32,7 @@ To use libdsc in your C project, follow these steps:
    ```
 
 3. Link against the library when compiling your program:
-   - If using a static library (`libdsc.a`):
-     ```
-     gcc -o program program.c -L/path/to/library -ldsc
-     ```
-   - If using a shared library (`libdsc.so`):
+   - If using a static (`libdsc.a`) or shared (`libdsc.so`) library:
      ```
      gcc -o program program.c -L/path/to/library -ldsc
      ```
@@ -44,16 +40,21 @@ To use libdsc in your C project, follow these steps:
 
 4. Use the library functions in your code, for example:
    ```c
-   dsc_list_t *list = dsc_list_create();
+   dsc_set_t *set = dsc_set_create();
 
-   dsc_list_append(list, 10); // [10]
-   dsc_list_prepend(list, 5); // [5, 10]
-   dsc_list_insert(list, 3, 1); // [5, 3, 10]
-   dsc_list_get_length(list); // returns 3
+   for (int i = 0; i < 100; i++) {
+      dsc_set_insert(set, i);
+   }
+   
+   dsc_set_insert(set, 0);   // returns false
+   dsc_set_contains(set, 3); // returns true
+   dsc_set_erase(set, 53);   // returns true
 
-   // Use other list functions as needed ...
+   dsc_set_size(set);        // returns 99
 
-   dsc_list_destroy(list);
+   // Use other set functions as needed ...
+
+   dsc_set_free(set);
    ```
 
 ## Build
