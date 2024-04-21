@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: sudo apt-get install check
+        run: sudo apt-get install check libsubunit-dev
       - name: Build
         run: make
       - name: Run tests
