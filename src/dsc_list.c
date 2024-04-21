@@ -100,6 +100,28 @@ void dsc_list_push_front(dsc_list_t *list, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
+void dsc_list_push_back(struct dsc_list_t *list, int value) {
+    if (list == NULL) {
+        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
+        return;
+    }
+
+    dsc_node_t *new_node = dsc_node_create(value);
+    if (new_node == NULL) {
+        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+        return;
+    }
+
+    dsc_node_t *curr = list->head;
+
+    while (curr->next != NULL) {
+        curr = curr->next;
+    }
+
+    curr->next = new_node;
+    dsc_set_error(DSC_ERROR_NONE);
+}
+
 void dsc_list_insert_after(dsc_list_t *list, dsc_node_t *prev_node, int value) {
     if (list == NULL || prev_node == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
@@ -233,13 +255,16 @@ void dsc_list_print(const dsc_list_t *list) {
         return;
     }
 
+    printf("[");
+
     dsc_node_t *curr = list->head;
 
-    while (curr != NULL) {
-        printf("%d ", curr->value);
+    while (curr->next != NULL) {
+        printf("%d, ", curr->value);
         curr = curr->next;
     }
-    printf("\n");
+
+    printf("%d]\n", curr->value);
 
     dsc_set_error(DSC_ERROR_NONE);
 }

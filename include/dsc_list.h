@@ -51,6 +51,14 @@ void dsc_list_destroy(struct dsc_list_t *list);
 void dsc_list_push_front(struct dsc_list_t *list, int value);
 
 /**
+ * @brief Inserts a value at the end of the list.
+ *
+ * @param list The list to insert the value into.
+ * @param value The value to insert.
+ */
+void dsc_list_push_back(struct dsc_list_t *list, int value);
+
+/**
  * @brief Inserts a value after a specific node in the list.
  *
  * @param list The list to insert the value into.
