@@ -6,14 +6,14 @@
 
 libdsc is an open-source C library featuring robust and efficient implementations of the following data structures:
 
-- Vectors (a.k.a. dynamic arrays): equivalent to `std::vector`
-- Stacks (LIFO): equivalent to `std::stack`
-- Queues (FIFO): equivalent to `std::queue`
-- (Singly) Linked Lists: equivalent to `std::forward_list`
-- Hash Sets: equivalent to `std::unordered_set`
-- Hash Maps (a.k.a. associative arrays): equivalent to `std::unordered_map`
+- Vectors: similar to `std::vector`
+- Lists:   similar to `std::forward_list`
+- Stacks:  similar to `std::stack`
+- Queues:  similar to `std::queue`
+- Sets:    similar to `std::unordered_set`
+- Maps:    similar to `std::unordered_map`
 
-The interfaces closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
+The libdsc APIs closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
 
 ## Version
 
@@ -24,7 +24,7 @@ The current version of libdsc is 0.1.0-alpha.
 To use libdsc in your C project, follow these steps:
 
 1. Obtain the library files:
-   - Either compile the library yourself (see "Build" section below) or download the pre-compiled library files.
+   - Either compile the library yourself (see [Build](#Build) section below) or download the pre-compiled library files.
 
 2. Include the header file in your C source file:
    ```c
@@ -77,7 +77,7 @@ To build libdsc yourself, follow these steps:
    ```
    make
    ```
-   This will generate the static library (`libdsc.a`) and the shared library (`libdsc.so`) in the project directory.
+   This will generate the static library (`libdsc.a`) and the shared library (`libdsc.so`) in the project's root directory.
 
 4. (Optional) Install the library and header files:
    ```
