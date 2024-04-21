@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build_debian:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -15,7 +15,8 @@ jobs:
         run: make test
 
   build_fedora:
-    runs-on: fedora-latest
+    runs-on: ubuntu-latest
+    container: fedora:latest
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
