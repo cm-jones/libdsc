@@ -87,14 +87,6 @@ deb: $(DIST_NAME).tar.gz
 	mv $(DIST_NAME)_$(shell dpkg --print-architecture).deb $(DIST_NAME).deb
 	rm -rf $(DIST_NAME)
 
-rpm: $(DIST_NAME).tar.gz
-	tar -xzf $(DIST_NAME).tar.gz
-	mkdir -p $(DIST_NAME)/SPECS
-	cp packaging/rpm/libdsc.spec $(DIST_NAME)/SPECS/
-	rpmbuild -bb --define "_topdir $(PWD)/$(DIST_NAME)" $(DIST_NAME)/SPECS/libdsc.spec
-	mv $(DIST_NAME)/RPMS/*/*.rpm .
-	rm -rf $(DIST_NAME)
-
 dmg: $(DIST_NAME).tar.gz
 	tar -xzf $(DIST_NAME).tar.gz
 	mkdir -p $(DIST_NAME)/package

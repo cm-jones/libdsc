@@ -16,22 +16,6 @@ jobs:
     - name: Run tests
       run: make test
 
-  build_fedora:
-    runs-on: ubuntu-latest
-    container: fedora:latest
-    
-    steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      run: |
-        sudo dnf install -y make gcc
-    - name: Build
-      run: make
-    - name: Build tests
-      run: make build-tests
-    - name: Run tests
-      run: make test
-
   build_macos:
     runs-on: macos-latest
     
