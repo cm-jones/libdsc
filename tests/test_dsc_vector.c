@@ -135,6 +135,7 @@ END_TEST
 
 START_TEST(test_dsc_vector_size)
 {
+    ck_assert_int_eq(dsc_vector_size(NULL), -1);
     dsc_vector_t *vector = dsc_vector_create();
     ck_assert_int_eq(dsc_vector_size(vector), 0);
     dsc_vector_push_back(vector, 1);

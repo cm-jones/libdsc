@@ -152,10 +152,10 @@ bool dsc_queue_empty(const dsc_queue_t *queue) {
     return queue->size == 0;
 }
 
-size_t dsc_queue_size(const dsc_queue_t *queue) {
+int dsc_queue_size(const dsc_queue_t *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return 0;
+        return -1;
     }
 
     dsc_set_error(DSC_ERROR_NONE);

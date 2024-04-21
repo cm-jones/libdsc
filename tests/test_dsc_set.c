@@ -81,11 +81,14 @@ END_TEST
 
 START_TEST(test_dsc_set_size)
 {
+    ck_assert_int_eq(dsc_set_size(NULL), -1);
     dsc_set_t *set = dsc_set_create();
     ck_assert_int_eq(dsc_set_size(set), 0);
     dsc_set_insert(set, 42);
     ck_assert_int_eq(dsc_set_size(set), 1);
     dsc_set_insert(set, 73);
+    ck_assert_int_eq(dsc_set_size(set), 2);
+    dsc_set_insert(set, 42);
     ck_assert_int_eq(dsc_set_size(set), 2);
     dsc_set_free(set);
 }

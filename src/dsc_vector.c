@@ -183,10 +183,10 @@ bool dsc_vector_empty(const dsc_vector_t *vector) {
     return vector->size == 0;
 }
 
-size_t dsc_vector_size(const dsc_vector_t *vector) {
+int dsc_vector_size(const dsc_vector_t *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return 0;
+        return -1;
     }
 
     dsc_set_error(DSC_ERROR_NONE);

@@ -82,8 +82,8 @@ bool dsc_stack_empty(const struct dsc_stack_t *stack);
  *
  * @param stack The stack to get the size of.
  *
- * @return The number of elements in the stack.
+ * @return The number of elements in the stack, -1 if the stack is NULL.
  */
-size_t dsc_stack_size(const struct dsc_stack_t *stack);
+int dsc_stack_size(const struct dsc_stack_t *stack);
 
 #endif /* __DSC_STACK_H__ */

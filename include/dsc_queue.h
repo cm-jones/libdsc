@@ -91,8 +91,8 @@ bool dsc_queue_empty(const struct dsc_queue_t *queue);
  *
  * @param queue The queue to get the size of.
  *
- * @return The number of elements in the queue.
+ * @return The number of elements in the queue, -1 if the stack is NULL.
  */
-size_t dsc_queue_size(const struct dsc_queue_t *queue);
+int dsc_queue_size(const struct dsc_queue_t *queue);
 
 #endif /* __DSC_QUEUE_H__ */

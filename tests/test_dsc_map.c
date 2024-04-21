@@ -98,6 +98,7 @@ END_TEST
 
 START_TEST(test_dsc_map_size)
 {
+    ck_assert_int_eq(dsc_map_size(NULL), -1);
     dsc_map_t *map = dsc_map_create();
     ck_assert_int_eq(dsc_map_size(map), 0);
     dsc_map_insert(map, 42, 73);

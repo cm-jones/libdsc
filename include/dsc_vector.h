@@ -102,9 +102,9 @@ bool dsc_vector_empty(const struct dsc_vector_t *vector);
  *
  * @param vector The vector to get the size of.
  *
- * @return The number of elements in the vector.
+ * @return The number of elements in the vector, -1 if the vector is NULL.
  */
-size_t dsc_vector_size(const struct dsc_vector_t *vector);
+int dsc_vector_size(const struct dsc_vector_t *vector);
 
 /**
  * @brief Gets the maximum number of elements the vector can hold before needing to allocate more memory.

@@ -83,9 +83,9 @@ bool dsc_set_contains(const dsc_set_t *set, int value);
  * @brief Gets the size of the hash set.
  *
  * @param set The hash set to get the size of.
- * @return The size of the hash set.
+ * @return The size of the hash set, -1 if the set is NULL.
  */
-size_t dsc_set_size(const dsc_set_t *set);
+int dsc_set_size(const dsc_set_t *set);
 
 /**
  * @brief Checks if the hash set is empty.

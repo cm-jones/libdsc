@@ -217,10 +217,10 @@ bool dsc_map_contains(const dsc_map_t *map, int key) {
    return false;
 }
 
-size_t dsc_map_size(const dsc_map_t *map) {
+int dsc_map_size(const dsc_map_t *map) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-       return 0;
+       return -1;
    }
 
    dsc_set_error(DSC_ERROR_NONE);

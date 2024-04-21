@@ -198,7 +198,7 @@ bool dsc_set_contains(const dsc_set_t *set, int value) {
     return false;
 }
 
-size_t dsc_set_size(const dsc_set_t *set) {
+int dsc_set_size(const dsc_set_t *set) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;

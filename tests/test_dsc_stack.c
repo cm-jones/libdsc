@@ -81,6 +81,7 @@ END_TEST
 
 START_TEST(test_dsc_stack_size)
 {
+    ck_assert_int_eq(dsc_stack_size(NULL), -1);
     dsc_stack_t *stack = dsc_stack_create();
     ck_assert_int_eq(dsc_stack_size(stack), 0);
     dsc_stack_push(stack, 42);

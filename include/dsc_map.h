@@ -99,9 +99,9 @@ bool dsc_map_contains(const dsc_map_t *map, int key);
  *
  * @param map The map to get the size of.
  *
- * @return The number of key-value pairs in the map.
+ * @return The number of key-value pairs in the map, -1 if the map is NULL.
  */
-size_t dsc_map_size(const dsc_map_t *map);
+int dsc_map_size(const dsc_map_t *map);
 
 /**
  * @brief Checks if the map is empty.

@@ -92,6 +92,7 @@ END_TEST
 
 START_TEST(test_dsc_queue_size)
 {
+    ck_assert_int_eq(dsc_queue_size(NULL), -1);
     dsc_queue_t *queue = dsc_queue_create();
     ck_assert_int_eq(dsc_queue_size(queue), 0);
     dsc_queue_push(queue, 42);

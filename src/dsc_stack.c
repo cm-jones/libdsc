@@ -132,10 +132,10 @@ bool dsc_stack_empty(const dsc_stack_t *stack) {
     return stack->size == 0;
 }
 
-size_t dsc_stack_size(const dsc_stack_t *stack) {
+int dsc_stack_size(const dsc_stack_t *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return 0;
+        return -1;
     }
 
     dsc_set_error(DSC_ERROR_NONE);
