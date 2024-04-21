@@ -6,3 +6,9 @@
 *.zip
 *.deb
 libdsc-*
+tests/test_dsc_list
+tests/test_dsc_map
+tests/test_dsc_queue
+tests/test_dsc_set
+tests/test_dsc_stack
+tests/test_dsc_vector
