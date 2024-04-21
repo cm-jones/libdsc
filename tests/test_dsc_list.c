@@ -51,6 +51,17 @@ START_TEST(test_dsc_list_push_front)
 }
 END_TEST
 
+START_TEST(test_dsc_list_push_back)
+{
+    dsc_list_t *list = dsc_list_create();
+    dsc_list_push_back(list, 42);
+    dsc_list_push_back(list, 73);
+    dsc_node_t *head = dsc_list_get_head(list);
+    ck_assert_int_eq(head->value, 42);
+    dsc_list_destroy(list);
+}
+END_TEST
+
 START_TEST(test_dsc_list_insert_after)
 {
     dsc_list_t *list = dsc_list_create();
