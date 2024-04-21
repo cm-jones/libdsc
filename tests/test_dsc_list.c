@@ -137,7 +137,7 @@ Suite *dsc_list_suite(void) {
     tcase_add_checked_fixture(tcase, setup, teardown);
     tcase_add_test(tcase, test_dsc_list_create);
     tcase_add_test(tcase, test_dsc_list_push_front);
-    case_add_test(tcase, test_dsc_list_push_back);
+    tcase_add_test(tcase, test_dsc_list_push_back);
     tcase_add_test(tcase, test_dsc_list_insert_after);
     tcase_add_test(tcase, test_dsc_list_pop_front);
     tcase_add_test(tcase, test_dsc_list_remove);
