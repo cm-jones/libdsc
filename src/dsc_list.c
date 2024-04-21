@@ -112,6 +112,11 @@ void dsc_list_push_back(struct dsc_list_t *list, int value) {
         return;
     }
 
+    if (list->head == NULL) {
+        list->head = new_node;
+        return;
+    }
+
     dsc_node_t *curr = list->head;
 
     while (curr->next != NULL) {
