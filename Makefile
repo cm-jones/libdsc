@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I. -I/usr/include -I/usr/local/include
-LDFLAGS = -L. -ldsc -lm -lcheck
+LDFLAGS = -L. -ldsc -lm -lcheck -lsubunit -lrt -lpthread
 
 LIBNAME = libdsc.a
 SONAME = libdsc.so
