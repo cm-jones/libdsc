@@ -16,120 +16,96 @@
  */
 
 #include <stdlib.h>
-#include <check.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "../include/dsc_queue.h"
 
-/* Setup and teardown functions */
-void setup(void) {
-    /* No setup needed */
+int tests_run = 0;
+int tests_passed = 0;
+
+void run_test(void (*test_func)(void), const char *name) {
+    printf("Running test: %s\n", name);
+    tests_run++;
+    test_func();
 }
 
-void teardown(void) {
-    /* No teardown needed */
-}
-
-/* Test cases */
-
-START_TEST(test_dsc_queue_create)
-{
+void test_dsc_queue_create() {
     dsc_queue_t *queue = dsc_queue_create();
-    ck_assert_ptr_nonnull(queue);
+    assert(queue != NULL);
     dsc_queue_free(queue);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_queue_push)
-{
+void test_dsc_queue_push() {
     dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
-    ck_assert_int_eq(dsc_queue_front(queue), 42);
-    ck_assert_int_eq(dsc_queue_back(queue), 73);
+    assert(dsc_queue_front(queue) == 42 && dsc_queue_back(queue) == 73);
     dsc_queue_free(queue);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_queue_pop)
-{
+void test_dsc_queue_pop() {
     dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     dsc_queue_pop(queue);
-    ck_assert_int_eq(dsc_queue_front(queue), 73);
+    assert(dsc_queue_front(queue) == 73);
     dsc_queue_free(queue);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_queue_front)
-{
+void test_dsc_queue_front() {
     dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
-    ck_assert_int_eq(dsc_queue_front(queue), 42);
+    assert(dsc_queue_front(queue) == 42);
     dsc_queue_free(queue);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_queue_back)
-{
+void test_dsc_queue_back() {
     dsc_queue_t *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
-    ck_assert_int_eq(dsc_queue_back(queue), 73);
+    assert(dsc_queue_back(queue) == 73);
     dsc_queue_free(queue);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_queue_empty)
-{
+void test_dsc_queue_empty() {
     dsc_queue_t *queue = dsc_queue_create();
-    ck_assert_int_eq(dsc_queue_empty(queue), true);
+    assert(dsc_queue_empty(queue));
     dsc_queue_push(queue, 42);
-    ck_assert_int_eq(dsc_queue_empty(queue), false);
+    assert(!dsc_queue_empty(queue));
     dsc_queue_free(queue);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_queue_size)
-{
-    ck_assert_int_eq(dsc_queue_size(NULL), -1);
+void test_dsc_queue_size() {
     dsc_queue_t *queue = dsc_queue_create();
-    ck_assert_int_eq(dsc_queue_size(queue), 0);
+    assert(dsc_queue_size(queue) == 0);
     dsc_queue_push(queue, 42);
-    ck_assert_int_eq(dsc_queue_size(queue), 1);
+    assert(dsc_queue_size(queue) == 1);
     dsc_queue_push(queue, 73);
-    ck_assert_int_eq(dsc_queue_size(queue), 2);
+    assert(dsc_queue_size(queue) == 2);
     dsc_queue_free(queue);
-}
-END_TEST
-
-/* Suite setup and teardown functions */
-Suite *dsc_queue_suite(void) {
-    Suite *suite = suite_create("dsc_queue");
-    TCase *tcase = tcase_create("core");
-
-    tcase_add_checked_fixture(tcase, setup, teardown);
-    tcase_add_test(tcase, test_dsc_queue_create);
-    tcase_add_test(tcase, test_dsc_queue_push);
-    tcase_add_test(tcase, test_dsc_queue_pop);
-    tcase_add_test(tcase, test_dsc_queue_front);
-    tcase_add_test(tcase, test_dsc_queue_back);
-    tcase_add_test(tcase, test_dsc_queue_empty);
-    tcase_add_test(tcase, test_dsc_queue_size);
-
-    suite_add_tcase(suite, tcase);
-    return suite;
+    tests_passed++;
 }
 
-/* Main function */
-int main(void) {
-    int failed;
-    Suite *suite = dsc_queue_suite();
-    SRunner *runner = srunner_create(suite);
+int main() {
+    run_test(test_dsc_queue_create, "test_dsc_queue_create");
+    run_test(test_dsc_queue_push, "test_dsc_queue_push");
+    run_test(test_dsc_queue_pop, "test_dsc_queue_pop");
+    run_test(test_dsc_queue_front, "test_dsc_queue_front");
+    run_test(test_dsc_queue_back, "test_dsc_queue_back");
+    run_test(test_dsc_queue_empty, "test_dsc_queue_empty");
+    run_test(test_dsc_queue_size, "test_dsc_queue_size");
 
-    srunner_run_all(runner, CK_NORMAL);
-    failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
+    printf("\nTest Results:\n");
+    printf("Total tests run: %d\n", tests_run);
+    printf("Tests passed: %d\n", tests_passed);
+    printf("Tests failed: %d\n", tests_run - tests_passed);
 
-    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

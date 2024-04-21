@@ -3,38 +3,43 @@ name: build
 on: [push]
 
 jobs:
+
   build_debian:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: sudo apt-get install check libsubunit-dev
-      - name: Build
-        run: make
-      - name: Run tests
-        run: make test
+    - uses: actions/checkout@v2
+    - name: Build
+      run: make
+    - name: Build tests
+      run: make build-tests
+    - name: Run tests
+      run: make test
 
   build_fedora:
     runs-on: ubuntu-latest
     container: fedora:latest
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          sudo dnf install -y check
-          sudo dnf install -y make gcc
-      - name: Build
-        run: make
-      - name: Run tests
-        run: make test
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo dnf install -y make gcc
+    - name: Build
+      run: make
+    - name: Build tests
+      run: make build-tests
+    - name: Run tests
+      run: make test
 
   build_macos:
     runs-on: macos-latest
+    
     steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: brew install check
-      - name: Build
-        run: make
-      - name: Run tests
-        run: make test
+    - uses: actions/checkout@v2
+    - name: Build
+      run: make
+    - name: Build tests
+      run: make build-tests
+    - name: Run tests
+      run: make test

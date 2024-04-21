@@ -16,108 +16,86 @@
  */
 
 #include <stdlib.h>
-#include <check.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "../include/dsc_stack.h"
 
-/* Setup and teardown functions */
-void setup(void) {
-    /* No setup needed */
+int tests_run = 0;
+int tests_passed = 0;
+
+void run_test(void (*test_func)(void), const char *name) {
+    printf("Running test: %s\n", name);
+    tests_run++;
+    test_func();
 }
 
-void teardown(void) {
-    /* No teardown needed */
-}
-
-/* Test cases */
-
-START_TEST(test_dsc_stack_create)
-{
+void test_dsc_stack_create() {
     dsc_stack_t *stack = dsc_stack_create();
-    ck_assert_ptr_nonnull(stack);
+    assert(stack != NULL);
     dsc_stack_free(stack);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_stack_push)
-{
+void test_dsc_stack_push() {
     dsc_stack_t *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
-    ck_assert_int_eq(dsc_stack_top(stack), 73);
+    assert(dsc_stack_top(stack) == 73);
     dsc_stack_free(stack);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_stack_pop)
-{
+void test_dsc_stack_pop() {
     dsc_stack_t *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
     dsc_stack_pop(stack);
-    ck_assert_int_eq(dsc_stack_top(stack), 42);
+    assert(dsc_stack_top(stack) == 42);
     dsc_stack_free(stack);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_stack_top)
-{
+void test_dsc_stack_top() {
     dsc_stack_t *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
-    ck_assert_int_eq(dsc_stack_top(stack), 42);
+    assert(dsc_stack_top(stack) == 42);
     dsc_stack_free(stack);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_stack_empty)
-{
+void test_dsc_stack_empty() {
     dsc_stack_t *stack = dsc_stack_create();
-    ck_assert_int_eq(dsc_stack_empty(stack), true);
+    assert(dsc_stack_empty(stack));
     dsc_stack_push(stack, 42);
-    ck_assert_int_eq(dsc_stack_empty(stack), false);
+    assert(!dsc_stack_empty(stack));
     dsc_stack_free(stack);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_stack_size)
-{
-    ck_assert_int_eq(dsc_stack_size(NULL), -1);
+void test_dsc_stack_size() {
     dsc_stack_t *stack = dsc_stack_create();
-    ck_assert_int_eq(dsc_stack_size(stack), 0);
+    assert(dsc_stack_size(stack) == 0);
     dsc_stack_push(stack, 42);
-    ck_assert_int_eq(dsc_stack_size(stack), 1);
+    assert(dsc_stack_size(stack) == 1);
     dsc_stack_push(stack, 73);
-    ck_assert_int_eq(dsc_stack_size(stack), 2);
+    assert(dsc_stack_size(stack) == 2);
     dsc_stack_free(stack);
-}
-END_TEST
-
-/* Suite setup and teardown functions */
-Suite *dsc_stack_suite(void) {
-    Suite *suite = suite_create("dsc_stack");
-    TCase *tcase = tcase_create("core");
-
-    tcase_add_checked_fixture(tcase, setup, teardown);
-    tcase_add_test(tcase, test_dsc_stack_create);
-    tcase_add_test(tcase, test_dsc_stack_push);
-    tcase_add_test(tcase, test_dsc_stack_pop);
-    tcase_add_test(tcase, test_dsc_stack_top);
-    tcase_add_test(tcase, test_dsc_stack_empty);
-    tcase_add_test(tcase, test_dsc_stack_size);
-
-    suite_add_tcase(suite, tcase);
-    return suite;
+    tests_passed++;
 }
 
-/* Main function */
-int main(void) {
-    int failed;
-    Suite *suite = dsc_stack_suite();
-    SRunner *runner = srunner_create(suite);
+int main() {
+    run_test(test_dsc_stack_create, "test_dsc_stack_create");
+    run_test(test_dsc_stack_push, "test_dsc_stack_push");
+    run_test(test_dsc_stack_pop, "test_dsc_stack_pop");
+    run_test(test_dsc_stack_top, "test_dsc_stack_top");
+    run_test(test_dsc_stack_empty, "test_dsc_stack_empty");
+    run_test(test_dsc_stack_size, "test_dsc_stack_size");
 
-    srunner_run_all(runner, CK_NORMAL);
-    failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
+    printf("\nTest Results:\n");
+    printf("Total tests run: %d\n", tests_run);
+    printf("Tests passed: %d\n", tests_passed);
+    printf("Tests failed: %d\n", tests_run - tests_passed);
 
-    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

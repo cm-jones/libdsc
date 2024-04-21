@@ -16,149 +16,125 @@
  */
 
 #include <stdlib.h>
-#include <check.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "../include/dsc_map.h"
 
-/* Setup and teardown functions */
-void setup(void) {
-    /* No setup needed */
+int tests_run = 0;
+int tests_passed = 0;
+
+void run_test(void (*test_func)(void), const char *name) {
+    printf("Running test: %s\n", name);
+    tests_run++;
+    test_func();
 }
 
-void teardown(void) {
-    /* No teardown needed */
-}
-
-/* Test cases */
-
-START_TEST(test_dsc_map_create)
-{
+void test_dsc_map_create() {
     dsc_map_t *map = dsc_map_create();
-    ck_assert_ptr_nonnull(map);
+    assert(map != NULL);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_insert)
-{
+void test_dsc_map_insert() {
     dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value = 73;
-    ck_assert_int_eq(dsc_map_insert(map, key, value), true);
-    ck_assert_int_eq(dsc_map_get(map, key), value);
+    assert(dsc_map_insert(map, key, value) == true);
+    assert(dsc_map_get(map, key) == value);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_insert_duplicate)
-{
+void test_dsc_map_insert_duplicate() {
     dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value1 = 73;
     int value2 = 84;
     dsc_map_insert(map, key, value1);
-    ck_assert_int_eq(dsc_map_insert(map, key, value2), false);
-    ck_assert_int_eq(dsc_map_get(map, key), value1);
+    assert(dsc_map_insert(map, key, value2) == false);
+    assert(dsc_map_get(map, key) == value1);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_erase)
-{
+void test_dsc_map_erase() {
     dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value = 73;
     dsc_map_insert(map, key, value);
-    ck_assert_int_eq(dsc_map_erase(map, key), true);
-    ck_assert_int_eq(dsc_map_get(map, key), 0);
+    assert(dsc_map_erase(map, key) == true);
+    assert(dsc_map_get(map, key) == 0);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_erase_nonexistent)
-{
+void test_dsc_map_erase_nonexistent() {
     dsc_map_t *map = dsc_map_create();
     int key = 42;
-    ck_assert_int_eq(dsc_map_erase(map, key), false);
+    assert(dsc_map_erase(map, key) == false);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_contains)
-{
+void test_dsc_map_contains() {
     dsc_map_t *map = dsc_map_create();
     int key = 42;
     int value = 73;
     dsc_map_insert(map, key, value);
-    ck_assert_int_eq(dsc_map_contains(map, key), true);
-    ck_assert_int_eq(dsc_map_contains(map, 84), false);
+    assert(dsc_map_contains(map, key) == true);
+    assert(dsc_map_contains(map, 84) == false);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_size)
-{
-    ck_assert_int_eq(dsc_map_size(NULL), -1);
+void test_dsc_map_size() {
+    assert(dsc_map_size(NULL) == -1);
     dsc_map_t *map = dsc_map_create();
-    ck_assert_int_eq(dsc_map_size(map), 0);
+    assert(dsc_map_size(map) == 0);
     dsc_map_insert(map, 42, 73);
-    ck_assert_int_eq(dsc_map_size(map), 1);
+    assert(dsc_map_size(map) == 1);
     dsc_map_insert(map, 84, 21);
-    ck_assert_int_eq(dsc_map_size(map), 2);
+    assert(dsc_map_size(map) == 2);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_empty)
-{
+void test_dsc_map_empty() {
     dsc_map_t *map = dsc_map_create();
-    ck_assert_int_eq(dsc_map_empty(map), true);
+    assert(dsc_map_empty(map) == true);
     dsc_map_insert(map, 42, 73);
-    ck_assert_int_eq(dsc_map_empty(map), false);
+    assert(dsc_map_empty(map) == false);
     dsc_map_free(map);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_map_clear)
-{
+void test_dsc_map_clear() {
     dsc_map_t *map = dsc_map_create();
     dsc_map_insert(map, 42, 73);
     dsc_map_insert(map, 84, 21);
     dsc_map_clear(map);
-    ck_assert_int_eq(dsc_map_size(map), 0);
+    assert(dsc_map_size(map) == 0);
     dsc_map_free(map);
-}
-END_TEST
-
-/* Suite setup and teardown functions */
-Suite *dsc_map_suite(void) {
-    Suite *suite = suite_create("dsc_map");
-    TCase *tcase = tcase_create("core");
-
-    tcase_add_checked_fixture(tcase, setup, teardown);
-    tcase_add_test(tcase, test_dsc_map_create);
-    tcase_add_test(tcase, test_dsc_map_insert);
-    tcase_add_test(tcase, test_dsc_map_insert_duplicate);
-    tcase_add_test(tcase, test_dsc_map_erase);
-    tcase_add_test(tcase, test_dsc_map_erase_nonexistent);
-    tcase_add_test(tcase, test_dsc_map_contains);
-    tcase_add_test(tcase, test_dsc_map_size);
-    tcase_add_test(tcase, test_dsc_map_empty);
-    tcase_add_test(tcase, test_dsc_map_clear);
-
-    suite_add_tcase(suite, tcase);
-    return suite;
+    tests_passed++;
 }
 
-/* Main function */
-int main(void) {
-    int failed;
-    Suite *suite = dsc_map_suite();
-    SRunner *runner = srunner_create(suite);
+int main() {
+    run_test(test_dsc_map_create, "test_dsc_map_create");
+    run_test(test_dsc_map_insert, "test_dsc_map_insert");
+    run_test(test_dsc_map_insert_duplicate, "test_dsc_map_insert_duplicate");
+    run_test(test_dsc_map_erase, "test_dsc_map_erase");
+    run_test(test_dsc_map_erase_nonexistent, "test_dsc_map_erase_nonexistent");
+    run_test(test_dsc_map_contains, "test_dsc_map_contains");
+    run_test(test_dsc_map_size, "test_dsc_map_size");
+    run_test(test_dsc_map_empty, "test_dsc_map_empty");
+    run_test(test_dsc_map_clear, "test_dsc_map_clear");
 
-    srunner_run_all(runner, CK_NORMAL);
-    failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
+    printf("\nTest Results:\n");
+    printf("Total tests run: %d\n", tests_run);
+    printf("Tests passed: %d\n", tests_passed);
+    printf("Tests failed: %d\n", tests_run - tests_passed);
 
-    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

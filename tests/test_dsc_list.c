@@ -16,148 +16,127 @@
  */
 
 #include <stdlib.h>
-#include <check.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "../include/dsc_list.h"
 #include "../include/dsc_node.h"
 
-/* Setup and teardown functions */
-void setup(void) {
-    /* No setup needed */
-}
+int tests_run = 0;
+int tests_passed = 0;
+int tests_failed = 0;
 
-void teardown(void) {
-    /* No teardown needed */
+void run_test(void (*test_func)(void), const char *name) {
+    printf("Running test: %s\n", name);
+    tests_run++;
+    test_func();
 }
 
 /* Test cases */
 
-START_TEST(test_dsc_list_create)
-{
+void test_dsc_list_create() {
     dsc_list_t *list = dsc_list_create();
-    ck_assert_ptr_nonnull(list);
+    assert(list != NULL);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_push_front)
-{
+void test_dsc_list_push_front() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_node_t *head = dsc_list_get_head(list);
-    ck_assert_int_eq(head->value, 73);
+    assert(head->value == 73);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_push_back)
-{
+void test_dsc_list_push_back() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_back(list, 42);
     dsc_list_push_back(list, 73);
     dsc_node_t *head = dsc_list_get_head(list);
-    ck_assert_int_eq(head->value, 42);
+    assert(head->value == 42);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_insert_after)
-{
+void test_dsc_list_insert_after() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_node_t *head = dsc_list_get_head(list);
     dsc_list_insert_after(list, head, 73);
     dsc_node_t *next_node = head->next;
-    ck_assert_int_eq(next_node->value, 73);
+    assert(next_node->value == 73);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_pop_front)
-{
+void test_dsc_list_pop_front() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_pop_front(list);
     dsc_node_t *head = dsc_list_get_head(list);
-    ck_assert_int_eq(head->value, 42);
+    assert(head->value == 42);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_remove)
-{
+void test_dsc_list_remove() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_remove(list, 73);
     dsc_node_t *head = dsc_list_get_head(list);
-    ck_assert_int_eq(head->value, 42);
+    assert(head->value == 42);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_remove_all)
-{
+void test_dsc_list_remove_all() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
     dsc_list_push_front(list, 73);
     dsc_list_remove_all(list, 73);
-    ck_assert_int_eq(dsc_list_front(list), 42);
+    assert(dsc_list_front(list) == 42);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_front)
-{
+void test_dsc_list_front() {
     dsc_list_t *list = dsc_list_create();
     dsc_list_push_front(list, 42);
-    ck_assert_int_eq(dsc_list_front(list), 42);
+    assert(dsc_list_front(list) == 42);
     dsc_list_destroy(list);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_list_empty)
-{
+void test_dsc_list_empty() {
     dsc_list_t *list = dsc_list_create();
-    ck_assert_int_eq(dsc_list_empty(list), true);
+    assert(dsc_list_empty(list));
     dsc_list_push_front(list, 42);
-    ck_assert_int_eq(dsc_list_empty(list), false);
+    assert(!dsc_list_empty(list));
     dsc_list_destroy(list);
-}
-END_TEST
-
-/* Suite setup and teardown functions */
-Suite *dsc_list_suite(void) {
-    Suite *suite = suite_create("dsc_list");
-    TCase *tcase = tcase_create("core");
-
-    tcase_add_checked_fixture(tcase, setup, teardown);
-    tcase_add_test(tcase, test_dsc_list_create);
-    tcase_add_test(tcase, test_dsc_list_push_front);
-    tcase_add_test(tcase, test_dsc_list_push_back);
-    tcase_add_test(tcase, test_dsc_list_insert_after);
-    tcase_add_test(tcase, test_dsc_list_pop_front);
-    tcase_add_test(tcase, test_dsc_list_remove);
-    tcase_add_test(tcase, test_dsc_list_remove_all);
-    tcase_add_test(tcase, test_dsc_list_front);
-    tcase_add_test(tcase, test_dsc_list_empty);
-
-    suite_add_tcase(suite, tcase);
-    return suite;
+    tests_passed++;
 }
 
-/* Main function */
-int main(void) {
-    int failed;
-    Suite *suite = dsc_list_suite();
-    SRunner *runner = srunner_create(suite);
+int main() {
+    run_test(test_dsc_list_create, "test_dsc_list_create");
+    run_test(test_dsc_list_push_front, "test_dsc_list_push_front");
+    run_test(test_dsc_list_push_back, "test_dsc_list_push_back");
+    run_test(test_dsc_list_insert_after, "test_dsc_list_insert_after");
+    run_test(test_dsc_list_pop_front, "test_dsc_list_pop_front");
+    run_test(test_dsc_list_remove, "test_dsc_list_remove");
+    run_test(test_dsc_list_remove_all, "test_dsc_list_remove_all");
+    run_test(test_dsc_list_front, "test_dsc_list_front");
+    run_test(test_dsc_list_empty, "test_dsc_list_empty");
 
-    srunner_run_all(runner, CK_NORMAL);
-    failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
+    printf("\nTest Results:\n");
+    printf("Total tests run: %d\n", tests_run);
+    printf("Tests passed: %d\n", tests_passed);
+    printf("Tests failed: %d\n", tests_run - tests_passed);
 
-    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

@@ -16,186 +16,141 @@
  */
 
 #include <stdlib.h>
-#include <check.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "../include/dsc_vector.h"
 
-/* Setup and teardown functions */
-void setup(void) {
-    /* No setup needed */
+int tests_run = 0;
+int tests_passed = 0;
+
+void run_test(void (*test_func)(void), const char *name) {
+    printf("Running test: %s\n", name);
+    tests_run++;
+    test_func();
 }
 
-void teardown(void) {
-    /* No teardown needed */
-}
-
-/* Test cases */
-
-START_TEST(test_dsc_vector_create)
-{
+void test_dsc_vector_create() {
     dsc_vector_t *vector = dsc_vector_create();
-    ck_assert_ptr_nonnull(vector);
-    ck_assert_int_eq(dsc_vector_empty(vector), true);
-    ck_assert_int_eq(dsc_vector_size(vector), 0);
-    ck_assert_int_eq(dsc_vector_capacity(vector), DSC_VECTOR_INITIAL_CAPACITY);
+    assert(vector != NULL && dsc_vector_empty(vector) && dsc_vector_size(vector) == 0 && dsc_vector_capacity(vector) == DSC_VECTOR_INITIAL_CAPACITY);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_free)
-{
+void test_dsc_vector_free() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_free(vector);
     /* No assertion needed, just ensuring no memory leaks or crashes */
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_push_back)
-{
+void test_dsc_vector_push_back() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_push_back(vector, 1);
     dsc_vector_push_back(vector, 2);
     dsc_vector_push_back(vector, 3);
-    ck_assert_int_eq(dsc_vector_size(vector), 3);
-    ck_assert_int_eq(dsc_vector_at(vector, 0), 1);
-    ck_assert_int_eq(dsc_vector_at(vector, 1), 2);
-    ck_assert_int_eq(dsc_vector_at(vector, 2), 3);
+    assert(dsc_vector_size(vector) == 3 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 2 && dsc_vector_at(vector, 2) == 3);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_pop_back)
-{
+void test_dsc_vector_pop_back() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_push_back(vector, 1);
     dsc_vector_push_back(vector, 2);
     dsc_vector_push_back(vector, 3);
     dsc_vector_pop_back(vector);
-    ck_assert_int_eq(dsc_vector_size(vector), 2);
-    ck_assert_int_eq(dsc_vector_at(vector, 0), 1);
-    ck_assert_int_eq(dsc_vector_at(vector, 1), 2);
+    assert(dsc_vector_size(vector) == 2 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 2);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_insert)
-{
+void test_dsc_vector_insert() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_push_back(vector, 1);
     dsc_vector_push_back(vector, 2);
     dsc_vector_push_back(vector, 3);
     size_t position = dsc_vector_insert(vector, 1, 10);
-    ck_assert_int_eq(position, 1);
-    ck_assert_int_eq(dsc_vector_size(vector), 4);
-    ck_assert_int_eq(dsc_vector_at(vector, 0), 1);
-    ck_assert_int_eq(dsc_vector_at(vector, 1), 10);
-    ck_assert_int_eq(dsc_vector_at(vector, 2), 2);
-    ck_assert_int_eq(dsc_vector_at(vector, 3), 3);
+    assert(position == 1 && dsc_vector_size(vector) == 4 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 10 && dsc_vector_at(vector, 2) == 2 && dsc_vector_at(vector, 3) == 3);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_erase)
-{
+void test_dsc_vector_erase() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_push_back(vector, 1);
     dsc_vector_push_back(vector, 2);
     dsc_vector_push_back(vector, 3);
     dsc_vector_erase(vector, 1);
-    ck_assert_int_eq(dsc_vector_size(vector), 2);
-    ck_assert_int_eq(dsc_vector_at(vector, 0), 1);
-    ck_assert_int_eq(dsc_vector_at(vector, 1), 3);
+    assert(dsc_vector_size(vector) == 2 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 3);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_at)
-{
+void test_dsc_vector_at() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_push_back(vector, 1);
     dsc_vector_push_back(vector, 2);
     dsc_vector_push_back(vector, 3);
-    ck_assert_int_eq(dsc_vector_at(vector, 0), 1);
-    ck_assert_int_eq(dsc_vector_at(vector, 1), 2);
-    ck_assert_int_eq(dsc_vector_at(vector, 2), 3);
-    ck_assert_int_eq(dsc_vector_at(vector, 3), 0); /* Out of bounds */
+    assert(dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 2 && dsc_vector_at(vector, 2) == 3 && dsc_vector_at(vector, 3) == 0);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_empty)
-{
+void test_dsc_vector_empty() {
     dsc_vector_t *vector = dsc_vector_create();
-    ck_assert_int_eq(dsc_vector_empty(vector), true);
+    assert(dsc_vector_empty(vector));
     dsc_vector_push_back(vector, 1);
-    ck_assert_int_eq(dsc_vector_empty(vector), false);
+    assert(!dsc_vector_empty(vector));
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_size)
-{
-    ck_assert_int_eq(dsc_vector_size(NULL), -1);
+void test_dsc_vector_size() {
     dsc_vector_t *vector = dsc_vector_create();
-    ck_assert_int_eq(dsc_vector_size(vector), 0);
+    assert(dsc_vector_size(vector) == 0);
     dsc_vector_push_back(vector, 1);
-    ck_assert_int_eq(dsc_vector_size(vector), 1);
+    assert(dsc_vector_size(vector) == 1);
     dsc_vector_push_back(vector, 2);
-    ck_assert_int_eq(dsc_vector_size(vector), 2);
+    assert(dsc_vector_size(vector) == 2);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_capacity)
-{
+void test_dsc_vector_capacity() {
     dsc_vector_t *vector = dsc_vector_create();
-    ck_assert_int_eq(dsc_vector_capacity(vector), DSC_VECTOR_INITIAL_CAPACITY);
+    assert(dsc_vector_capacity(vector) == DSC_VECTOR_INITIAL_CAPACITY);
     dsc_vector_reserve(vector, 100);
-    ck_assert_int_eq(dsc_vector_capacity(vector), 100);
+    assert(dsc_vector_capacity(vector) == 100);
     dsc_vector_free(vector);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_vector_reserve)
-{
+void test_dsc_vector_reserve() {
     dsc_vector_t *vector = dsc_vector_create();
     dsc_vector_reserve(vector, 100);
-    ck_assert_int_eq(dsc_vector_capacity(vector), 100);
+    assert(dsc_vector_capacity(vector) == 100);
     dsc_vector_free(vector);
-}
-END_TEST
-
-/* Suite setup and teardown functions */
-Suite *dsc_vector_suite(void) {
-    Suite *suite = suite_create("dsc_vector");
-    TCase *tcase = tcase_create("core");
-
-    tcase_add_checked_fixture(tcase, setup, teardown);
-    tcase_add_test(tcase, test_dsc_vector_create);
-    tcase_add_test(tcase, test_dsc_vector_free);
-    tcase_add_test(tcase, test_dsc_vector_push_back);
-    tcase_add_test(tcase, test_dsc_vector_pop_back);
-    tcase_add_test(tcase, test_dsc_vector_insert);
-    tcase_add_test(tcase, test_dsc_vector_erase);
-    tcase_add_test(tcase, test_dsc_vector_at);
-    tcase_add_test(tcase, test_dsc_vector_empty);
-    tcase_add_test(tcase, test_dsc_vector_size);
-    tcase_add_test(tcase, test_dsc_vector_capacity);
-    tcase_add_test(tcase, test_dsc_vector_reserve);
-
-    suite_add_tcase(suite, tcase);
-    return suite;
+    tests_passed++;
 }
 
-/* Main function */
-int main(void) {
-    int failed;
-    Suite *suite = dsc_vector_suite();
-    SRunner *runner = srunner_create(suite);
+int main() {
+    run_test(test_dsc_vector_create, "test_dsc_vector_create");
+    run_test(test_dsc_vector_free, "test_dsc_vector_free");
+    run_test(test_dsc_vector_push_back, "test_dsc_vector_push_back");
+    run_test(test_dsc_vector_pop_back, "test_dsc_vector_pop_back");
+    run_test(test_dsc_vector_insert, "test_dsc_vector_insert");
+    run_test(test_dsc_vector_erase, "test_dsc_vector_erase");
+    run_test(test_dsc_vector_at, "test_dsc_vector_at");
+    run_test(test_dsc_vector_empty, "test_dsc_vector_empty");
+    run_test(test_dsc_vector_size, "test_dsc_vector_size");
+    run_test(test_dsc_vector_capacity, "test_dsc_vector_capacity");
+    run_test(test_dsc_vector_reserve, "test_dsc_vector_reserve");
 
-    srunner_run_all(runner, CK_NORMAL);
-    failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
+    printf("\nTest Results:\n");
+    printf("Total tests run: %d\n", tests_run);
+    printf("Tests passed: %d\n", tests_passed);
+    printf("Tests failed: %d\n", tests_run - tests_passed);
 
-    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

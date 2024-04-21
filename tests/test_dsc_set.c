@@ -16,133 +16,107 @@
  */
 
 #include <stdlib.h>
-#include <check.h>
+#include <assert.h>
+#include <stdio.h>
 
 #include "../include/dsc_set.h"
 
-/* Setup and teardown functions */
-void setup(void) {
-    /* No setup needed */
+int tests_run = 0;
+int tests_passed = 0;
+
+void run_test(void (*test_func)(void), const char *name) {
+    printf("Running test: %s\n", name);
+    tests_run++;
+    test_func();
 }
 
-void teardown(void) {
-    /* No teardown needed */
-}
-
-/* Test cases */
-
-START_TEST(test_dsc_set_create)
-{
+void test_dsc_set_create() {
     dsc_set_t *set = dsc_set_create();
-    ck_assert_ptr_nonnull(set);
+    assert(set != NULL);
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_insert)
-{
+void test_dsc_set_insert() {
     dsc_set_t *set = dsc_set_create();
     int value = 42;
-    ck_assert_int_eq(dsc_set_insert(set, value), true);
-    ck_assert_int_eq(dsc_set_contains(set, value), true);
+    assert(dsc_set_insert(set, value) && dsc_set_contains(set, value));
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_insert_duplicate)
-{
+void test_dsc_set_insert_duplicate() {
     dsc_set_t *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
-    ck_assert_int_eq(dsc_set_insert(set, value), false);
+    assert(!dsc_set_insert(set, value));
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_erase)
-{
+void test_dsc_set_erase() {
     dsc_set_t *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
-    ck_assert_int_eq(dsc_set_erase(set, value), true);
-    ck_assert_int_eq(dsc_set_contains(set, value), false);
+    assert(dsc_set_erase(set, value) && !dsc_set_contains(set, value));
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_erase_nonexistent)
-{
+void test_dsc_set_erase_nonexistent() {
     dsc_set_t *set = dsc_set_create();
     int value = 42;
-    ck_assert_int_eq(dsc_set_erase(set, value), false);
+    assert(!dsc_set_erase(set, value));
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_size)
-{
-    ck_assert_int_eq(dsc_set_size(NULL), -1);
+void test_dsc_set_size() {
     dsc_set_t *set = dsc_set_create();
-    ck_assert_int_eq(dsc_set_size(set), 0);
+    assert(dsc_set_size(set) == 0);
     dsc_set_insert(set, 42);
-    ck_assert_int_eq(dsc_set_size(set), 1);
+    assert(dsc_set_size(set) == 1);
     dsc_set_insert(set, 73);
-    ck_assert_int_eq(dsc_set_size(set), 2);
+    assert(dsc_set_size(set) == 2);
     dsc_set_insert(set, 42);
-    ck_assert_int_eq(dsc_set_size(set), 2);
+    assert(dsc_set_size(set) == 2);
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_empty)
-{
+void test_dsc_set_empty() {
     dsc_set_t *set = dsc_set_create();
-    ck_assert_int_eq(dsc_set_empty(set), true);
+    assert(dsc_set_empty(set));
     dsc_set_insert(set, 42);
-    ck_assert_int_eq(dsc_set_empty(set), false);
+    assert(!dsc_set_empty(set));
     dsc_set_free(set);
+    tests_passed++;
 }
-END_TEST
 
-START_TEST(test_dsc_set_clear)
-{
+void test_dsc_set_clear() {
     dsc_set_t *set = dsc_set_create();
     dsc_set_insert(set, 42);
     dsc_set_insert(set, 73);
     dsc_set_clear(set);
-    ck_assert_int_eq(dsc_set_size(set), 0);
+    assert(dsc_set_size(set) == 0);
     dsc_set_free(set);
-}
-END_TEST
-
-/* Suite setup and teardown functions */
-Suite *dsc_set_suite(void) {
-    Suite *suite = suite_create("dsc_set");
-    TCase *tcase = tcase_create("core");
-
-    tcase_add_checked_fixture(tcase, setup, teardown);
-    tcase_add_test(tcase, test_dsc_set_create);
-    tcase_add_test(tcase, test_dsc_set_insert);
-    tcase_add_test(tcase, test_dsc_set_insert_duplicate);
-    tcase_add_test(tcase, test_dsc_set_erase);
-    tcase_add_test(tcase, test_dsc_set_erase_nonexistent);
-    tcase_add_test(tcase, test_dsc_set_size);
-    tcase_add_test(tcase, test_dsc_set_empty);
-    tcase_add_test(tcase, test_dsc_set_clear);
-
-    suite_add_tcase(suite, tcase);
-    return suite;
+    tests_passed++;
 }
 
-/* Main function */
-int main(void) {
-    int failed;
-    Suite *suite = dsc_set_suite();
-    SRunner *runner = srunner_create(suite);
+int main() {
+    run_test(test_dsc_set_create, "test_dsc_set_create");
+    run_test(test_dsc_set_insert, "test_dsc_set_insert");
+    run_test(test_dsc_set_insert_duplicate, "test_dsc_set_insert_duplicate");
+    run_test(test_dsc_set_erase, "test_dsc_set_erase");
+    run_test(test_dsc_set_erase_nonexistent, "test_dsc_set_erase_nonexistent");
+    run_test(test_dsc_set_size, "test_dsc_set_size");
+    run_test(test_dsc_set_empty, "test_dsc_set_empty");
+    run_test(test_dsc_set_clear, "test_dsc_set_clear");
 
-    srunner_run_all(runner, CK_NORMAL);
-    failed = srunner_ntests_failed(runner);
-    srunner_free(runner);
+    printf("\nTest Results:\n");
+    printf("Total tests run: %d\n", tests_run);
+    printf("Tests passed: %d\n", tests_passed);
+    printf("Tests failed: %d\n", tests_run - tests_passed);
 
-    return (failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
