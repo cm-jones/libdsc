@@ -17,7 +17,7 @@ Represents a stack. The internal implementation of the `dsc_stack_t` struct is h
 ### `dsc_stack_create`
 
 ```c
-struct dsc_stack_t *dsc_stack_create();
+dsc_stack_t *dsc_stack_create();
 ```
 
 Creates a new empty stack.
@@ -27,7 +27,7 @@ Creates a new empty stack.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 if (stack == NULL) {
     // Handle memory allocation failure
 }
@@ -36,7 +36,7 @@ if (stack == NULL) {
 ### `dsc_stack_free`
 
 ```c
-void dsc_stack_free(struct dsc_stack_t *stack);
+void dsc_stack_free(dsc_stack_t *stack);
 ```
 
 Destroys the stack and frees its memory.
@@ -47,7 +47,7 @@ Destroys the stack and frees its memory.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 // Use the stack
 dsc_stack_free(stack);
 ```
@@ -55,7 +55,7 @@ dsc_stack_free(stack);
 ### `dsc_stack_push`
 
 ```c
-void dsc_stack_push(struct dsc_stack_t *stack, int value);
+void dsc_stack_push(dsc_stack_t *stack, int value);
 ```
 
 Pushes an element onto the top of the stack.
@@ -67,7 +67,7 @@ Pushes an element onto the top of the stack.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
 ```
@@ -75,7 +75,7 @@ dsc_stack_push(stack, 73);
 ### `dsc_stack_pop`
 
 ```c
-void dsc_stack_pop(struct dsc_stack_t *stack);
+void dsc_stack_pop(dsc_stack_t *stack);
 ```
 
 Removes the top element from the stack.
@@ -86,7 +86,7 @@ Removes the top element from the stack.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
 int top_value = dsc_stack_top(stack); // top_value = 73
@@ -96,7 +96,7 @@ dsc_stack_pop(stack); // Removes 73 from the stack
 ### `dsc_stack_top`
 
 ```c
-int dsc_stack_top(const struct dsc_stack_t *stack);
+int dsc_stack_top(const dsc_stack_t *stack);
 ```
 
 Retrieves the value of the top element on the stack without removing it.
@@ -109,7 +109,7 @@ Retrieves the value of the top element on the stack without removing it.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
 int top_value = dsc_stack_top(stack); // top_value = 73
@@ -118,7 +118,7 @@ int top_value = dsc_stack_top(stack); // top_value = 73
 ### `dsc_stack_empty`
 
 ```c
-bool dsc_stack_empty(const struct dsc_stack_t *stack);
+bool dsc_stack_empty(const dsc_stack_t *stack);
 ```
 
 Checks if the stack is empty.
@@ -131,7 +131,7 @@ Checks if the stack is empty.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 if (dsc_stack_empty(stack)) {
     printf("The stack is empty\n");
 } else {
@@ -142,7 +142,7 @@ if (dsc_stack_empty(stack)) {
 ### `dsc_stack_size`
 
 ```c
-size_t dsc_stack_size(const struct dsc_stack_t *stack);
+size_t dsc_stack_size(const dsc_stack_t *stack);
 ```
 
 Gets the number of elements in the stack.
@@ -155,7 +155,7 @@ Gets the number of elements in the stack.
 **Example:**
 
 ```c
-struct dsc_stack_t *stack = dsc_stack_create();
+dsc_stack_t *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
 size_t size = dsc_stack_size(stack); // size = 2

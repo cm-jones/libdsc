@@ -17,7 +17,7 @@ Represents a hash map. The internal implementation of the `dsc_map_t` struct is 
 ### `dsc_map_create`
 
 ```c
-struct dsc_map_t *dsc_map_create();
+dsc_map_t *dsc_map_create();
 ```
 
 Creates a new empty map.
@@ -27,7 +27,7 @@ Creates a new empty map.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 if (map == NULL) {
     // Handle memory allocation failure
 }
@@ -36,7 +36,7 @@ if (map == NULL) {
 ### `dsc_map_free`
 
 ```c
-void dsc_map_free(struct dsc_map_t *map);
+void dsc_map_free(dsc_map_t *map);
 ```
 
 Destroys the map and frees its memory.
@@ -47,7 +47,7 @@ Destroys the map and frees its memory.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 // Use the map
 dsc_map_free(map);
 ```
@@ -55,7 +55,7 @@ dsc_map_free(map);
 ### `dsc_map_insert`
 
 ```c
-bool dsc_map_insert(struct dsc_map_t *map, int key, int value);
+bool dsc_map_insert(dsc_map_t *map, int key, int value);
 ```
 
 Inserts a key-value pair into the map.
@@ -70,7 +70,7 @@ Inserts a key-value pair into the map.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 int key = 42;
 int value = 73;
 if (dsc_map_insert(map, key, value)) {
@@ -83,7 +83,7 @@ if (dsc_map_insert(map, key, value)) {
 ### `dsc_map_erase`
 
 ```c
-bool dsc_map_erase(struct dsc_map_t *map, int key);
+bool dsc_map_erase(dsc_map_t *map, int key);
 ```
 
 Erases the key-value pair with the given key from the map.
@@ -97,7 +97,7 @@ Erases the key-value pair with the given key from the map.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 int key = 42;
 dsc_map_insert(map, key, 73);
 if (dsc_map_erase(map, key)) {
@@ -110,7 +110,7 @@ if (dsc_map_erase(map, key)) {
 ### `dsc_map_get`
 
 ```c
-int dsc_map_get(const struct dsc_map_t *map, int key);
+int dsc_map_get(const dsc_map_t *map, int key);
 ```
 
 Retrieves the value associated with the given key.
@@ -124,7 +124,7 @@ Retrieves the value associated with the given key.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 int key = 42;
 dsc_map_insert(map, key, 73);
 int value = dsc_map_get(map, key); // value = 73
@@ -133,7 +133,7 @@ int value = dsc_map_get(map, key); // value = 73
 ### `dsc_map_contains`
 
 ```c
-bool dsc_map_contains(const struct dsc_map_t *map, int key);
+bool dsc_map_contains(const dsc_map_t *map, int key);
 ```
 
 Checks if the map contains the given key.
@@ -147,7 +147,7 @@ Checks if the map contains the given key.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 int key = 42;
 dsc_map_insert(map, key, 73);
 if (dsc_map_contains(map, key)) {
@@ -160,7 +160,7 @@ if (dsc_map_contains(map, key)) {
 ### `dsc_map_size`
 
 ```c
-size_t dsc_map_size(const struct dsc_map_t *map);
+size_t dsc_map_size(const dsc_map_t *map);
 ```
 
 Gets the number of key-value pairs in the map.
@@ -173,7 +173,7 @@ Gets the number of key-value pairs in the map.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 dsc_map_insert(map, 42, 73);
 dsc_map_insert(map, 54, 21);
 size_t size = dsc_map_size(map); // size = 2
@@ -182,7 +182,7 @@ size_t size = dsc_map_size(map); // size = 2
 ### `dsc_map_empty`
 
 ```c
-bool dsc_map_empty(const struct dsc_map_t *map);
+bool dsc_map_empty(const dsc_map_t *map);
 ```
 
 Checks if the map is empty.
@@ -195,7 +195,7 @@ Checks if the map is empty.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 if (dsc_map_empty(map)) {
     printf("The map is empty\n");
 } else {
@@ -206,7 +206,7 @@ if (dsc_map_empty(map)) {
 ### `dsc_map_clear`
 
 ```c
-void dsc_map_clear(struct dsc_map_t *map);
+void dsc_map_clear(dsc_map_t *map);
 ```
 
 Clears all key-value pairs from the map.
@@ -217,7 +217,7 @@ Clears all key-value pairs from the map.
 **Example:**
 
 ```c
-struct dsc_map_t *map = dsc_map_create();
+dsc_map_t *map = dsc_map_create();
 dsc_map_insert(map, 42, 73);
 dsc_map_insert(map, 54, 21);
 dsc_map_clear(map);

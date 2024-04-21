@@ -17,7 +17,7 @@ A singly linked list is a linear data structure in which the elements are not st
 ### `dsc_list_create`
 
 ```c
-struct dsc_list_t *dsc_list_create();
+dsc_list_t *dsc_list_create();
 ```
 
 Creates a new empty list.

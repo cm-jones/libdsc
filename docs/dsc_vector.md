@@ -17,7 +17,7 @@ Represents a vector. The internal implementation of the `dsc_vector_t` struct is
 ### `dsc_vector_create`
 
 ```c
-struct dsc_vector_t *dsc_vector_create();
+dsc_vector_t *dsc_vector_create();
 ```
 
 Creates a new empty vector.
