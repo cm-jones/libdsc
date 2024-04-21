@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I. -I/usr/include -I/usr/local/include
-LDFLAGS = -L. -ldsc -lm -lcheck
+LDFLAGS = -L. -ldsc -lm
 
 LIBNAME = libdsc.a
 SONAME = libdsc.so
@@ -40,8 +40,10 @@ clean:
 
 .PHONY: all static shared install clean test dist deb rpm dmg
 
-test: $(TESTS)
+test: $(LIBNAME) $(TESTS)
 	for test in $(TESTS); do ./$$test; done
+
+build-tests: $(TESTS)
 
 tests/test_dsc_list: tests/test_dsc_list.c $(LIBNAME)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
@@ -60,6 +62,8 @@ tests/test_dsc_map: tests/test_dsc_map.c $(LIBNAME)
 
 tests/test_dsc_set: tests/test_dsc_set.c $(LIBNAME)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+
+$(TESTS): $(LIBNAME)
 
 dist: clean
 	mkdir -p $(DIST_NAME)
