@@ -23,7 +23,7 @@ $(SONAME): $(OBJS)
 	$(CC) -shared -o $@ $^
 
 %.o: %.c
-    $(CC) $(CFLAGS) -fPIC -c -o $@ $<
+	$(CC) $(CFLAGS) -fPIC -c -o $@ $<
 
 install: all
 	sudo install -m 644 $(LIBNAME) /usr/local/lib/
