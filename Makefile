@@ -13,10 +13,9 @@ TEST_SRCS = $(wildcard tests/test_*.c)
 TESTS = $(TEST_SRCS:.c=)
 
 ifeq ($(shell uname), Darwin)
-RUNTIMEDIR = @rpath
-MACOS_RUNTIMEDIR = @executable_path
+RPATH = -Wl,-rpath,@executable_path
 else
-RUNTIMEDIR = .
+RPATH = -Wl,-rpath,'$$ORIGIN'
 endif
 
 all: static shared
@@ -53,22 +52,22 @@ test: $(LIBNAME) $(TESTS)
 build-tests: $(TESTS)
 
 tests/test_dsc_list: tests/test_dsc_list.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(if $(filter $(shell uname), Darwin),-Wl,-rpath,$(MACOS_RUNTIMEDIR),-Wl,-rpath,$(RUNTIMEDIR))
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 tests/test_dsc_vector: tests/test_dsc_vector.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(if $(filter $(shell uname), Darwin),-Wl,-rpath,$(MACOS_RUNTIMEDIR),-Wl,-rpath,$(RUNTIMEDIR))
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 tests/test_dsc_stack: tests/test_dsc_stack.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(if $(filter $(shell uname), Darwin),-Wl,-rpath,$(MACOS_RUNTIMEDIR),-Wl,-rpath,$(RUNTIMEDIR))
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 tests/test_dsc_queue: tests/test_dsc_queue.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(if $(filter $(shell uname), Darwin),-Wl,-rpath,$(MACOS_RUNTIMEDIR),-Wl,-rpath,$(RUNTIMEDIR))
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 tests/test_dsc_map: tests/test_dsc_map.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(if $(filter $(shell uname), Darwin),-Wl,-rpath,$(MACOS_RUNTIMEDIR),-Wl,-rpath,$(RUNTIMEDIR))
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 tests/test_dsc_set: tests/test_dsc_set.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(if $(filter $(shell uname), Darwin),-Wl,-rpath,$(MACOS_RUNTIMEDIR),-Wl,-rpath,$(RUNTIMEDIR))
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 $(TESTS): $(LIBNAME)
 
