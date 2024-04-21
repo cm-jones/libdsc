@@ -72,6 +72,26 @@ dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 ```
 
+### `dsc_list_push_back`
+
+```c
+void dsc_list_push_back(dsc_list_t *list, int value);
+```
+
+Inserts a value at the end of the list.
+
+**Parameters:**
+- `list`: The list to insert the value into.
+- `value`: The value to insert.
+
+**Example:**
+
+```c
+dsc_list_t *list = dsc_list_create();
+dsc_list_push_back(list, 42);
+dsc_list_push_back(list, 73);
+```
+
 ### `dsc_list_insert_after`
 
 ```c
