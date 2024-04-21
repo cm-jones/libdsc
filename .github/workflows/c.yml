@@ -20,7 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: sudo dnf install -y check
+        run: |
+          sudo dnf install -y check
+          sudo dnf install -y make gcc
       - name: Build
         run: make
       - name: Run tests
