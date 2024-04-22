@@ -91,7 +91,7 @@ dmg: $(DIST_NAME).tar.gz
 	tar -xzf $(DIST_NAME).tar.gz
 	mkdir -p $(DIST_NAME)/package
 	cp -r $(DIST_NAME)/* $(DIST_NAME)/package/
-	hdiutil create -volname "libdsc" -srcfolder $(DIST_NAME)/package -ov -format UDZO "libdsc-0.1.0.dmg"
+	hdiutil create -volname "libdsc" -srcfolder $(DIST_NAME)/package -ov -format UDZO "libdsc-0.1.0-alpha.dmg"
 	rm -rf $(DIST_NAME)
 
 .PHONY: test dist deb rpm dmg
