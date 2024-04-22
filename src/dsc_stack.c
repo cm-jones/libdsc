@@ -41,7 +41,7 @@ static bool dsc_stack_resize(DSCStack *stack, unsigned int new_capacity) {
     return true;
 }
 
-DSCStack *dsc_stack_create() {
+DSCStack *dsc_stack_create(void) {
     DSCStack *new_stack = malloc(sizeof *new_stack);
     if (new_stack == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);

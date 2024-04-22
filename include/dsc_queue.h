@@ -35,7 +35,7 @@ typedef struct DSCQueue DSCQueue;
  *
  * @return A pointer to the newly created queue, or NULL if memory allocation fails.
  */
-DSCQueue *dsc_queue_create();
+DSCQueue *dsc_queue_create(void);
 
 /**
  * @brief Destroys the queue and frees its memory.

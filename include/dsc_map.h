@@ -44,7 +44,7 @@ typedef struct DSCMap DSCMap;
  *
  * @return A pointer to the newly created map, or NULL if memory allocation fails.
  */
-DSCMap *dsc_map_create();
+DSCMap *dsc_map_create(void);
 
 /**
  * @brief Destroys the map and frees its memory.

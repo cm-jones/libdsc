@@ -30,14 +30,14 @@ void run_test(void (*test_func)(void), const char *name) {
     test_func();
 }
 
-void test_dsc_stack_create() {
+void test_dsc_stack_create(void) {
     DSCStack *stack = dsc_stack_create();
     assert(stack != NULL);
     dsc_stack_free(stack);
     tests_passed++;
 }
 
-void test_dsc_stack_push() {
+void test_dsc_stack_push(void) {
     DSCStack *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
@@ -46,7 +46,7 @@ void test_dsc_stack_push() {
     tests_passed++;
 }
 
-void test_dsc_stack_pop() {
+void test_dsc_stack_pop(void) {
     DSCStack *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
@@ -56,7 +56,7 @@ void test_dsc_stack_pop() {
     tests_passed++;
 }
 
-void test_DSCStackop() {
+void test_DSCStackop(void) {
     DSCStack *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     assert(DSCStackop(stack) == 42);
@@ -64,7 +64,7 @@ void test_DSCStackop() {
     tests_passed++;
 }
 
-void test_dsc_stack_empty() {
+void test_dsc_stack_empty(void) {
     DSCStack *stack = dsc_stack_create();
     assert(dsc_stack_empty(stack));
     dsc_stack_push(stack, 42);
@@ -73,7 +73,7 @@ void test_dsc_stack_empty() {
     tests_passed++;
 }
 
-void test_dsc_stack_size() {
+void test_dsc_stack_size(void) {
     DSCStack *stack = dsc_stack_create();
     assert(dsc_stack_size(stack) == 0);
     dsc_stack_push(stack, 42);
@@ -84,7 +84,7 @@ void test_dsc_stack_size() {
     tests_passed++;
 }
 
-int main() {
+int main(void) {
     run_test(test_dsc_stack_create, "test_dsc_stack_create");
     run_test(test_dsc_stack_push, "test_dsc_stack_push");
     run_test(test_dsc_stack_pop, "test_dsc_stack_pop");
