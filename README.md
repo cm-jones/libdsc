@@ -91,7 +91,7 @@ Detailed documentation for libdsc can be found under [docs/](docs/).
 
 ## Contributing
 
-If you find any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/cm-jones/libdsc).
+If you find any issues or have suggestions for improvements, feel free to [open an issue](https://github.com/cm-jones/libdsc/issues/new) or submit a [pull request](https://github.com/cm-jones/libdsc/compare).
 
 ## License
 
