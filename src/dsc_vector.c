@@ -107,7 +107,7 @@ void dsc_vector_pop_back(dsc_vector_t *vector) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-unsigned int dsc_vector_insert(struct dsc_vector_t *vector, unsigned int position, int value) {
+unsigned int dsc_vector_insert(dsc_vector_t *vector, unsigned int position, int value) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -138,7 +138,7 @@ unsigned int dsc_vector_insert(struct dsc_vector_t *vector, unsigned int positio
     return position;
 }
 
-void dsc_vector_erase(struct dsc_vector_t *vector, unsigned int position) {
+void dsc_vector_erase(dsc_vector_t *vector, unsigned int position) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;

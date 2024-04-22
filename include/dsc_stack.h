@@ -35,14 +35,14 @@ typedef struct dsc_stack_t dsc_stack_t;
  *
  * @return A pointer to the newly created stack, or NULL if memory allocation fails.
  */
-struct dsc_stack_t *dsc_stack_create();
+dsc_stack_t *dsc_stack_create();
 
 /**
  * @brief Destroys the stack and frees its memory.
  *
  * @param stack The stack to destroy.
  */
-void dsc_stack_free(struct dsc_stack_t *stack);
+void dsc_stack_free(dsc_stack_t *stack);
 
 /**
  * @brief Pushes an element onto the top of the stack.
@@ -50,14 +50,14 @@ void dsc_stack_free(struct dsc_stack_t *stack);
  * @param stack The stack to push the element onto.
  * @param value The value to push.
  */
-void dsc_stack_push(struct dsc_stack_t *stack, int value);
+void dsc_stack_push(dsc_stack_t *stack, int value);
 
 /**
  * @brief Removes the top element from the stack.
  *
  * @param stack The stack to pop from.
  */
-void dsc_stack_pop(struct dsc_stack_t *stack);
+void dsc_stack_pop(dsc_stack_t *stack);
 
 /**
  * @brief Retrieves the value of the top element on the stack without removing it.
@@ -66,7 +66,7 @@ void dsc_stack_pop(struct dsc_stack_t *stack);
  *
  * @return The value of the top element.
  */
-int dsc_stack_top(const struct dsc_stack_t *stack);
+int dsc_stack_top(const dsc_stack_t *stack);
 
 /**
  * @brief Checks if the stack is empty.
@@ -75,7 +75,7 @@ int dsc_stack_top(const struct dsc_stack_t *stack);
  *
  * @return true if the stack is empty, false otherwise.
  */
-bool dsc_stack_empty(const struct dsc_stack_t *stack);
+bool dsc_stack_empty(const dsc_stack_t *stack);
 
 /**
  * @brief Gets the number of elements in the stack.
@@ -84,6 +84,6 @@ bool dsc_stack_empty(const struct dsc_stack_t *stack);
  *
  * @return The number of elements in the stack, -1 if the stack is NULL.
  */
-int dsc_stack_size(const struct dsc_stack_t *stack);
+int dsc_stack_size(const dsc_stack_t *stack);
 
 #endif /* __DSC_STACK_H__ */
