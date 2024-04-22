@@ -28,21 +28,21 @@
 #define DSC_VECTOR_INITIAL_CAPACITY 16
 
 /* Forward declaration of the vector structure */
-typedef struct dsc_vector_t dsc_vector_t;
+typedef struct DSCVector DSCVector;
 
 /**
  * @brief Creates a new empty vector.
  *
  * @return A pointer to the newly created vector, or NULL if memory allocation fails.
  */
-dsc_vector_t *dsc_vector_create();
+DSCVector *dsc_vector_create();
 
 /**
  * @brief Destroys the vector and frees its memory.
  *
  * @param vector The vector to destroy.
  */
-void dsc_vector_free(dsc_vector_t *vector);
+void dsc_vector_free(DSCVector *vector);
 
 /**
  * @brief Inserts an element at the end of the vector.
@@ -50,14 +50,14 @@ void dsc_vector_free(dsc_vector_t *vector);
  * @param vector The vector to push the element into.
  * @param value The value to push.
  */
-void dsc_vector_push_back(dsc_vector_t *vector, int value);
+void dsc_vector_push_back(DSCVector *vector, int value);
 
 /**
  * @brief Removes the last element from the vector.
  *
  * @param vector The vector to pop from.
  */
-void dsc_vector_pop_back(dsc_vector_t *vector);
+void dsc_vector_pop_back(DSCVector *vector);
 
 /**
  * @brief Inserts an element at the specified position in the vector.
@@ -68,7 +68,7 @@ void dsc_vector_pop_back(dsc_vector_t *vector);
  *
  * @return The position of the inserted element.
  */
-unsigned int dsc_vector_insert(dsc_vector_t *vector, unsigned int position, int value);
+unsigned int dsc_vector_insert(DSCVector *vector, unsigned int position, int value);
 
 /**
  * @brief Removes the element at the specified position from the vector.
@@ -76,7 +76,7 @@ unsigned int dsc_vector_insert(dsc_vector_t *vector, unsigned int position, int 
  * @param vector The vector to erase the element from.
  * @param position The position of the element to erase.
  */
-void dsc_vector_erase(dsc_vector_t *vector, unsigned int position);
+void dsc_vector_erase(DSCVector *vector, unsigned int position);
 
 /**
  * @brief Retrieves the value of the element at the specified index.
@@ -86,7 +86,7 @@ void dsc_vector_erase(dsc_vector_t *vector, unsigned int position);
  *
  * @return The value of the element at the specified index, or 0 if the index is out of bounds.
  */
-int dsc_vector_at(const dsc_vector_t *vector, unsigned int index);
+int dsc_vector_at(const DSCVector *vector, unsigned int index);
 
 /**
  * @brief Checks if the vector is empty.
@@ -95,7 +95,7 @@ int dsc_vector_at(const dsc_vector_t *vector, unsigned int index);
  *
  * @return true if the vector is empty, false otherwise.
  */
-bool dsc_vector_empty(const dsc_vector_t *vector);
+bool dsc_vector_empty(const DSCVector *vector);
 
 /**
  * @brief Gets the number of elements in the vector.
@@ -104,7 +104,7 @@ bool dsc_vector_empty(const dsc_vector_t *vector);
  *
  * @return The number of elements in the vector, -1 if the vector is NULL.
  */
-int dsc_vector_size(const dsc_vector_t *vector);
+int dsc_vector_size(const DSCVector *vector);
 
 /**
  * @brief Gets the maximum number of elements the vector can hold before needing to allocate more memory.
@@ -113,7 +113,7 @@ int dsc_vector_size(const dsc_vector_t *vector);
  *
  * @return The maximum number of elements the vector can hold.
  */
-unsigned int dsc_vector_capacity(const dsc_vector_t *vector);
+unsigned int dsc_vector_capacity(const DSCVector *vector);
 
 /**
  * @brief Reserves memory for the vector to hold at least the specified number of elements.
@@ -121,6 +121,6 @@ unsigned int dsc_vector_capacity(const dsc_vector_t *vector);
  * @param vector The vector to reserve memory for.
  * @param new_capacity The minimum capacity to reserve.
  */
-void dsc_vector_reserve(dsc_vector_t *vector, unsigned int new_capacity);
+void dsc_vector_reserve(DSCVector *vector, unsigned int new_capacity);
 
 #endif /* __DSC_VECTOR_H__ */

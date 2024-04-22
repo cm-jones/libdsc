@@ -31,14 +31,14 @@ void run_test(void (*test_func)(void), const char *name) {
 }
 
 void test_dsc_set_create() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     assert(set != NULL);
     dsc_set_free(set);
     tests_passed++;
 }
 
 void test_dsc_set_insert() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     int value = 42;
     assert(dsc_set_insert(set, value) && dsc_set_contains(set, value));
     dsc_set_free(set);
@@ -46,7 +46,7 @@ void test_dsc_set_insert() {
 }
 
 void test_dsc_set_insert_duplicate() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
     assert(!dsc_set_insert(set, value));
@@ -55,7 +55,7 @@ void test_dsc_set_insert_duplicate() {
 }
 
 void test_dsc_set_erase() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
     assert(dsc_set_erase(set, value) && !dsc_set_contains(set, value));
@@ -64,7 +64,7 @@ void test_dsc_set_erase() {
 }
 
 void test_dsc_set_erase_nonexistent() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     int value = 42;
     assert(!dsc_set_erase(set, value));
     dsc_set_free(set);
@@ -72,7 +72,7 @@ void test_dsc_set_erase_nonexistent() {
 }
 
 void test_dsc_set_size() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     assert(dsc_set_size(set) == 0);
     dsc_set_insert(set, 42);
     assert(dsc_set_size(set) == 1);
@@ -85,7 +85,7 @@ void test_dsc_set_size() {
 }
 
 void test_dsc_set_empty() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     assert(dsc_set_empty(set));
     dsc_set_insert(set, 42);
     assert(!dsc_set_empty(set));
@@ -94,7 +94,7 @@ void test_dsc_set_empty() {
 }
 
 void test_dsc_set_clear() {
-    dsc_set_t *set = dsc_set_create();
+    DSCSet *set = dsc_set_create();
     dsc_set_insert(set, 42);
     dsc_set_insert(set, 73);
     dsc_set_clear(set);

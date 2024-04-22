@@ -23,13 +23,13 @@
 #include "../include/dsc_error.h"
 
 /* Represents a queue. */
-struct dsc_queue_t {
+struct DSCQueue {
     int *values;     /* Array of values stored in the queue. */
     unsigned int size;     /* The number of elements in the queue. */
     unsigned int capacity; /* The current capacity of the queue. */
 };
 
-static bool dsc_queue_resize(dsc_queue_t *queue, unsigned int new_capacity) {
+static bool dsc_queue_resize(DSCQueue *queue, unsigned int new_capacity) {
     int *new_values = realloc(queue->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -41,8 +41,8 @@ static bool dsc_queue_resize(dsc_queue_t *queue, unsigned int new_capacity) {
     return true;
 }
 
-dsc_queue_t *dsc_queue_create() {
-    dsc_queue_t *new_queue = malloc(sizeof *new_queue);
+DSCQueue *dsc_queue_create() {
+    DSCQueue *new_queue = malloc(sizeof *new_queue);
     if (new_queue == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -61,7 +61,7 @@ dsc_queue_t *dsc_queue_create() {
     return new_queue;
 }
 
-void dsc_queue_free(dsc_queue_t *queue) {
+void dsc_queue_free(DSCQueue *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -73,7 +73,7 @@ void dsc_queue_free(dsc_queue_t *queue) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_queue_push(dsc_queue_t *queue, int value) {
+void dsc_queue_push(DSCQueue *queue, int value) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -92,7 +92,7 @@ void dsc_queue_push(dsc_queue_t *queue, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_queue_pop(dsc_queue_t *queue) {
+void dsc_queue_pop(DSCQueue *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -112,7 +112,7 @@ void dsc_queue_pop(dsc_queue_t *queue) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_queue_front(const dsc_queue_t *queue) {
+int dsc_queue_front(const DSCQueue *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -127,7 +127,7 @@ int dsc_queue_front(const dsc_queue_t *queue) {
     return queue->values[0];
 }
 
-int dsc_queue_back(const dsc_queue_t *queue) {
+int dsc_queue_back(const DSCQueue *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -142,7 +142,7 @@ int dsc_queue_back(const dsc_queue_t *queue) {
     return queue->values[queue->size - 1];
 }
 
-bool dsc_queue_empty(const dsc_queue_t *queue) {
+bool dsc_queue_empty(const DSCQueue *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return true;
@@ -152,7 +152,7 @@ bool dsc_queue_empty(const dsc_queue_t *queue) {
     return queue->size == 0;
 }
 
-int dsc_queue_size(const dsc_queue_t *queue) {
+int dsc_queue_size(const DSCQueue *queue) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;

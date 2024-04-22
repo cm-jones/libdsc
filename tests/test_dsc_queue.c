@@ -31,14 +31,14 @@ void run_test(void (*test_func)(void), const char *name) {
 }
 
 void test_dsc_queue_create() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     assert(queue != NULL);
     dsc_queue_free(queue);
     tests_passed++;
 }
 
 void test_dsc_queue_push() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     assert(dsc_queue_front(queue) == 42 && dsc_queue_back(queue) == 73);
@@ -47,7 +47,7 @@ void test_dsc_queue_push() {
 }
 
 void test_dsc_queue_pop() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     dsc_queue_pop(queue);
@@ -57,7 +57,7 @@ void test_dsc_queue_pop() {
 }
 
 void test_dsc_queue_front() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     assert(dsc_queue_front(queue) == 42);
     dsc_queue_free(queue);
@@ -65,7 +65,7 @@ void test_dsc_queue_front() {
 }
 
 void test_dsc_queue_back() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     dsc_queue_push(queue, 42);
     dsc_queue_push(queue, 73);
     assert(dsc_queue_back(queue) == 73);
@@ -74,7 +74,7 @@ void test_dsc_queue_back() {
 }
 
 void test_dsc_queue_empty() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     assert(dsc_queue_empty(queue));
     dsc_queue_push(queue, 42);
     assert(!dsc_queue_empty(queue));
@@ -83,7 +83,7 @@ void test_dsc_queue_empty() {
 }
 
 void test_dsc_queue_size() {
-    dsc_queue_t *queue = dsc_queue_create();
+    DSCQueue *queue = dsc_queue_create();
     assert(dsc_queue_size(queue) == 0);
     dsc_queue_push(queue, 42);
     assert(dsc_queue_size(queue) == 1);

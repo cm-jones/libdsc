@@ -29,13 +29,13 @@ struct dsc_map_entry_t {
 };
 
 /* Represents a hash map. */
-struct dsc_map_t {
+struct DSCMap {
    struct dsc_map_entry_t **buckets;  /* Array of buckets (linked lists). */
    unsigned int size;                       /* Number of entries in the map. */
    unsigned int capacity;                   /* Number of buckets in the map. */
 };
 
-static void dsc_map_rehash(dsc_map_t *map, unsigned int new_capacity) {
+static void dsc_map_rehash(DSCMap *map, unsigned int new_capacity) {
    dsc_map_entry_t **new_buckets = calloc(new_capacity, sizeof(dsc_map_entry_t *));
    if (new_buckets == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -62,8 +62,8 @@ static void dsc_map_rehash(dsc_map_t *map, unsigned int new_capacity) {
    map->capacity = new_capacity;
 }
 
-dsc_map_t *dsc_map_create() {
-   dsc_map_t *new_map = malloc(sizeof *new_map);
+DSCMap *dsc_map_create() {
+   DSCMap *new_map = malloc(sizeof *new_map);
    if (new_map == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
        return NULL;
@@ -83,7 +83,7 @@ dsc_map_t *dsc_map_create() {
    return new_map;
 }
 
-void dsc_map_free(dsc_map_t *map) {
+void dsc_map_free(DSCMap *map) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return;
@@ -105,7 +105,7 @@ void dsc_map_free(dsc_map_t *map) {
    dsc_set_error(DSC_ERROR_NONE);
 }
 
-bool dsc_map_insert(dsc_map_t *map, int key, int value) {
+bool dsc_map_insert(DSCMap *map, int key, int value) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return false;
@@ -145,7 +145,7 @@ bool dsc_map_insert(dsc_map_t *map, int key, int value) {
    return true;
 }
 
-bool dsc_map_erase(dsc_map_t *map, int key) {
+bool dsc_map_erase(DSCMap *map, int key) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return false;
@@ -175,7 +175,7 @@ bool dsc_map_erase(dsc_map_t *map, int key) {
    return false;
 }
 
-int dsc_map_get(const dsc_map_t *map, int key) {
+int dsc_map_get(const DSCMap *map, int key) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return 0;
@@ -196,7 +196,7 @@ int dsc_map_get(const dsc_map_t *map, int key) {
    return 0;
 }
 
-bool dsc_map_contains(const dsc_map_t *map, int key) {
+bool dsc_map_contains(const DSCMap *map, int key) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return false;
@@ -217,7 +217,7 @@ bool dsc_map_contains(const dsc_map_t *map, int key) {
    return false;
 }
 
-int dsc_map_size(const dsc_map_t *map) {
+int dsc_map_size(const DSCMap *map) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return -1;
@@ -227,7 +227,7 @@ int dsc_map_size(const dsc_map_t *map) {
    return map->size;
 }
 
-bool dsc_map_empty(const dsc_map_t *map) {
+bool dsc_map_empty(const DSCMap *map) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return true;
@@ -237,7 +237,7 @@ bool dsc_map_empty(const dsc_map_t *map) {
    return map->size == 0;
 }
 
-void dsc_map_clear(dsc_map_t *map) {
+void dsc_map_clear(DSCMap *map) {
    if (map == NULL) {
        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
        return;

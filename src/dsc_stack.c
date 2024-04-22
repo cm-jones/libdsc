@@ -23,13 +23,13 @@
 #include "../include/dsc_error.h"
 
 /* Represents a stack. */
-struct dsc_stack_t {
+struct DSCStack {
     int *values;     /* Array of values stored in the stack. */
     unsigned int size;     /* The number of elements in the stack. */
     unsigned int capacity; /* The current capacity of the stack. */
 };
 
-static bool dsc_stack_resize(dsc_stack_t *stack, unsigned int new_capacity) {
+static bool dsc_stack_resize(DSCStack *stack, unsigned int new_capacity) {
     int *new_values = realloc(stack->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -41,8 +41,8 @@ static bool dsc_stack_resize(dsc_stack_t *stack, unsigned int new_capacity) {
     return true;
 }
 
-dsc_stack_t *dsc_stack_create() {
-    dsc_stack_t *new_stack = malloc(sizeof *new_stack);
+DSCStack *dsc_stack_create() {
+    DSCStack *new_stack = malloc(sizeof *new_stack);
     if (new_stack == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -61,7 +61,7 @@ dsc_stack_t *dsc_stack_create() {
     return new_stack;
 }
 
-void dsc_stack_free(dsc_stack_t *stack) {
+void dsc_stack_free(DSCStack *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -73,7 +73,7 @@ void dsc_stack_free(dsc_stack_t *stack) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_stack_push(dsc_stack_t *stack, int value) {
+void dsc_stack_push(DSCStack *stack, int value) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -92,7 +92,7 @@ void dsc_stack_push(dsc_stack_t *stack, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_stack_pop(dsc_stack_t *stack) {
+void dsc_stack_pop(DSCStack *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -107,7 +107,7 @@ void dsc_stack_pop(dsc_stack_t *stack) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_stack_top(const dsc_stack_t *stack) {
+int DSCStackop(const DSCStack *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -122,7 +122,7 @@ int dsc_stack_top(const dsc_stack_t *stack) {
     return stack->values[stack->size - 1];
 }
 
-bool dsc_stack_empty(const dsc_stack_t *stack) {
+bool dsc_stack_empty(const DSCStack *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return true;
@@ -132,7 +132,7 @@ bool dsc_stack_empty(const dsc_stack_t *stack) {
     return stack->size == 0;
 }
 
-int dsc_stack_size(const dsc_stack_t *stack) {
+int dsc_stack_size(const DSCStack *stack) {
     if (stack == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;

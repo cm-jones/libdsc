@@ -4,20 +4,20 @@ A stack is a linear data structure that follows the Last-In-First-Out (LIFO) pri
 
 ## Data Structures
 
-### `dsc_stack_t`
+### `DSCStack`
 
 ```c
-struct dsc_stack_t;
+struct DSCStack;
 ```
 
-Represents a stack. The internal implementation of the `dsc_stack_t` struct is hidden and defined in the source file.
+Represents a stack. The internal implementation of the `DSCStack` struct is hidden and defined in the source file.
 
 ## Functions
 
 ### `dsc_stack_create`
 
 ```c
-dsc_stack_t *dsc_stack_create();
+DSCStack *dsc_stack_create();
 ```
 
 Creates a new empty stack.
@@ -27,7 +27,7 @@ Creates a new empty stack.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 if (stack == NULL) {
     // Handle memory allocation failure
 }
@@ -36,7 +36,7 @@ if (stack == NULL) {
 ### `dsc_stack_free`
 
 ```c
-void dsc_stack_free(dsc_stack_t *stack);
+void dsc_stack_free(DSCStack *stack);
 ```
 
 Destroys the stack and frees its memory.
@@ -47,7 +47,7 @@ Destroys the stack and frees its memory.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 // Use the stack
 dsc_stack_free(stack);
 ```
@@ -55,7 +55,7 @@ dsc_stack_free(stack);
 ### `dsc_stack_push`
 
 ```c
-void dsc_stack_push(dsc_stack_t *stack, int value);
+void dsc_stack_push(DSCStack *stack, int value);
 ```
 
 Pushes an element onto the top of the stack.
@@ -67,7 +67,7 @@ Pushes an element onto the top of the stack.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
 ```
@@ -75,7 +75,7 @@ dsc_stack_push(stack, 73);
 ### `dsc_stack_pop`
 
 ```c
-void dsc_stack_pop(dsc_stack_t *stack);
+void dsc_stack_pop(DSCStack *stack);
 ```
 
 Removes the top element from the stack.
@@ -86,17 +86,17 @@ Removes the top element from the stack.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
-int top_value = dsc_stack_top(stack); // top_value = 73
+int top_value = DSCStackop(stack); // top_value = 73
 dsc_stack_pop(stack); // Removes 73 from the stack
 ```
 
-### `dsc_stack_top`
+### `DSCStackop`
 
 ```c
-int dsc_stack_top(const dsc_stack_t *stack);
+int DSCStackop(const DSCStack *stack);
 ```
 
 Retrieves the value of the top element on the stack without removing it.
@@ -109,16 +109,16 @@ Retrieves the value of the top element on the stack without removing it.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
-int top_value = dsc_stack_top(stack); // top_value = 73
+int top_value = DSCStackop(stack); // top_value = 73
 ```
 
 ### `dsc_stack_empty`
 
 ```c
-bool dsc_stack_empty(const dsc_stack_t *stack);
+bool dsc_stack_empty(const DSCStack *stack);
 ```
 
 Checks if the stack is empty.
@@ -131,7 +131,7 @@ Checks if the stack is empty.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 if (dsc_stack_empty(stack)) {
     printf("The stack is empty\n");
 } else {
@@ -142,7 +142,7 @@ if (dsc_stack_empty(stack)) {
 ### `dsc_stack_size`
 
 ```c
-unsigned int dsc_stack_size(const dsc_stack_t *stack);
+unsigned int dsc_stack_size(const DSCStack *stack);
 ```
 
 Gets the number of elements in the stack.
@@ -155,7 +155,7 @@ Gets the number of elements in the stack.
 **Example:**
 
 ```c
-dsc_stack_t *stack = dsc_stack_create();
+DSCStack *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
 unsigned int size = dsc_stack_size(stack); // size = 2

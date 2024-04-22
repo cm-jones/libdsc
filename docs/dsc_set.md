@@ -18,10 +18,10 @@ Represents an entry in the hash set.
 - `key`: The key of the entry.
 - `next`: Pointer to the next entry in case of collisions.
 
-### `dsc_set_t`
+### `DSCSet`
 
 ```c
-struct dsc_set_t {
+struct DSCSet {
     struct dsc_set_entry_t **buckets;
     int capacity;
     int size;
@@ -39,7 +39,7 @@ Represents a hash set.
 ### `dsc_set_create`
 
 ```c
-dsc_set_t *dsc_set_create();
+DSCSet *dsc_set_create();
 ```
 
 Creates a new hash set.
@@ -49,7 +49,7 @@ Creates a new hash set.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 if (set == NULL) {
     // Handle memory allocation failure
 }
@@ -58,7 +58,7 @@ if (set == NULL) {
 ### `dsc_set_free`
 
 ```c
-void dsc_set_free(dsc_set_t *set);
+void dsc_set_free(DSCSet *set);
 ```
 
 Destroys the hash set and frees its memory.
@@ -69,7 +69,7 @@ Destroys the hash set and frees its memory.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 // Use the set
 dsc_set_free(set);
 ```
@@ -77,7 +77,7 @@ dsc_set_free(set);
 ### `dsc_set_insert`
 
 ```c
-bool dsc_set_insert(dsc_set_t *set, int value);
+bool dsc_set_insert(DSCSet *set, int value);
 ```
 
 Inserts an element into the hash set.
@@ -91,7 +91,7 @@ Inserts an element into the hash set.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 int value = 42;
 if (dsc_set_insert(set, value)) {
     printf("Value %d inserted successfully\n", value);
@@ -103,7 +103,7 @@ if (dsc_set_insert(set, value)) {
 ### `dsc_set_erase`
 
 ```c
-bool dsc_set_erase(dsc_set_t *set, int value);
+bool dsc_set_erase(DSCSet *set, int value);
 ```
 
 Erases an element from the hash set.
@@ -117,7 +117,7 @@ Erases an element from the hash set.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 int value = 42;
 dsc_set_insert(set, value);
 if (dsc_set_erase(set, value)) {
@@ -130,7 +130,7 @@ if (dsc_set_erase(set, value)) {
 ### `dsc_set_contains`
 
 ```c
-bool dsc_set_contains(const dsc_set_t *set, int value);
+bool dsc_set_contains(const DSCSet *set, int value);
 ```
 
 Checks if an element exists in the hash set.
@@ -144,7 +144,7 @@ Checks if an element exists in the hash set.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 int value = 42;
 dsc_set_insert(set, value);
 if (dsc_set_contains(set, value)) {
@@ -157,7 +157,7 @@ if (dsc_set_contains(set, value)) {
 ### `dsc_set_size`
 
 ```c
-unsigned int dsc_set_size(const dsc_set_t *set);
+unsigned int dsc_set_size(const DSCSet *set);
 ```
 
 Gets the size of the hash set.
@@ -170,7 +170,7 @@ Gets the size of the hash set.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 dsc_set_insert(set, 42);
 dsc_set_insert(set, 73);
 unsigned int size = dsc_set_size(set);
@@ -180,7 +180,7 @@ printf("Size of the set: %zu\n", size);
 ### `dsc_set_empty`
 
 ```c
-bool dsc_set_empty(const dsc_set_t *set);
+bool dsc_set_empty(const DSCSet *set);
 ```
 
 Checks if the hash set is empty.
@@ -193,7 +193,7 @@ Checks if the hash set is empty.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 if (dsc_set_empty(set)) {
     printf("The set is empty\n");
 } else {
@@ -204,7 +204,7 @@ if (dsc_set_empty(set)) {
 ### `dsc_set_clear`
 
 ```c
-void dsc_set_clear(dsc_set_t *set);
+void dsc_set_clear(DSCSet *set);
 ```
 
 Clears all elements from the hash set.
@@ -215,7 +215,7 @@ Clears all elements from the hash set.
 **Example:**
 
 ```c
-dsc_set_t *set = dsc_set_create();
+DSCSet *set = dsc_set_create();
 dsc_set_insert(set, 42);
 dsc_set_insert(set, 73);
 dsc_set_clear(set);

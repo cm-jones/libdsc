@@ -28,21 +28,21 @@
 #define DSC_QUEUE_INITIAL_CAPACITY 16
 
 /* Forward declaration of the queue structure. */
-typedef struct dsc_queue_t dsc_queue_t;
+typedef struct DSCQueue DSCQueue;
 
 /**
  * @brief Creates a new empty queue.
  *
  * @return A pointer to the newly created queue, or NULL if memory allocation fails.
  */
-dsc_queue_t *dsc_queue_create();
+DSCQueue *dsc_queue_create();
 
 /**
  * @brief Destroys the queue and frees its memory.
  *
  * @param queue The queue to destroy.
  */
-void dsc_queue_free(dsc_queue_t *queue);
+void dsc_queue_free(DSCQueue *queue);
 
 /**
  * @brief Inserts an element at the end of the queue.
@@ -50,14 +50,14 @@ void dsc_queue_free(dsc_queue_t *queue);
  * @param queue The queue to push the element into.
  * @param value The value to push.
  */
-void dsc_queue_push(dsc_queue_t *queue, int value);
+void dsc_queue_push(DSCQueue *queue, int value);
 
 /**
  * @brief Removes the element at the front of the queue.
  *
  * @param queue The queue to pop from.
  */
-void dsc_queue_pop(dsc_queue_t *queue);
+void dsc_queue_pop(DSCQueue *queue);
 
 /**
  * @brief Retrieves the value of the element at the front of the queue without removing it.
@@ -66,7 +66,7 @@ void dsc_queue_pop(dsc_queue_t *queue);
  *
  * @return The value of the front element.
  */
-int dsc_queue_front(const dsc_queue_t *queue);
+int dsc_queue_front(const DSCQueue *queue);
 
 /**
  * @brief Retrieves the value of the element at the back of the queue without removing it.
@@ -75,7 +75,7 @@ int dsc_queue_front(const dsc_queue_t *queue);
  *
  * @return The value of the back element.
  */
-int dsc_queue_back(const dsc_queue_t *queue);
+int dsc_queue_back(const DSCQueue *queue);
 
 /**
  * @brief Checks if the queue is empty.
@@ -84,7 +84,7 @@ int dsc_queue_back(const dsc_queue_t *queue);
  *
  * @return true if the queue is empty, false otherwise.
  */
-bool dsc_queue_empty(const dsc_queue_t *queue);
+bool dsc_queue_empty(const DSCQueue *queue);
 
 /**
  * @brief Gets the number of elements in the queue.
@@ -93,6 +93,6 @@ bool dsc_queue_empty(const dsc_queue_t *queue);
  *
  * @return The number of elements in the queue, -1 if the stack is NULL.
  */
-int dsc_queue_size(const dsc_queue_t *queue);
+int dsc_queue_size(const DSCQueue *queue);
 
 #endif /* __DSC_QUEUE_H__ */

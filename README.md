@@ -40,7 +40,7 @@ To use libdsc in your C project, follow these steps:
 
 4. Use the library functions in your code, for example:
    ```c
-   dsc_set_t *set = dsc_set_create();
+   DSCSet *set = dsc_set_create();
    if (set == NULL) {
       // Handle memory allocation error ...
    }

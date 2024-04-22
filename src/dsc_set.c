@@ -28,13 +28,13 @@ struct dsc_set_entry_t {
 };
 
 /* Represents a hash set. */
-struct dsc_set_t {
+struct DSCSet {
     struct dsc_set_entry_t **buckets; /* Array of pointers to entries. */
     unsigned int size;                      /* The number of elements in the hash set. */
     unsigned int capacity;                  /* The current capacity of the hash set. */
 };
 
-static void dsc_set_rehash(dsc_set_t *set, unsigned int new_capacity) {
+static void dsc_set_rehash(DSCSet *set, unsigned int new_capacity) {
     dsc_set_entry_t **new_buckets = calloc(new_capacity, sizeof(dsc_set_entry_t *));
     if (new_buckets == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -61,8 +61,8 @@ static void dsc_set_rehash(dsc_set_t *set, unsigned int new_capacity) {
     set->capacity = new_capacity;
 }
 
-dsc_set_t *dsc_set_create() {
-    dsc_set_t *new_set = calloc(1, sizeof *new_set);
+DSCSet *dsc_set_create() {
+    DSCSet *new_set = calloc(1, sizeof *new_set);
     if (new_set == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -82,7 +82,7 @@ dsc_set_t *dsc_set_create() {
     return new_set;
 }
 
-void dsc_set_free(dsc_set_t *set) {
+void dsc_set_free(DSCSet *set) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -104,7 +104,7 @@ void dsc_set_free(dsc_set_t *set) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-bool dsc_set_insert(dsc_set_t *set, int value) {
+bool dsc_set_insert(DSCSet *set, int value) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -144,7 +144,7 @@ bool dsc_set_insert(dsc_set_t *set, int value) {
     return true;
 }
 
-bool dsc_set_erase(dsc_set_t *set, int value) {
+bool dsc_set_erase(DSCSet *set, int value) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -175,7 +175,7 @@ bool dsc_set_erase(dsc_set_t *set, int value) {
     return false;
 }
 
-bool dsc_set_contains(const dsc_set_t *set, int value) {
+bool dsc_set_contains(const DSCSet *set, int value) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -198,7 +198,7 @@ bool dsc_set_contains(const dsc_set_t *set, int value) {
     return false;
 }
 
-int dsc_set_size(const dsc_set_t *set) {
+int dsc_set_size(const DSCSet *set) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -208,7 +208,7 @@ int dsc_set_size(const dsc_set_t *set) {
     return set->size;
 }
 
-bool dsc_set_empty(const dsc_set_t *set) {
+bool dsc_set_empty(const DSCSet *set) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return true;
@@ -218,7 +218,7 @@ bool dsc_set_empty(const dsc_set_t *set) {
     return set->size == 0;
 }
 
-void dsc_set_clear(dsc_set_t *set) {
+void dsc_set_clear(DSCSet *set) {
     if (set == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;

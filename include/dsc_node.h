@@ -19,15 +19,15 @@
 #define __DSC_NODE_H__
 
 /**
- * @struct dsc_node_t
+ * @struct DSCNode
  * @brief Represents a node in the list.
  *
  * @param value The value stored in the node.
  * @param next Pointer to the next node in the list.
  */
-struct dsc_node_t {
+struct DSCNode {
     int value;
-    struct dsc_node_t *next;
+    struct DSCNode *next;
 };
 
 #endif /* __DSC_NODE_H__ */

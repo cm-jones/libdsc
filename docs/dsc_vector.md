@@ -4,20 +4,20 @@ A vector is a dynamic array data structure that provides flexible storage and ef
 
 ## Data Structures
 
-### `dsc_vector_t`
+### `DSCVector`
 
 ```c
-struct dsc_vector_t;
+struct DSCVector;
 ```
 
-Represents a vector. The internal implementation of the `dsc_vector_t` struct is hidden and defined in the source file.
+Represents a vector. The internal implementation of the `DSCVector` struct is hidden and defined in the source file.
 
 ## Functions
 
 ### `dsc_vector_create`
 
 ```c
-dsc_vector_t *dsc_vector_create();
+DSCVector *dsc_vector_create();
 ```
 
 Creates a new empty vector.
@@ -27,7 +27,7 @@ Creates a new empty vector.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 if (vector == NULL) {
     // Handle memory allocation failure
 }
@@ -36,7 +36,7 @@ if (vector == NULL) {
 ### `dsc_vector_free`
 
 ```c
-void dsc_vector_free(dsc_vector_t *vector);
+void dsc_vector_free(DSCVector *vector);
 ```
 
 Destroys the vector and frees its memory.
@@ -47,7 +47,7 @@ Destroys the vector and frees its memory.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 // Use the vector
 dsc_vector_free(vector);
 ```
@@ -55,7 +55,7 @@ dsc_vector_free(vector);
 ### `dsc_vector_push_back`
 
 ```c
-void dsc_vector_push_back(dsc_vector_t *vector, int value);
+void dsc_vector_push_back(DSCVector *vector, int value);
 ```
 
 Inserts an element at the end of the vector.
@@ -67,7 +67,7 @@ Inserts an element at the end of the vector.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
 ```
@@ -75,7 +75,7 @@ dsc_vector_push_back(vector, 73);
 ### `dsc_vector_pop_back`
 
 ```c
-void dsc_vector_pop_back(dsc_vector_t *vector);
+void dsc_vector_pop_back(DSCVector *vector);
 ```
 
 Removes the last element from the vector.
@@ -86,7 +86,7 @@ Removes the last element from the vector.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
 dsc_vector_pop_back(vector); // Removes 73 from the vector
@@ -95,7 +95,7 @@ dsc_vector_pop_back(vector); // Removes 73 from the vector
 ### `dsc_vector_insert`
 
 ```c
-void dsc_vector_insert(dsc_vector_t *vector, int value);
+void dsc_vector_insert(DSCVector *vector, int value);
 ```
 
 Inserts an element at the beginning of the vector.
@@ -107,7 +107,7 @@ Inserts an element at the beginning of the vector.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_insert(vector, 42);
 dsc_vector_insert(vector, 73);
 ```
@@ -115,7 +115,7 @@ dsc_vector_insert(vector, 73);
 ### `dsc_vector_erase`
 
 ```c
-void dsc_vector_erase(dsc_vector_t *vector);
+void dsc_vector_erase(DSCVector *vector);
 ```
 
 Removes the first element from the vector.
@@ -126,7 +126,7 @@ Removes the first element from the vector.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_insert(vector, 42);
 dsc_vector_insert(vector, 73);
 dsc_vector_erase(vector); // Removes 42 from the vector
@@ -135,7 +135,7 @@ dsc_vector_erase(vector); // Removes 42 from the vector
 ### `dsc_vector_at`
 
 ```c
-int dsc_vector_at(const dsc_vector_t *vector, unsigned int index);
+int dsc_vector_at(const DSCVector *vector, unsigned int index);
 ```
 
 Retrieves the value of the element at the specified index.
@@ -149,7 +149,7 @@ Retrieves the value of the element at the specified index.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
 int value = dsc_vector_at(vector, 1); // value = 73
@@ -158,7 +158,7 @@ int value = dsc_vector_at(vector, 1); // value = 73
 ### `dsc_vector_empty`
 
 ```c
-bool dsc_vector_empty(const dsc_vector_t *vector);
+bool dsc_vector_empty(const DSCVector *vector);
 ```
 
 Checks if the vector is empty.
@@ -171,7 +171,7 @@ Checks if the vector is empty.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 if (dsc_vector_empty(vector)) {
     printf("The vector is empty\n");
 } else {
@@ -182,7 +182,7 @@ if (dsc_vector_empty(vector)) {
 ### `dsc_vector_size`
 
 ```c
-unsigned int dsc_vector_size(const dsc_vector_t *vector);
+unsigned int dsc_vector_size(const DSCVector *vector);
 ```
 
 Gets the number of elements in the vector.
@@ -195,7 +195,7 @@ Gets the number of elements in the vector.
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
 unsigned int size = dsc_vector_size(vector); // size = 2
@@ -204,7 +204,7 @@ unsigned int size = dsc_vector_size(vector); // size = 2
 ### `dsc_vector_capacity`
 
 ```c
-unsigned int dsc_vector_capacity(const dsc_vector_t *vector);
+unsigned int dsc_vector_capacity(const DSCVector *vector);
 ```
 
 Gets the maximum number of elements the vector can hold before needing to allocate more memory.
@@ -217,7 +217,7 @@ Gets the maximum number of elements the vector can hold before needing to alloca
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
 unsigned int capacity = dsc_vector_capacity(vector); // capacity = 2 (or more, depending on the initial capacity)
@@ -226,7 +226,7 @@ unsigned int capacity = dsc_vector_capacity(vector); // capacity = 2 (or more, d
 ### `dsc_vector_reserve`
 
 ```c
-void dsc_vector_reserve(dsc_vector_t *vector, unsigned int new_capacity);
+void dsc_vector_reserve(DSCVector *vector, unsigned int new_capacity);
 ```
 
 Reserves memory for the vector to hold at least the specified number of elements.
@@ -238,6 +238,6 @@ Reserves memory for the vector to hold at least the specified number of elements
 **Example:**
 
 ```c
-dsc_vector_t *vector = dsc_vector_create();
+DSCVector *vector = dsc_vector_create();
 dsc_vector_reserve(vector, 10); // Reserve memory for at least 10 elements
 ```

@@ -4,20 +4,20 @@ A singly linked list is a linear data structure in which the elements are not st
 
 ## Data Structures
 
-### `dsc_node_t`
+### `DSCNode`
 
-`dsc_node_t` represents a node in the list. The internal structure of `dsc_node_t` is not exposed to the library user.
+`DSCNode` represents a node in the list. The internal structure of `DSCNode` is not exposed to the library user.
 
-### `dsc_list_t`
+### `DSCList`
 
-`dsc_list_t` represents a singly linked list. The internal structure of `dsc_list_t` is not exposed to the library user.
+`DSCList` represents a singly linked list. The internal structure of `DSCList` is not exposed to the library user.
 
 ## Functions
 
 ### `dsc_list_create`
 
 ```c
-dsc_list_t *dsc_list_create();
+DSCList *dsc_list_create();
 ```
 
 Creates a new empty list.
@@ -27,7 +27,7 @@ Creates a new empty list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 if (list == NULL) {
     // Handle memory allocation failure
 }
@@ -36,7 +36,7 @@ if (list == NULL) {
 ### `dsc_list_destroy`
 
 ```c
-void dsc_list_destroy(dsc_list_t *list);
+void dsc_list_destroy(DSCList *list);
 ```
 
 Destroys the list and frees its memory.
@@ -47,7 +47,7 @@ Destroys the list and frees its memory.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 // Use the list
 dsc_list_destroy(list);
 ```
@@ -55,7 +55,7 @@ dsc_list_destroy(list);
 ### `dsc_list_push_front`
 
 ```c
-void dsc_list_push_front(dsc_list_t *list, int value);
+void dsc_list_push_front(DSCList *list, int value);
 ```
 
 Inserts a value at the beginning of the list.
@@ -67,7 +67,7 @@ Inserts a value at the beginning of the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 ```
@@ -75,7 +75,7 @@ dsc_list_push_front(list, 73);
 ### `dsc_list_push_back`
 
 ```c
-void dsc_list_push_back(dsc_list_t *list, int value);
+void dsc_list_push_back(DSCList *list, int value);
 ```
 
 Inserts a value at the end of the list.
@@ -87,7 +87,7 @@ Inserts a value at the end of the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_back(list, 42);
 dsc_list_push_back(list, 73);
 ```
@@ -95,7 +95,7 @@ dsc_list_push_back(list, 73);
 ### `dsc_list_insert_after`
 
 ```c
-void dsc_list_insert_after(dsc_list_t *list, dsc_node_t *prev_node, int value);
+void dsc_list_insert_after(DSCList *list, DSCNode *prev_node, int value);
 ```
 
 Inserts a value after a specific node in the list.
@@ -108,16 +108,16 @@ Inserts a value after a specific node in the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
-dsc_node_t *node = dsc_list_get_head(list);
+DSCNode *node = dsc_list_get_head(list);
 dsc_list_insert_after(list, node, 73);
 ```
 
 ### `dsc_list_pop_front`
 
 ```c
-void dsc_list_pop_front(dsc_list_t *list);
+void dsc_list_pop_front(DSCList *list);
 ```
 
 Removes the first node from the list.
@@ -128,7 +128,7 @@ Removes the first node from the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 dsc_list_pop_front(list); // Removes 73 from the list
@@ -137,7 +137,7 @@ dsc_list_pop_front(list); // Removes 73 from the list
 ### `dsc_list_remove`
 
 ```c
-void dsc_list_remove(dsc_list_t *list, int value);
+void dsc_list_remove(DSCList *list, int value);
 ```
 
 Removes the first occurrence of a value from the list.
@@ -149,7 +149,7 @@ Removes the first occurrence of a value from the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 dsc_list_remove(list, 73); // Removes the first occurrence of 73
@@ -158,7 +158,7 @@ dsc_list_remove(list, 73); // Removes the first occurrence of 73
 ### `dsc_list_remove_all`
 
 ```c
-void dsc_list_remove_all(dsc_list_t *list, int value);
+void dsc_list_remove_all(DSCList *list, int value);
 ```
 
 Removes all occurrences of a value from the list.
@@ -170,7 +170,7 @@ Removes all occurrences of a value from the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 dsc_list_push_front(list, 73);
@@ -180,7 +180,7 @@ dsc_list_remove_all(list, 73); // Removes all occurrences of 73
 ### `dsc_list_front`
 
 ```c
-int dsc_list_front(const dsc_list_t *list);
+int dsc_list_front(const DSCList *list);
 ```
 
 Retrieves the value of the first element in the list.
@@ -193,7 +193,7 @@ Retrieves the value of the first element in the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 int front_value = dsc_list_front(list); // front_value = 73
@@ -202,7 +202,7 @@ int front_value = dsc_list_front(list); // front_value = 73
 ### `dsc_list_empty`
 
 ```c
-bool dsc_list_empty(const dsc_list_t *list);
+bool dsc_list_empty(const DSCList *list);
 ```
 
 Checks if the list is empty.
@@ -215,7 +215,7 @@ Checks if the list is empty.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 if (dsc_list_empty(list)) {
     printf("The list is empty\n");
 } else {
@@ -226,7 +226,7 @@ if (dsc_list_empty(list)) {
 ### `dsc_list_print`
 
 ```c
-void dsc_list_print(const dsc_list_t *list);
+void dsc_list_print(const DSCList *list);
 ```
 
 Prints the values of the list.
@@ -237,7 +237,7 @@ Prints the values of the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
 dsc_list_push_front(list, 73);
 dsc_list_print(list); // Prints "73 42"
@@ -246,7 +246,7 @@ dsc_list_print(list); // Prints "73 42"
 ### `dsc_list_get_head`
 
 ```c
-dsc_node_t *dsc_list_get_head(const dsc_list_t *list);
+DSCNode *dsc_list_get_head(const DSCList *list);
 ```
 
 Gets the head node of the list.
@@ -259,8 +259,8 @@ Gets the head node of the list.
 **Example:**
 
 ```c
-dsc_list_t *list = dsc_list_create();
+DSCList *list = dsc_list_create();
 dsc_list_push_front(list, 42);
-dsc_node_t *head = dsc_list_get_head(list);
+DSCNode *head = dsc_list_get_head(list);
 // Use the head node
 ```

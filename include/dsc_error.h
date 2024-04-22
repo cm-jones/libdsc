@@ -19,7 +19,7 @@
 #define __DSC_ERROR_H__
 
 /**
- * @enum dsc_error_t
+ * @enum DSCError
  * @brief Represents the error codes used in the DSC library.
  *
  * @constant DSC_ERROR_NONE                       No error occurred.
@@ -32,7 +32,7 @@
  * @constant DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS The key already exists in the hash map.
  * @constant DSC_ERROR_QUEUE_FULL                 The queue is full.
  */
-typedef enum dsc_error_t {
+typedef enum DSCError {
     DSC_ERROR_NONE,
     DSC_ERROR_INVALID_ARGUMENT,
     DSC_ERROR_OUT_OF_RANGE,
@@ -42,20 +42,20 @@ typedef enum dsc_error_t {
     DSC_ERROR_VECTOR_CAPACITY_EXCEEDED,
     DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS,
     DSC_ERROR_QUEUE_FULL
-} dsc_error_t;
+} DSCError;
 
 /**
  * @brief Sets the last error code.
  *
  * @param error The error code to set.
  */
-void dsc_set_error(dsc_error_t error);
+void dsc_set_error(DSCError error);
 
 /**
  * @brief Gets the last error code.
  *
  * @return The last error code.
  */
-dsc_error_t dsc_get_error();
+DSCError dsc_get_error();
 
 #endif // __DSC_ERROR_H__

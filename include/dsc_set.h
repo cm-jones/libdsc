@@ -36,21 +36,21 @@
 typedef struct dsc_set_entry_t dsc_set_entry_t;
 
 /* Forward declaration of the set structure */
-typedef struct dsc_set_t dsc_set_t;
+typedef struct DSCSet DSCSet;
 
 /**
  * @brief Creates a new hash set.
  *
  * @return A pointer to the newly created hash set, or NULL if memory allocation fails.
  */
-dsc_set_t *dsc_set_create();
+DSCSet *dsc_set_create();
 
 /**
  * @brief Destroys the hash set and frees its memory.
  *
  * @param set The hash set to destroy.
  */
-void dsc_set_free(dsc_set_t *set);
+void dsc_set_free(DSCSet *set);
 
 /**
  * @brief Inserts an element into the hash set.
@@ -59,7 +59,7 @@ void dsc_set_free(dsc_set_t *set);
  * @param value The value to insert.
  * @return true if the element was inserted successfully, false if the element already exists.
  */
-bool dsc_set_insert(dsc_set_t *set, int value);
+bool dsc_set_insert(DSCSet *set, int value);
 
 /**
  * @brief Erases an element from the hash set.
@@ -68,7 +68,7 @@ bool dsc_set_insert(dsc_set_t *set, int value);
  * @param value The value to erase.
  * @return true if the element was erased successfully, false if the element was not found.
  */
-bool dsc_set_erase(dsc_set_t *set, int value);
+bool dsc_set_erase(DSCSet *set, int value);
 
 /**
  * @brief Checks if an element exists in the hash set.
@@ -77,7 +77,7 @@ bool dsc_set_erase(dsc_set_t *set, int value);
  * @param value The value to check for.
  * @return true if the element exists, false otherwise.
  */
-bool dsc_set_contains(const dsc_set_t *set, int value);
+bool dsc_set_contains(const DSCSet *set, int value);
 
 /**
  * @brief Gets the size of the hash set.
@@ -85,7 +85,7 @@ bool dsc_set_contains(const dsc_set_t *set, int value);
  * @param set The hash set to get the size of.
  * @return The size of the hash set, -1 if the set is NULL.
  */
-int dsc_set_size(const dsc_set_t *set);
+int dsc_set_size(const DSCSet *set);
 
 /**
  * @brief Checks if the hash set is empty.
@@ -93,13 +93,13 @@ int dsc_set_size(const dsc_set_t *set);
  * @param set The hash set to check.
  * @return true if the hash set is empty, false otherwise.
  */
-bool dsc_set_empty(const dsc_set_t *set);
+bool dsc_set_empty(const DSCSet *set);
 
 /**
  * @brief Clears all elements from the hash set.
  *
  * @param set The hash set to clear.
  */
-void dsc_set_clear(dsc_set_t *set);
+void dsc_set_clear(DSCSet *set);
 
 #endif // __DSC_SET_H__

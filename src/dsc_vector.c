@@ -22,13 +22,13 @@
 #include "../include/dsc_error.h"
 
 /* Represents a vector. */
-struct dsc_vector_t {
+struct DSCVector {
     int *values;     /* Array of values stored in the vector. */
     unsigned int size;     /* The number of elements in the vector. */
     unsigned int capacity; /* The current capacity of the vector. */
 };
 
-static bool dsc_vector_resize(dsc_vector_t *vector, unsigned int new_capacity) {
+static bool dsc_vector_resize(DSCVector *vector, unsigned int new_capacity) {
     int *new_values = realloc(vector->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -40,8 +40,8 @@ static bool dsc_vector_resize(dsc_vector_t *vector, unsigned int new_capacity) {
     return true;
 }
 
-dsc_vector_t *dsc_vector_create() {
-    dsc_vector_t *new_vector = malloc(sizeof *new_vector);
+DSCVector *dsc_vector_create() {
+    DSCVector *new_vector = malloc(sizeof *new_vector);
     if (new_vector == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -61,7 +61,7 @@ dsc_vector_t *dsc_vector_create() {
     return new_vector;
 }
 
-void dsc_vector_free(dsc_vector_t *vector) {
+void dsc_vector_free(DSCVector *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -73,7 +73,7 @@ void dsc_vector_free(dsc_vector_t *vector) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_vector_push_back(dsc_vector_t *vector, int value) {
+void dsc_vector_push_back(DSCVector *vector, int value) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -92,7 +92,7 @@ void dsc_vector_push_back(dsc_vector_t *vector, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_vector_pop_back(dsc_vector_t *vector) {
+void dsc_vector_pop_back(DSCVector *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -107,7 +107,7 @@ void dsc_vector_pop_back(dsc_vector_t *vector) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-unsigned int dsc_vector_insert(dsc_vector_t *vector, unsigned int position, int value) {
+unsigned int dsc_vector_insert(DSCVector *vector, unsigned int position, int value) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -138,7 +138,7 @@ unsigned int dsc_vector_insert(dsc_vector_t *vector, unsigned int position, int 
     return position;
 }
 
-void dsc_vector_erase(dsc_vector_t *vector, unsigned int position) {
+void dsc_vector_erase(DSCVector *vector, unsigned int position) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -158,7 +158,7 @@ void dsc_vector_erase(dsc_vector_t *vector, unsigned int position) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_vector_at(const dsc_vector_t *vector, unsigned int index) {
+int dsc_vector_at(const DSCVector *vector, unsigned int index) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -173,7 +173,7 @@ int dsc_vector_at(const dsc_vector_t *vector, unsigned int index) {
     return vector->values[index];
 }
 
-bool dsc_vector_empty(const dsc_vector_t *vector) {
+bool dsc_vector_empty(const DSCVector *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return true;
@@ -183,7 +183,7 @@ bool dsc_vector_empty(const dsc_vector_t *vector) {
     return vector->size == 0;
 }
 
-int dsc_vector_size(const dsc_vector_t *vector) {
+int dsc_vector_size(const DSCVector *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -193,7 +193,7 @@ int dsc_vector_size(const dsc_vector_t *vector) {
     return vector->size;
 }
 
-unsigned int dsc_vector_capacity(const dsc_vector_t *vector) {
+unsigned int dsc_vector_capacity(const DSCVector *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -203,7 +203,7 @@ unsigned int dsc_vector_capacity(const dsc_vector_t *vector) {
     return vector->capacity;
 }
 
-void dsc_vector_reserve(dsc_vector_t *vector, unsigned int new_capacity) {
+void dsc_vector_reserve(DSCVector *vector, unsigned int new_capacity) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;

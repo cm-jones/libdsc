@@ -37,21 +37,21 @@
 typedef struct dsc_map_entry_t dsc_map_entry_t;
 
 /* Forward declaration of the map structure */
-typedef struct dsc_map_t dsc_map_t;
+typedef struct DSCMap DSCMap;
 
 /**
  * @brief Creates a new empty map.
  *
  * @return A pointer to the newly created map, or NULL if memory allocation fails.
  */
-dsc_map_t *dsc_map_create();
+DSCMap *dsc_map_create();
 
 /**
  * @brief Destroys the map and frees its memory.
  *
  * @param map The map to destroy.
  */
-void dsc_map_free(dsc_map_t *map);
+void dsc_map_free(DSCMap *map);
 
 /**
  * @brief Inserts a key-value pair into the map.
@@ -62,7 +62,7 @@ void dsc_map_free(dsc_map_t *map);
  *
  * @return true if the key-value pair was inserted successfully, false if the key already exists.
  */
-bool dsc_map_insert(dsc_map_t *map, int key, int value);
+bool dsc_map_insert(DSCMap *map, int key, int value);
 
 /**
  * @brief Erases the key-value pair with the given key from the map.
@@ -72,7 +72,7 @@ bool dsc_map_insert(dsc_map_t *map, int key, int value);
  *
  * @return true if the key-value pair was erased successfully, false if the key was not found.
  */
-bool dsc_map_erase(dsc_map_t *map, int key);
+bool dsc_map_erase(DSCMap *map, int key);
 
 /**
  * @brief Retrieves the value associated with the given key.
@@ -82,7 +82,7 @@ bool dsc_map_erase(dsc_map_t *map, int key);
  *
  * @return The value associated with the key, or 0 if the key is not found.
  */
-int dsc_map_get(const dsc_map_t *map, int key);
+int dsc_map_get(const DSCMap *map, int key);
 
 /**
  * @brief Checks if the map contains the given key.
@@ -92,7 +92,7 @@ int dsc_map_get(const dsc_map_t *map, int key);
  *
  * @return true if the key exists in the map, false otherwise.
  */
-bool dsc_map_contains(const dsc_map_t *map, int key);
+bool dsc_map_contains(const DSCMap *map, int key);
 
 /**
  * @brief Gets the number of key-value pairs in the map.
@@ -101,7 +101,7 @@ bool dsc_map_contains(const dsc_map_t *map, int key);
  *
  * @return The number of key-value pairs in the map, -1 if the map is NULL.
  */
-int dsc_map_size(const dsc_map_t *map);
+int dsc_map_size(const DSCMap *map);
 
 /**
  * @brief Checks if the map is empty.
@@ -110,13 +110,13 @@ int dsc_map_size(const dsc_map_t *map);
  *
  * @return true if the map is empty, false otherwise.
  */
-bool dsc_map_empty(const dsc_map_t *map);
+bool dsc_map_empty(const DSCMap *map);
 
 /**
  * @brief Clears all key-value pairs from the map.
  *
  * @param map The map to clear.
  */
-void dsc_map_clear(dsc_map_t *map);
+void dsc_map_clear(DSCMap *map);
 
 #endif /* __DSC_MAP_H__ */

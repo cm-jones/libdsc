@@ -22,17 +22,17 @@
 #include "../include/dsc_error.h"
 
 /* Represents a list node. */
-struct dsc_node_t {
+struct DSCNode {
     int value;        /* The value stored in the node. */
-    dsc_node_t *next; /* Pointer to the next node in the list. */
+    DSCNode *next; /* Pointer to the next node in the list. */
 };
 /* Represents a list. */
-struct dsc_list_t {
-    dsc_node_t *head; /* Pointer to the first node in the list. */
+struct DSCList {
+    DSCNode *head; /* Pointer to the first node in the list. */
 };
 
-static dsc_node_t *dsc_node_create(int value) {
-    dsc_node_t *new_node = malloc(sizeof *new_node);
+static DSCNode *dsc_node_create(int value) {
+    DSCNode *new_node = malloc(sizeof *new_node);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -45,14 +45,14 @@ static dsc_node_t *dsc_node_create(int value) {
     return new_node;
 }
 
-static void dsc_node_destroy(dsc_node_t *node) {
+static void dsc_node_destroy(DSCNode *node) {
     if (node != NULL) {
         free(node);
     }
 }
 
-dsc_list_t *dsc_list_create() {
-    dsc_list_t *new_list = malloc(sizeof *new_list);
+DSCList *dsc_list_create() {
+    DSCList *new_list = malloc(sizeof *new_list);
     if (new_list == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -64,14 +64,14 @@ dsc_list_t *dsc_list_create() {
     return new_list;
 }
 
-void dsc_list_destroy(dsc_list_t *list) {
+void dsc_list_destroy(DSCList *list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    dsc_node_t *prev = NULL;
-    dsc_node_t *curr = list->head;
+    DSCNode *prev = NULL;
+    DSCNode *curr = list->head;
 
     while (curr != NULL) {
         prev = curr;
@@ -83,13 +83,13 @@ void dsc_list_destroy(dsc_list_t *list) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_push_front(dsc_list_t *list, int value) {
+void dsc_list_push_front(DSCList *list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    dsc_node_t *new_node = dsc_node_create(value);
+    DSCNode *new_node = dsc_node_create(value);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
@@ -100,13 +100,13 @@ void dsc_list_push_front(dsc_list_t *list, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_push_back(struct dsc_list_t *list, int value) {
+void dsc_list_push_back(struct DSCList *list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    dsc_node_t *new_node = dsc_node_create(value);
+    DSCNode *new_node = dsc_node_create(value);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
@@ -117,7 +117,7 @@ void dsc_list_push_back(struct dsc_list_t *list, int value) {
         return;
     }
 
-    dsc_node_t *curr = list->head;
+    DSCNode *curr = list->head;
 
     while (curr->next != NULL) {
         curr = curr->next;
@@ -127,13 +127,13 @@ void dsc_list_push_back(struct dsc_list_t *list, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_insert_after(dsc_list_t *list, dsc_node_t *prev_node, int value) {
+void dsc_list_insert_after(DSCList *list, DSCNode *prev_node, int value) {
     if (list == NULL || prev_node == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
     }
 
-    dsc_node_t *new_node = dsc_node_create(value);
+    DSCNode *new_node = dsc_node_create(value);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
@@ -144,7 +144,7 @@ void dsc_list_insert_after(dsc_list_t *list, dsc_node_t *prev_node, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_pop_front(dsc_list_t *list) {
+void dsc_list_pop_front(DSCList *list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -155,13 +155,13 @@ void dsc_list_pop_front(dsc_list_t *list) {
         return;
     }
 
-    dsc_node_t *old_head = list->head;
+    DSCNode *old_head = list->head;
     list->head = old_head->next;
     dsc_node_destroy(old_head);
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_list_remove(dsc_list_t *list, int value) {
+void dsc_list_remove(DSCList *list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -178,8 +178,8 @@ void dsc_list_remove(dsc_list_t *list, int value) {
         return;
     }
 
-    dsc_node_t *prev = list->head;
-    dsc_node_t *curr = list->head->next;
+    DSCNode *prev = list->head;
+    DSCNode *curr = list->head->next;
 
     while (curr != NULL) {
         if (curr->value == value) {
@@ -195,7 +195,7 @@ void dsc_list_remove(dsc_list_t *list, int value) {
     dsc_set_error(DSC_ERROR_KEY_NOT_FOUND);
 }
 
-void dsc_list_remove_all(dsc_list_t *list, int value) {
+void dsc_list_remove_all(DSCList *list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -206,8 +206,8 @@ void dsc_list_remove_all(dsc_list_t *list, int value) {
         return;
     }
 
-    dsc_node_t *prev = NULL;
-    dsc_node_t *curr = list->head;
+    DSCNode *prev = NULL;
+    DSCNode *curr = list->head;
 
     while (curr != NULL) {
         if (curr->value == value) {
@@ -216,7 +216,7 @@ void dsc_list_remove_all(dsc_list_t *list, int value) {
             } else {
                 prev->next = curr->next;
             }
-            dsc_node_t *temp = curr;
+            DSCNode *temp = curr;
             curr = curr->next;
             dsc_node_destroy(temp);
         } else {
@@ -228,7 +228,7 @@ void dsc_list_remove_all(dsc_list_t *list, int value) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_list_front(const dsc_list_t *list) {
+int dsc_list_front(const DSCList *list) {
     if (list == NULL || list->head == NULL) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return 0;
@@ -238,7 +238,7 @@ int dsc_list_front(const dsc_list_t *list) {
     return list->head->value;
 }
 
-bool dsc_list_empty(const dsc_list_t *list) {
+bool dsc_list_empty(const DSCList *list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -248,7 +248,7 @@ bool dsc_list_empty(const dsc_list_t *list) {
     return list->head == NULL;
 }
 
-void dsc_list_print(const dsc_list_t *list) {
+void dsc_list_print(const DSCList *list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -262,7 +262,7 @@ void dsc_list_print(const dsc_list_t *list) {
 
     printf("[");
 
-    dsc_node_t *curr = list->head;
+    DSCNode *curr = list->head;
 
     while (curr->next != NULL) {
         printf("%d, ", curr->value);
@@ -274,7 +274,7 @@ void dsc_list_print(const dsc_list_t *list) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-dsc_node_t *dsc_list_get_head(const dsc_list_t *list) {
+DSCNode *dsc_list_get_head(const DSCList *list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return NULL;

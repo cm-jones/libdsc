@@ -31,41 +31,41 @@ void run_test(void (*test_func)(void), const char *name) {
 }
 
 void test_dsc_stack_create() {
-    dsc_stack_t *stack = dsc_stack_create();
+    DSCStack *stack = dsc_stack_create();
     assert(stack != NULL);
     dsc_stack_free(stack);
     tests_passed++;
 }
 
 void test_dsc_stack_push() {
-    dsc_stack_t *stack = dsc_stack_create();
+    DSCStack *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
-    assert(dsc_stack_top(stack) == 73);
+    assert(DSCStackop(stack) == 73);
     dsc_stack_free(stack);
     tests_passed++;
 }
 
 void test_dsc_stack_pop() {
-    dsc_stack_t *stack = dsc_stack_create();
+    DSCStack *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
     dsc_stack_push(stack, 73);
     dsc_stack_pop(stack);
-    assert(dsc_stack_top(stack) == 42);
+    assert(DSCStackop(stack) == 42);
     dsc_stack_free(stack);
     tests_passed++;
 }
 
-void test_dsc_stack_top() {
-    dsc_stack_t *stack = dsc_stack_create();
+void test_DSCStackop() {
+    DSCStack *stack = dsc_stack_create();
     dsc_stack_push(stack, 42);
-    assert(dsc_stack_top(stack) == 42);
+    assert(DSCStackop(stack) == 42);
     dsc_stack_free(stack);
     tests_passed++;
 }
 
 void test_dsc_stack_empty() {
-    dsc_stack_t *stack = dsc_stack_create();
+    DSCStack *stack = dsc_stack_create();
     assert(dsc_stack_empty(stack));
     dsc_stack_push(stack, 42);
     assert(!dsc_stack_empty(stack));
@@ -74,7 +74,7 @@ void test_dsc_stack_empty() {
 }
 
 void test_dsc_stack_size() {
-    dsc_stack_t *stack = dsc_stack_create();
+    DSCStack *stack = dsc_stack_create();
     assert(dsc_stack_size(stack) == 0);
     dsc_stack_push(stack, 42);
     assert(dsc_stack_size(stack) == 1);
@@ -88,7 +88,7 @@ int main() {
     run_test(test_dsc_stack_create, "test_dsc_stack_create");
     run_test(test_dsc_stack_push, "test_dsc_stack_push");
     run_test(test_dsc_stack_pop, "test_dsc_stack_pop");
-    run_test(test_dsc_stack_top, "test_dsc_stack_top");
+    run_test(test_DSCStackop, "test_DSCStackop");
     run_test(test_dsc_stack_empty, "test_dsc_stack_empty");
     run_test(test_dsc_stack_size, "test_dsc_stack_size");
 
