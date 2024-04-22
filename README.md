@@ -13,7 +13,7 @@ libdsc is an open-source C library featuring robust and efficient implementation
 - Sets:    similar to `std::unordered_set`
 - Maps:    similar to `std::unordered_map`
 
-The libdsc APIs closely resemble those found in the C++ standard library, which provides familiarity and ease of use to C++ developers.
+The libdsc APIs closely resemble those found for the corresponding containers in the C++ Standard Library, which provides familiarity and ease of use to C++ developers.
 
 ## Version
 
