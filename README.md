@@ -17,7 +17,7 @@ The libdsc APIs closely resemble those found for the corresponding containers in
 
 ## Version
 
-The current version of libdsc is 0.1.0-alpha.
+The current version of libdsc is [0.1.0-alpha](https://github.com/cm-jones/libdsc/releases/tag/v0.1.0-alpha).
 
 ## Usage
 
