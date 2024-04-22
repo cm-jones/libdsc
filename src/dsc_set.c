@@ -30,11 +30,11 @@ struct dsc_set_entry_t {
 /* Represents a hash set. */
 struct dsc_set_t {
     struct dsc_set_entry_t **buckets; /* Array of pointers to entries. */
-    size_t size;                      /* The number of elements in the hash set. */
-    size_t capacity;                  /* The current capacity of the hash set. */
+    unsigned int size;                      /* The number of elements in the hash set. */
+    unsigned int capacity;                  /* The current capacity of the hash set. */
 };
 
-static void dsc_set_rehash(dsc_set_t *set, size_t new_capacity) {
+static void dsc_set_rehash(dsc_set_t *set, unsigned int new_capacity) {
     dsc_set_entry_t **new_buckets = calloc(new_capacity, sizeof(dsc_set_entry_t *));
     if (new_buckets == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -42,7 +42,7 @@ static void dsc_set_rehash(dsc_set_t *set, size_t new_capacity) {
     }
 
     /* Rehash all the elements into the new buckets. */
-    for (size_t i = 0; i < set->capacity; ++i) {
+    for (unsigned int i = 0; i < set->capacity; ++i) {
         dsc_set_entry_t *entry = set->buckets[i];
         while (entry != NULL) {
             dsc_set_entry_t *next = entry->next;
@@ -89,7 +89,7 @@ void dsc_set_free(dsc_set_t *set) {
     }
 
     /* Free all the entries in the set */
-    for (size_t i = 0; i < set->capacity; ++i) {
+    for (unsigned int i = 0; i < set->capacity; ++i) {
         dsc_set_entry_t *curr = set->buckets[i];
         while (curr != NULL) {
             dsc_set_entry_t *next = curr->next;
@@ -117,7 +117,7 @@ bool dsc_set_insert(dsc_set_t *set, int value) {
 
     /* Resize the set if the load factor exceeds the threshold */
     if ((float) set->size / set->capacity >= DSC_SET_LOAD_FACTOR) {
-        size_t new_capacity = set->capacity * 2;
+        unsigned int new_capacity = set->capacity * 2;
         dsc_set_rehash(set, new_capacity);
     }
 
@@ -225,7 +225,7 @@ void dsc_set_clear(dsc_set_t *set) {
     }
 
     /* Free all the entries in the set. */
-    for (size_t i = 0; i < set->capacity; ++i) {
+    for (unsigned int i = 0; i < set->capacity; ++i) {
         dsc_set_entry_t *entry = set->buckets[i];
         while (entry != NULL) {
             dsc_set_entry_t *next = entry->next;

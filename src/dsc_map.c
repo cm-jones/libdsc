@@ -31,11 +31,11 @@ struct dsc_map_entry_t {
 /* Represents a hash map. */
 struct dsc_map_t {
    struct dsc_map_entry_t **buckets;  /* Array of buckets (linked lists). */
-   size_t size;                       /* Number of entries in the map. */
-   size_t capacity;                   /* Number of buckets in the map. */
+   unsigned int size;                       /* Number of entries in the map. */
+   unsigned int capacity;                   /* Number of buckets in the map. */
 };
 
-static void dsc_map_rehash(dsc_map_t *map, size_t new_capacity) {
+static void dsc_map_rehash(dsc_map_t *map, unsigned int new_capacity) {
    dsc_map_entry_t **new_buckets = calloc(new_capacity, sizeof(dsc_map_entry_t *));
    if (new_buckets == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -43,7 +43,7 @@ static void dsc_map_rehash(dsc_map_t *map, size_t new_capacity) {
    }
 
    /* Rehash all the elements into the new buckets. */
-   for (size_t i = 0; i < map->capacity; ++i) {
+   for (unsigned int i = 0; i < map->capacity; ++i) {
        dsc_map_entry_t *entry = map->buckets[i];
        while (entry != NULL) {
            dsc_map_entry_t *next = entry->next;
@@ -90,7 +90,7 @@ void dsc_map_free(dsc_map_t *map) {
    }
 
    /* Free all the entries in the map. */
-   for (size_t i = 0; i < map->capacity; ++i) {
+   for (unsigned int i = 0; i < map->capacity; ++i) {
        dsc_map_entry_t *curr = map->buckets[i];
        while (curr != NULL) {
            dsc_map_entry_t *next = curr->next;
@@ -244,7 +244,7 @@ void dsc_map_clear(dsc_map_t *map) {
    }
 
    /* Free all the entries in the map */
-   for (size_t i = 0; i < map->capacity; ++i) {
+   for (unsigned int i = 0; i < map->capacity; ++i) {
        dsc_map_entry_t *entry = map->buckets[i];
        while (entry != NULL) {
            dsc_map_entry_t *next = entry->next;

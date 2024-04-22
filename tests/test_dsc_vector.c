@@ -70,7 +70,7 @@ void test_dsc_vector_insert() {
     dsc_vector_push_back(vector, 1);
     dsc_vector_push_back(vector, 2);
     dsc_vector_push_back(vector, 3);
-    size_t position = dsc_vector_insert(vector, 1, 10);
+    unsigned int position = dsc_vector_insert(vector, 1, 10);
     assert(position == 1 && dsc_vector_size(vector) == 4 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 10 && dsc_vector_at(vector, 2) == 2 && dsc_vector_at(vector, 3) == 3);
     dsc_vector_free(vector);
     tests_passed++;

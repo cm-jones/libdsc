@@ -135,7 +135,7 @@ dsc_vector_erase(vector); // Removes 42 from the vector
 ### `dsc_vector_at`
 
 ```c
-int dsc_vector_at(const dsc_vector_t *vector, size_t index);
+int dsc_vector_at(const dsc_vector_t *vector, unsigned int index);
 ```
 
 Retrieves the value of the element at the specified index.
@@ -182,7 +182,7 @@ if (dsc_vector_empty(vector)) {
 ### `dsc_vector_size`
 
 ```c
-size_t dsc_vector_size(const dsc_vector_t *vector);
+unsigned int dsc_vector_size(const dsc_vector_t *vector);
 ```
 
 Gets the number of elements in the vector.
@@ -198,13 +198,13 @@ Gets the number of elements in the vector.
 dsc_vector_t *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
-size_t size = dsc_vector_size(vector); // size = 2
+unsigned int size = dsc_vector_size(vector); // size = 2
 ```
 
 ### `dsc_vector_capacity`
 
 ```c
-size_t dsc_vector_capacity(const dsc_vector_t *vector);
+unsigned int dsc_vector_capacity(const dsc_vector_t *vector);
 ```
 
 Gets the maximum number of elements the vector can hold before needing to allocate more memory.
@@ -220,13 +220,13 @@ Gets the maximum number of elements the vector can hold before needing to alloca
 dsc_vector_t *vector = dsc_vector_create();
 dsc_vector_push_back(vector, 42);
 dsc_vector_push_back(vector, 73);
-size_t capacity = dsc_vector_capacity(vector); // capacity = 2 (or more, depending on the initial capacity)
+unsigned int capacity = dsc_vector_capacity(vector); // capacity = 2 (or more, depending on the initial capacity)
 ```
 
 ### `dsc_vector_reserve`
 
 ```c
-void dsc_vector_reserve(dsc_vector_t *vector, size_t new_capacity);
+void dsc_vector_reserve(dsc_vector_t *vector, unsigned int new_capacity);
 ```
 
 Reserves memory for the vector to hold at least the specified number of elements.

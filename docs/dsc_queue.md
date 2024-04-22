@@ -164,7 +164,7 @@ if (dsc_queue_empty(queue)) {
 ### `dsc_queue_size`
 
 ```c
-size_t dsc_queue_size(const dsc_queue_t *queue);
+unsigned int dsc_queue_size(const dsc_queue_t *queue);
 ```
 
 Gets the number of elements in the queue.
@@ -180,5 +180,5 @@ Gets the number of elements in the queue.
 dsc_queue_t *queue = dsc_queue_create();
 dsc_queue_push(queue, 42);
 dsc_queue_push(queue, 73);
-size_t size = dsc_queue_size(queue); // size = 2
+unsigned int size = dsc_queue_size(queue); // size = 2
 ```

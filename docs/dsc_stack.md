@@ -142,7 +142,7 @@ if (dsc_stack_empty(stack)) {
 ### `dsc_stack_size`
 
 ```c
-size_t dsc_stack_size(const dsc_stack_t *stack);
+unsigned int dsc_stack_size(const dsc_stack_t *stack);
 ```
 
 Gets the number of elements in the stack.
@@ -158,5 +158,5 @@ Gets the number of elements in the stack.
 dsc_stack_t *stack = dsc_stack_create();
 dsc_stack_push(stack, 42);
 dsc_stack_push(stack, 73);
-size_t size = dsc_stack_size(stack); // size = 2
+unsigned int size = dsc_stack_size(stack); // size = 2
 ```

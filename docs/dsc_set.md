@@ -157,7 +157,7 @@ if (dsc_set_contains(set, value)) {
 ### `dsc_set_size`
 
 ```c
-size_t dsc_set_size(const dsc_set_t *set);
+unsigned int dsc_set_size(const dsc_set_t *set);
 ```
 
 Gets the size of the hash set.
@@ -173,7 +173,7 @@ Gets the size of the hash set.
 dsc_set_t *set = dsc_set_create();
 dsc_set_insert(set, 42);
 dsc_set_insert(set, 73);
-size_t size = dsc_set_size(set);
+unsigned int size = dsc_set_size(set);
 printf("Size of the set: %zu\n", size);
 ```
 

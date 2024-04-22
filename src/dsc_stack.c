@@ -25,11 +25,11 @@
 /* Represents a stack. */
 struct dsc_stack_t {
     int *values;     /* Array of values stored in the stack. */
-    size_t size;     /* The number of elements in the stack. */
-    size_t capacity; /* The current capacity of the stack. */
+    unsigned int size;     /* The number of elements in the stack. */
+    unsigned int capacity; /* The current capacity of the stack. */
 };
 
-static bool dsc_stack_resize(dsc_stack_t *stack, size_t new_capacity) {
+static bool dsc_stack_resize(dsc_stack_t *stack, unsigned int new_capacity) {
     int *new_values = realloc(stack->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -81,7 +81,7 @@ void dsc_stack_push(dsc_stack_t *stack, int value) {
 
     /* Resize the stack if the size exceeds the capacity. */
     if (stack->size >= stack->capacity) {
-        size_t new_capacity = stack->capacity * 1.5;
+        unsigned int new_capacity = stack->capacity * 1.5;
         if (!dsc_stack_resize(stack, new_capacity)) {
             return;
         }

@@ -68,7 +68,7 @@ void dsc_vector_pop_back(struct dsc_vector_t *vector);
  *
  * @return The position of the inserted element.
  */
-size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value);
+unsigned int dsc_vector_insert(struct dsc_vector_t *vector, unsigned int position, int value);
 
 /**
  * @brief Removes the element at the specified position from the vector.
@@ -76,7 +76,7 @@ size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value
  * @param vector The vector to erase the element from.
  * @param position The position of the element to erase.
  */
-void dsc_vector_erase(struct dsc_vector_t *vector, size_t position);
+void dsc_vector_erase(struct dsc_vector_t *vector, unsigned int position);
 
 /**
  * @brief Retrieves the value of the element at the specified index.
@@ -86,7 +86,7 @@ void dsc_vector_erase(struct dsc_vector_t *vector, size_t position);
  *
  * @return The value of the element at the specified index, or 0 if the index is out of bounds.
  */
-int dsc_vector_at(const struct dsc_vector_t *vector, size_t index);
+int dsc_vector_at(const struct dsc_vector_t *vector, unsigned int index);
 
 /**
  * @brief Checks if the vector is empty.
@@ -113,7 +113,7 @@ int dsc_vector_size(const struct dsc_vector_t *vector);
  *
  * @return The maximum number of elements the vector can hold.
  */
-size_t dsc_vector_capacity(const struct dsc_vector_t *vector);
+unsigned int dsc_vector_capacity(const struct dsc_vector_t *vector);
 
 /**
  * @brief Reserves memory for the vector to hold at least the specified number of elements.
@@ -121,6 +121,6 @@ size_t dsc_vector_capacity(const struct dsc_vector_t *vector);
  * @param vector The vector to reserve memory for.
  * @param new_capacity The minimum capacity to reserve.
  */
-void dsc_vector_reserve(struct dsc_vector_t *vector, size_t new_capacity);
+void dsc_vector_reserve(struct dsc_vector_t *vector, unsigned int new_capacity);
 
 #endif /* __DSC_VECTOR_H__ */

@@ -160,7 +160,7 @@ if (dsc_map_contains(map, key)) {
 ### `dsc_map_size`
 
 ```c
-size_t dsc_map_size(const dsc_map_t *map);
+unsigned int dsc_map_size(const dsc_map_t *map);
 ```
 
 Gets the number of key-value pairs in the map.
@@ -176,7 +176,7 @@ Gets the number of key-value pairs in the map.
 dsc_map_t *map = dsc_map_create();
 dsc_map_insert(map, 42, 73);
 dsc_map_insert(map, 54, 21);
-size_t size = dsc_map_size(map); // size = 2
+unsigned int size = dsc_map_size(map); // size = 2
 ```
 
 ### `dsc_map_empty`

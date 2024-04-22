@@ -24,11 +24,11 @@
 /* Represents a vector. */
 struct dsc_vector_t {
     int *values;     /* Array of values stored in the vector. */
-    size_t size;     /* The number of elements in the vector. */
-    size_t capacity; /* The current capacity of the vector. */
+    unsigned int size;     /* The number of elements in the vector. */
+    unsigned int capacity; /* The current capacity of the vector. */
 };
 
-static bool dsc_vector_resize(dsc_vector_t *vector, size_t new_capacity) {
+static bool dsc_vector_resize(dsc_vector_t *vector, unsigned int new_capacity) {
     int *new_values = realloc(vector->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -81,7 +81,7 @@ void dsc_vector_push_back(dsc_vector_t *vector, int value) {
 
     /* Resize the vector if the size exceeds the capacity. */
     if (vector->size >= vector->capacity) {
-        size_t new_capacity = vector->capacity * 1.5;
+        unsigned int new_capacity = vector->capacity * 1.5;
         if (!dsc_vector_resize(vector, new_capacity)) {
             return;
         }
@@ -107,7 +107,7 @@ void dsc_vector_pop_back(dsc_vector_t *vector) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value) {
+unsigned int dsc_vector_insert(struct dsc_vector_t *vector, unsigned int position, int value) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -120,14 +120,14 @@ size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value
 
     /* Resize the vector if the size exceeds the capacity. */
     if (vector->size >= vector->capacity) {
-        size_t new_capacity = vector->capacity * 1.5;
+        unsigned int new_capacity = vector->capacity * 1.5;
         if (!dsc_vector_resize(vector, new_capacity)) {
             return 0;
         }
     }
 
     /* Shift elements to the right to make room for the new element. */
-    for (size_t i = vector->size; i > position; --i) {
+    for (unsigned int i = vector->size; i > position; --i) {
         vector->values[i] = vector->values[i - 1];
     }
 
@@ -138,7 +138,7 @@ size_t dsc_vector_insert(struct dsc_vector_t *vector, size_t position, int value
     return position;
 }
 
-void dsc_vector_erase(struct dsc_vector_t *vector, size_t position) {
+void dsc_vector_erase(struct dsc_vector_t *vector, unsigned int position) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;
@@ -150,7 +150,7 @@ void dsc_vector_erase(struct dsc_vector_t *vector, size_t position) {
     }
 
     /* Shift elements to the left to fill the gap. */
-    for (size_t i = position; i < vector->size - 1; ++i) {
+    for (unsigned int i = position; i < vector->size - 1; ++i) {
         vector->values[i] = vector->values[i + 1];
     }
 
@@ -158,7 +158,7 @@ void dsc_vector_erase(struct dsc_vector_t *vector, size_t position) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-int dsc_vector_at(const dsc_vector_t *vector, size_t index) {
+int dsc_vector_at(const dsc_vector_t *vector, unsigned int index) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -193,7 +193,7 @@ int dsc_vector_size(const dsc_vector_t *vector) {
     return vector->size;
 }
 
-size_t dsc_vector_capacity(const dsc_vector_t *vector) {
+unsigned int dsc_vector_capacity(const dsc_vector_t *vector) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return 0;
@@ -203,7 +203,7 @@ size_t dsc_vector_capacity(const dsc_vector_t *vector) {
     return vector->capacity;
 }
 
-void dsc_vector_reserve(dsc_vector_t *vector, size_t new_capacity) {
+void dsc_vector_reserve(dsc_vector_t *vector, unsigned int new_capacity) {
     if (vector == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return;

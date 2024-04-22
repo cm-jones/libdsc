@@ -25,11 +25,11 @@
 /* Represents a queue. */
 struct dsc_queue_t {
     int *values;     /* Array of values stored in the queue. */
-    size_t size;     /* The number of elements in the queue. */
-    size_t capacity; /* The current capacity of the queue. */
+    unsigned int size;     /* The number of elements in the queue. */
+    unsigned int capacity; /* The current capacity of the queue. */
 };
 
-static bool dsc_queue_resize(dsc_queue_t *queue, size_t new_capacity) {
+static bool dsc_queue_resize(dsc_queue_t *queue, unsigned int new_capacity) {
     int *new_values = realloc(queue->values, new_capacity * sizeof(int));
     if (new_values == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -81,7 +81,7 @@ void dsc_queue_push(dsc_queue_t *queue, int value) {
 
     /* Resize the queue if the size exceeds the capacity. */
     if (queue->size >= queue->capacity) {
-        size_t new_capacity = queue->capacity * 1.5;
+        unsigned int new_capacity = queue->capacity * 1.5;
         if (!dsc_queue_resize(queue, new_capacity)) {
             return;
         }
@@ -104,7 +104,7 @@ void dsc_queue_pop(dsc_queue_t *queue) {
     }
 
     /* Shift elements to the left */
-    for (size_t i = 0; i < queue->size - 1; ++i) {
+    for (unsigned int i = 0; i < queue->size - 1; ++i) {
         queue->values[i] = queue->values[i + 1];
     }
 
