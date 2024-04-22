@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -I. -I/usr/include -I/usr/local/include
+CFLAGS = -Wall -Wextra -O3 -I. -I/usr/include -I/usr/local/include
 LDFLAGS = -L. -ldsc -lm
 
 LIBNAME = libdsc.a
