@@ -34,7 +34,7 @@
 #define DSC_MAP_LOAD_FACTOR 0.75
 
 /* Forward declaration of the map entry structure */
-typedef struct dsc_map_entry_t dsc_map_entry_t;
+typedef struct DSCMapEntry DSCMapEntry;
 
 /* Forward declaration of the map structure */
 typedef struct DSCMap DSCMap;

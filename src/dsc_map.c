@@ -22,21 +22,21 @@
 #include "../include/dsc_error.h"
 
 /* Represents a hash map entry. */
-struct dsc_map_entry_t {
+struct DSCMapEntry {
    int key;                       /* Key of the entry. */
    int value;                     /* Value associated with the key. */
-   struct dsc_map_entry_t *next;  /* Pointer to the next entry in the same bucket. */
+   struct DSCMapEntry *next;  /* Pointer to the next entry in the same bucket. */
 };
 
 /* Represents a hash map. */
 struct DSCMap {
-   struct dsc_map_entry_t **buckets;  /* Array of buckets (linked lists). */
+   struct DSCMapEntry **buckets;  /* Array of buckets (linked lists). */
    unsigned int size;                       /* Number of entries in the map. */
    unsigned int capacity;                   /* Number of buckets in the map. */
 };
 
 static void dsc_map_rehash(DSCMap *map, unsigned int new_capacity) {
-   dsc_map_entry_t **new_buckets = calloc(new_capacity, sizeof(dsc_map_entry_t *));
+   DSCMapEntry **new_buckets = calloc(new_capacity, sizeof(DSCMapEntry *));
    if (new_buckets == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
        return;
@@ -44,9 +44,9 @@ static void dsc_map_rehash(DSCMap *map, unsigned int new_capacity) {
 
    /* Rehash all the elements into the new buckets. */
    for (unsigned int i = 0; i < map->capacity; ++i) {
-       dsc_map_entry_t *entry = map->buckets[i];
+       DSCMapEntry *entry = map->buckets[i];
        while (entry != NULL) {
-           dsc_map_entry_t *next = entry->next;
+           DSCMapEntry *next = entry->next;
 
            /* Rehash the value to determine the new index. */
            int index = dsc_hash(entry->key, new_capacity);
@@ -72,7 +72,7 @@ DSCMap *dsc_map_create() {
    new_map->size = 0;
    new_map->capacity = DSC_MAP_INITIAL_CAPACITY;
 
-   new_map->buckets = calloc(new_map->capacity, sizeof(dsc_map_entry_t *));
+   new_map->buckets = calloc(new_map->capacity, sizeof(DSCMapEntry *));
    if (new_map->buckets == NULL) {
        free(new_map);
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -91,9 +91,9 @@ void dsc_map_free(DSCMap *map) {
 
    /* Free all the entries in the map. */
    for (unsigned int i = 0; i < map->capacity; ++i) {
-       dsc_map_entry_t *curr = map->buckets[i];
+       DSCMapEntry *curr = map->buckets[i];
        while (curr != NULL) {
-           dsc_map_entry_t *next = curr->next;
+           DSCMapEntry *next = curr->next;
            free(curr);
            curr = next;
        }
@@ -113,7 +113,7 @@ bool dsc_map_insert(DSCMap *map, int key, int value) {
 
    /* Check if the key already exists. */
    int index = dsc_hash(key, map->capacity);
-   dsc_map_entry_t *entry = map->buckets[index];
+   DSCMapEntry *entry = map->buckets[index];
    while (entry != NULL) {
        if (entry->key == key) {
            dsc_set_error(DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS);
@@ -123,7 +123,7 @@ bool dsc_map_insert(DSCMap *map, int key, int value) {
    }
 
    /* Create a new entry. */
-   entry = malloc(sizeof(dsc_map_entry_t));
+   entry = malloc(sizeof(DSCMapEntry));
    if (entry == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
        return false;
@@ -152,8 +152,8 @@ bool dsc_map_erase(DSCMap *map, int key) {
    }
 
    int index = dsc_hash(key, map->capacity);
-   dsc_map_entry_t *prev = NULL;
-   dsc_map_entry_t *entry = map->buckets[index];
+   DSCMapEntry *prev = NULL;
+   DSCMapEntry *entry = map->buckets[index];
 
    while (entry != NULL) {
        if (entry->key == key) {
@@ -182,7 +182,7 @@ int dsc_map_get(const DSCMap *map, int key) {
    }
 
    int index = dsc_hash(key, map->capacity);
-   dsc_map_entry_t *entry = map->buckets[index];
+   DSCMapEntry *entry = map->buckets[index];
 
    while (entry != NULL) {
        if (entry->key == key) {
@@ -203,7 +203,7 @@ bool dsc_map_contains(const DSCMap *map, int key) {
    }
 
    int index = dsc_hash(key, map->capacity);
-   dsc_map_entry_t *entry = map->buckets[index];
+   DSCMapEntry *entry = map->buckets[index];
 
    while (entry != NULL) {
        if (entry->key == key) {
@@ -245,9 +245,9 @@ void dsc_map_clear(DSCMap *map) {
 
    /* Free all the entries in the map */
    for (unsigned int i = 0; i < map->capacity; ++i) {
-       dsc_map_entry_t *entry = map->buckets[i];
+       DSCMapEntry *entry = map->buckets[i];
        while (entry != NULL) {
-           dsc_map_entry_t *next = entry->next;
+           DSCMapEntry *next = entry->next;
            free(entry);
            entry = next;
        }
