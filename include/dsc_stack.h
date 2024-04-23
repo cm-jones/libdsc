@@ -35,7 +35,7 @@ typedef struct DSCStack DSCStack;
  *
  * @return A pointer to the newly created stack, or NULL if memory allocation fails.
  */
-DSCStack *dsc_stack_create(void);
+DSCStack *dsc_stack_create();
 
 /**
  * @brief Destroys the stack and frees its memory.

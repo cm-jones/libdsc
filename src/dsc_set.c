@@ -61,7 +61,7 @@ static void dsc_set_rehash(DSCSet *set, unsigned int new_capacity) {
     set->capacity = new_capacity;
 }
 
-DSCSet *dsc_set_create(void) {
+DSCSet *dsc_set_create() {
     DSCSet *new_set = calloc(1, sizeof *new_set);
     if (new_set == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);

@@ -43,7 +43,7 @@ typedef struct DSCSet DSCSet;
  *
  * @return A pointer to the newly created hash set, or NULL if memory allocation fails.
  */
-DSCSet *dsc_set_create(void);
+DSCSet *dsc_set_create();
 
 /**
  * @brief Destroys the hash set and frees its memory.

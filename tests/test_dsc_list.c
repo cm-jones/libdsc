@@ -35,13 +35,13 @@ void run_test(void (*test_func)(void), const char *name) {
 /* Test cases */
 
 void test_dsc_list_create() {
-    DSCList *list = dsc_list_create(void);
+    DSCList *list = dsc_list_create();
     assert(list != NULL);
     dsc_list_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_push_front(void) {
+void test_dsc_list_push_front() {
     DSCList *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
@@ -51,7 +51,7 @@ void test_dsc_list_push_front(void) {
     tests_passed++;
 }
 
-void test_dsc_list_push_back(void) {
+void test_dsc_list_push_back() {
     DSCList *list = dsc_list_create();
     dsc_list_push_back(list, 42);
     dsc_list_push_back(list, 73);
@@ -61,7 +61,7 @@ void test_dsc_list_push_back(void) {
     tests_passed++;
 }
 
-void test_dsc_list_insert_after(void) {
+void test_dsc_list_insert_after() {
     DSCList *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     DSCNode *head = dsc_list_get_head(list);
@@ -72,7 +72,7 @@ void test_dsc_list_insert_after(void) {
     tests_passed++;
 }
 
-void test_dsc_list_pop_front(void) {
+void test_dsc_list_pop_front() {
     DSCList *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
@@ -83,7 +83,7 @@ void test_dsc_list_pop_front(void) {
     tests_passed++;
 }
 
-void test_dsc_list_remove(void) {
+void test_dsc_list_remove() {
     DSCList *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
@@ -94,7 +94,7 @@ void test_dsc_list_remove(void) {
     tests_passed++;
 }
 
-void test_dsc_list_remove_all(void) {
+void test_dsc_list_remove_all() {
     DSCList *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     dsc_list_push_front(list, 73);
@@ -105,7 +105,7 @@ void test_dsc_list_remove_all(void) {
     tests_passed++;
 }
 
-void test_dsc_list_front(void) {
+void test_dsc_list_front() {
     DSCList *list = dsc_list_create();
     dsc_list_push_front(list, 42);
     assert(dsc_list_front(list) == 42);
@@ -113,7 +113,7 @@ void test_dsc_list_front(void) {
     tests_passed++;
 }
 
-void test_dsc_list_empty(void) {
+void test_dsc_list_empty() {
     DSCList *list = dsc_list_create();
     assert(dsc_list_empty(list));
     dsc_list_push_front(list, 42);
@@ -122,7 +122,7 @@ void test_dsc_list_empty(void) {
     tests_passed++;
 }
 
-int main(void) {
+int main() {
     run_test(test_dsc_list_create, "test_dsc_list_create");
     run_test(test_dsc_list_push_front, "test_dsc_list_push_front");
     run_test(test_dsc_list_push_back, "test_dsc_list_push_back");

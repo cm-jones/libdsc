@@ -30,14 +30,14 @@ void run_test(void (*test_func)(void), const char *name) {
     test_func();
 }
 
-void test_dsc_set_create(void) {
+void test_dsc_set_create() {
     DSCSet *set = dsc_set_create();
     assert(set != NULL);
     dsc_set_free(set);
     tests_passed++;
 }
 
-void test_dsc_set_insert(void) {
+void test_dsc_set_insert() {
     DSCSet *set = dsc_set_create();
     int value = 42;
     assert(dsc_set_insert(set, value) && dsc_set_contains(set, value));
@@ -45,7 +45,7 @@ void test_dsc_set_insert(void) {
     tests_passed++;
 }
 
-void test_dsc_set_insert_duplicate(void) {
+void test_dsc_set_insert_duplicate() {
     DSCSet *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
@@ -54,7 +54,7 @@ void test_dsc_set_insert_duplicate(void) {
     tests_passed++;
 }
 
-void test_dsc_set_erase(void) {
+void test_dsc_set_erase() {
     DSCSet *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
@@ -63,7 +63,7 @@ void test_dsc_set_erase(void) {
     tests_passed++;
 }
 
-void test_dsc_set_erase_nonexistent(void) {
+void test_dsc_set_erase_nonexistent() {
     DSCSet *set = dsc_set_create();
     int value = 42;
     assert(!dsc_set_erase(set, value));
@@ -71,7 +71,7 @@ void test_dsc_set_erase_nonexistent(void) {
     tests_passed++;
 }
 
-void test_dsc_set_size(void) {
+void test_dsc_set_size() {
     DSCSet *set = dsc_set_create();
     assert(dsc_set_size(set) == 0);
     dsc_set_insert(set, 42);
@@ -84,7 +84,7 @@ void test_dsc_set_size(void) {
     tests_passed++;
 }
 
-void test_dsc_set_empty(void) {
+void test_dsc_set_empty() {
     DSCSet *set = dsc_set_create();
     assert(dsc_set_empty(set));
     dsc_set_insert(set, 42);
@@ -93,7 +93,7 @@ void test_dsc_set_empty(void) {
     tests_passed++;
 }
 
-void test_dsc_set_clear(void) {
+void test_dsc_set_clear() {
     DSCSet *set = dsc_set_create();
     dsc_set_insert(set, 42);
     dsc_set_insert(set, 73);
@@ -103,7 +103,7 @@ void test_dsc_set_clear(void) {
     tests_passed++;
 }
 
-int main(void) {
+int main() {
     run_test(test_dsc_set_create, "test_dsc_set_create");
     run_test(test_dsc_set_insert, "test_dsc_set_insert");
     run_test(test_dsc_set_insert_duplicate, "test_dsc_set_insert_duplicate");

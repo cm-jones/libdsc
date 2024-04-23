@@ -40,7 +40,7 @@ static bool dsc_vector_resize(DSCVector *vector, unsigned int new_capacity) {
     return true;
 }
 
-DSCVector *dsc_vector_create(void) {
+DSCVector *dsc_vector_create() {
     DSCVector *new_vector = malloc(sizeof *new_vector);
     if (new_vector == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);

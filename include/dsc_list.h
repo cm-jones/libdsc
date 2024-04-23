@@ -33,7 +33,7 @@ typedef struct DSCList DSCList;
  * @return A pointer to the newly created list, or NULL if memory allocation
  * fails.
  */
-struct DSCList *dsc_list_create(void);
+struct DSCList *dsc_list_create();
 
 /**
  * @brief Destroys the list and frees its memory.

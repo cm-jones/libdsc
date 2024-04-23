@@ -30,14 +30,14 @@ void run_test(void (*test_func)(void), const char *name) {
     test_func();
 }
 
-void test_dsc_map_create(void) {
+void test_dsc_map_create() {
     DSCMap *map = dsc_map_create();
     assert(map != NULL);
     dsc_map_free(map);
     tests_passed++;
 }
 
-void test_dsc_map_insert(void) {
+void test_dsc_map_insert() {
     DSCMap *map = dsc_map_create();
     int key = 42;
     int value = 73;
@@ -47,7 +47,7 @@ void test_dsc_map_insert(void) {
     tests_passed++;
 }
 
-void test_dsc_map_insert_duplicate(void) {
+void test_dsc_map_insert_duplicate() {
     DSCMap *map = dsc_map_create();
     int key = 42;
     int value1 = 73;
@@ -59,7 +59,7 @@ void test_dsc_map_insert_duplicate(void) {
     tests_passed++;
 }
 
-void test_dsc_map_erase(void) {
+void test_dsc_map_erase() {
     DSCMap *map = dsc_map_create();
     int key = 42;
     int value = 73;
@@ -70,7 +70,7 @@ void test_dsc_map_erase(void) {
     tests_passed++;
 }
 
-void test_dsc_map_erase_nonexistent(void) {
+void test_dsc_map_erase_nonexistent() {
     DSCMap *map = dsc_map_create();
     int key = 42;
     assert(dsc_map_erase(map, key) == false);
@@ -78,7 +78,7 @@ void test_dsc_map_erase_nonexistent(void) {
     tests_passed++;
 }
 
-void test_dsc_map_contains(void) {
+void test_dsc_map_contains() {
     DSCMap *map = dsc_map_create();
     int key = 42;
     int value = 73;
@@ -89,7 +89,7 @@ void test_dsc_map_contains(void) {
     tests_passed++;
 }
 
-void test_dsc_map_size(void) {
+void test_dsc_map_size() {
     assert(dsc_map_size(NULL) == -1);
     DSCMap *map = dsc_map_create();
     assert(dsc_map_size(map) == 0);
@@ -101,7 +101,7 @@ void test_dsc_map_size(void) {
     tests_passed++;
 }
 
-void test_dsc_map_empty(void) {
+void test_dsc_map_empty() {
     DSCMap *map = dsc_map_create();
     assert(dsc_map_empty(map) == true);
     dsc_map_insert(map, 42, 73);
@@ -110,7 +110,7 @@ void test_dsc_map_empty(void) {
     tests_passed++;
 }
 
-void test_dsc_map_clear(void) {
+void test_dsc_map_clear() {
     DSCMap *map = dsc_map_create();
     dsc_map_insert(map, 42, 73);
     dsc_map_insert(map, 84, 21);
@@ -120,7 +120,7 @@ void test_dsc_map_clear(void) {
     tests_passed++;
 }
 
-int main(void) {
+int main() {
     run_test(test_dsc_map_create, "test_dsc_map_create");
     run_test(test_dsc_map_insert, "test_dsc_map_insert");
     run_test(test_dsc_map_insert_duplicate, "test_dsc_map_insert_duplicate");

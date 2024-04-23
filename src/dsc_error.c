@@ -20,7 +20,7 @@
 // Global variable to store the last error code
 static DSCError last_error = DSC_ERROR_NONE;
 
-DSCError dsc_get_error(void) {
+DSCError dsc_get_error() {
     return last_error;
 }
 

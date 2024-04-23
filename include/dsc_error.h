@@ -56,6 +56,6 @@ void dsc_set_error(DSCError error);
  *
  * @return The last error code.
  */
-DSCError dsc_get_error(void);
+DSCError dsc_get_error();
 
 #endif // __DSC_ERROR_H__
