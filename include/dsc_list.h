@@ -33,14 +33,14 @@ typedef struct DSCList DSCList;
  * @return A pointer to the newly created list, or NULL if memory allocation
  * fails.
  */
-struct DSCList *dsc_list_create(void);
+DSCList *dsc_list_create(void);
 
 /**
  * @brief Destroys the list and frees its memory.
  *
  * @param list The list to destroy.
  */
-void dsc_list_destroy(struct DSCList *list);
+void dsc_list_destroy(DSCList *list);
 
 /**
  * @brief Inserts a value at the beginning of the list.
@@ -48,7 +48,7 @@ void dsc_list_destroy(struct DSCList *list);
  * @param list The list to insert the value into.
  * @param value The value to insert.
  */
-void dsc_list_push_front(struct DSCList *list, int value);
+void dsc_list_push_front(DSCList *list, int value);
 
 /**
  * @brief Inserts a value at the end of the list.
@@ -56,7 +56,7 @@ void dsc_list_push_front(struct DSCList *list, int value);
  * @param list The list to insert the value into.
  * @param value The value to insert.
  */
-void dsc_list_push_back(struct DSCList *list, int value);
+void dsc_list_push_back(DSCList *list, int value);
 
 /**
  * @brief Inserts a value after a specific node in the list.
@@ -65,14 +65,14 @@ void dsc_list_push_back(struct DSCList *list, int value);
  * @param prev_node The node after which to insert the value.
  * @param value The value to insert.
  */
-void dsc_list_insert_after(struct DSCList *list, struct DSCNode *prev_node, int value);
+void dsc_list_insert_after(DSCList *list, DSCNode *prev_node, int value);
 
 /**
  * @brief Removes the first node from the list.
  *
  * @param list The list to remove the first node from.
  */
-void dsc_list_pop_front(struct DSCList *list);
+void dsc_list_pop_front(DSCList *list);
 
 /**
  * @brief Removes the first occurrence of a value from the list.
@@ -80,7 +80,7 @@ void dsc_list_pop_front(struct DSCList *list);
  * @param list The list to remove the value from.
  * @param value The value to remove.
  */
-void dsc_list_remove(struct DSCList *list, int value);
+void dsc_list_remove(DSCList *list, int value);
 
 /**
  * @brief Removes all occurrences of a value from the list.
@@ -88,7 +88,7 @@ void dsc_list_remove(struct DSCList *list, int value);
  * @param list The list to remove the values from.
  * @param value The value to remove.
  */
-void dsc_list_remove_all(struct DSCList *list, int value);
+void dsc_list_remove_all(DSCList *list, int value);
 
 /**
  * @brief Retrieves the value of the first element in the list.
@@ -96,7 +96,7 @@ void dsc_list_remove_all(struct DSCList *list, int value);
  * @param list The list to get the front element from.
  * @return The value of the front element, or 0 if the list is empty or NULL.
  */
-int dsc_list_front(const struct DSCList *list);
+int dsc_list_front(const DSCList *list);
 
 /**
  * @brief Checks if the list is empty.
@@ -104,14 +104,14 @@ int dsc_list_front(const struct DSCList *list);
  * @param list The list to check.
  * @return true if the list is empty or NULL, false otherwise.
  */
-bool dsc_list_empty(const struct DSCList *list);
+bool dsc_list_empty(const DSCList *list);
 
 /**
  * @brief Prints the values of the list.
  *
  * @param list The list to print.
  */
-void dsc_list_print(const struct DSCList *list);
+void dsc_list_print(const DSCList *list);
 
 /**
  * @brief Gets the head node of the list.
@@ -120,6 +120,6 @@ void dsc_list_print(const struct DSCList *list);
  * @return A pointer to the head node of the list, or NULL if the list is empty
  * or NULL.
  */
-struct DSCNode *dsc_list_get_head(const struct DSCList *list);
+struct DSCNode *dsc_list_get_head(const DSCList *list);
 
 #endif // __DSC_LIST_H__

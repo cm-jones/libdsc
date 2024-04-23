@@ -24,12 +24,12 @@
 /* Represents an entry in the hash set. */
 struct DSCSetEntry {
     int key;                          /* The key of the entry. */
-    struct DSCSetEntry *next;     /* Pointer to the next entry in case of collisions. */
+    DSCSetEntry *next;     /* Pointer to the next entry in case of collisions. */
 };
 
 /* Represents a hash set. */
 struct DSCSet {
-    struct DSCSetEntry **buckets; /* Array of pointers to entries. */
+    DSCSetEntry **buckets; /* Array of pointers to entries. */
     unsigned int size;            /* The number of elements in the hash set. */
     unsigned int capacity;        /* The current capacity of the hash set. */
 };
