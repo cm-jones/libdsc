@@ -35,7 +35,7 @@ void run_test(void (*test_func)(void), const char *name) {
 /* Test cases */
 
 void test_dsc_list_create() {
-    DSCList *list = dsc_list_create();
+    DSCList *list = dsc_list_create(void);
     assert(list != NULL);
     dsc_list_destroy(list);
     tests_passed++;
