@@ -30,122 +30,139 @@ void run_test(void (*test_func)(void), const char *name) {
     test_func();
 }
 
-void test_dsc_vector_create(void) {
-    DSCVector *vector = dsc_vector_create();
-    assert(vector != NULL && dsc_vector_empty(vector) && dsc_vector_size(vector) == 0 && dsc_vector_capacity(vector) == DSC_VECTOR_INITIAL_CAPACITY);
-    dsc_vector_free(vector);
+void test_DSCVector_create(void) {
+    DSCVector vector = DSCVector_create();
+    assert(vector != NULL);
+    assert(DSCVector_is_empty(vector));
+    assert(DSCVector_size(vector) == 0);
+    assert(DSCVector_capacity(vector) == DSC_VECTOR_INITIAL_CAPACITY);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_free(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_free(vector);
+void test_DSCVector_free(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_free(vector));
     /* No assertion needed, just ensuring no memory leaks or crashes */
     tests_passed++;
 }
 
-void test_dsc_vector_push_back(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_push_back(vector, 1);
-    dsc_vector_push_back(vector, 2);
-    dsc_vector_push_back(vector, 3);
-    assert(dsc_vector_size(vector) == 3 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 2 && dsc_vector_at(vector, 2) == 3);
-    dsc_vector_free(vector);
+void test_DSCVector_push_back(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_push_back(vector, 1));
+    assert(DSCVector_push_back(vector, 2));
+    assert(DSCVector_push_back(vector, 3));
+    assert(DSCVector_size(vector) == 3);
+    assert(DSCVector_at(vector, 0) == 1);
+    assert(DSCVector_at(vector, 1) == 2);
+    assert(DSCVector_at(vector, 2) == 3);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_pop_back(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_push_back(vector, 1);
-    dsc_vector_push_back(vector, 2);
-    dsc_vector_push_back(vector, 3);
-    dsc_vector_pop_back(vector);
-    assert(dsc_vector_size(vector) == 2 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 2);
-    dsc_vector_free(vector);
+void test_DSCVector_pop_back(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_push_back(vector, 1));
+    assert(DSCVector_push_back(vector, 2));
+    assert(DSCVector_push_back(vector, 3));
+    assert(DSCVector_pop_back(vector));
+    assert(DSCVector_size(vector) == 2);
+    assert(DSCVector_at(vector, 0) == 1);
+    assert(DSCVector_at(vector, 1) == 2);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_insert(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_push_back(vector, 1);
-    dsc_vector_push_back(vector, 2);
-    dsc_vector_push_back(vector, 3);
-    unsigned int position = dsc_vector_insert(vector, 1, 10);
-    assert(position == 1 && dsc_vector_size(vector) == 4 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 10 && dsc_vector_at(vector, 2) == 2 && dsc_vector_at(vector, 3) == 3);
-    dsc_vector_free(vector);
+void test_DSCVector_insert(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_push_back(vector, 1));
+    assert(DSCVector_push_back(vector, 2));
+    assert(DSCVector_push_back(vector, 3));
+    assert(DSCVector_insert(vector, 10, 1));
+    assert(DSCVector_size(vector) == 4);
+    assert(DSCVector_at(vector, 0) == 1);
+    assert(DSCVector_at(vector, 1) == 10);
+    assert(DSCVector_at(vector, 2) == 2);
+    assert(DSCVector_at(vector, 3) == 3);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_erase(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_push_back(vector, 1);
-    dsc_vector_push_back(vector, 2);
-    dsc_vector_push_back(vector, 3);
-    dsc_vector_erase(vector, 1);
-    assert(dsc_vector_size(vector) == 2 && dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 3);
-    dsc_vector_free(vector);
+void test_DSCVector_erase(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_push_back(vector, 1));
+    assert(DSCVector_push_back(vector, 2));
+    assert(DSCVector_push_back(vector, 3));
+    assert(DSCVector_erase(vector, 1));
+    assert(DSCVector_size(vector) == 2);
+    assert(DSCVector_at(vector, 0) == 1);
+    assert(DSCVector_at(vector, 1) == 3);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_at(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_push_back(vector, 1);
-    dsc_vector_push_back(vector, 2);
-    dsc_vector_push_back(vector, 3);
-    assert(dsc_vector_at(vector, 0) == 1 && dsc_vector_at(vector, 1) == 2 && dsc_vector_at(vector, 2) == 3 && dsc_vector_at(vector, 3) == 0);
-    dsc_vector_free(vector);
+void test_DSCVector_at(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_push_back(vector, 1));
+    assert(DSCVector_push_back(vector, 2));
+    assert(DSCVector_push_back(vector, 3));
+    assert(DSCVector_at(vector, 0) == 1);
+    assert(DSCVector_at(vector, 1) == 2);
+    assert(DSCVector_at(vector, 2) == 3);
+    assert(DSCVector_at(vector, 3) == -1);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_empty(void) {
-    DSCVector *vector = dsc_vector_create();
-    assert(dsc_vector_empty(vector));
-    dsc_vector_push_back(vector, 1);
-    assert(!dsc_vector_empty(vector));
-    dsc_vector_free(vector);
+void test_DSCVector_is_empty(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_is_empty(vector));
+    assert(DSCVector_push_back(vector, 1));
+    assert(!DSCVector_is_empty(vector));
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_size(void) {
-    DSCVector *vector = dsc_vector_create();
-    assert(dsc_vector_size(vector) == 0);
-    dsc_vector_push_back(vector, 1);
-    assert(dsc_vector_size(vector) == 1);
-    dsc_vector_push_back(vector, 2);
-    assert(dsc_vector_size(vector) == 2);
-    dsc_vector_free(vector);
+void test_DSCVector_size(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_size(vector) == 0);
+    assert(DSCVector_push_back(vector, 1));
+    assert(DSCVector_size(vector) == 1);
+    assert(DSCVector_push_back(vector, 2));
+    assert(DSCVector_size(vector) == 2);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_capacity(void) {
-    DSCVector *vector = dsc_vector_create();
-    assert(dsc_vector_capacity(vector) == DSC_VECTOR_INITIAL_CAPACITY);
-    dsc_vector_reserve(vector, 100);
-    assert(dsc_vector_capacity(vector) == 100);
-    dsc_vector_free(vector);
+void test_DSCVector_capacity(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_capacity(vector) == DSC_VECTOR_INITIAL_CAPACITY);
+    assert(DSCVector_reserve(vector, 100));
+    assert(DSCVector_capacity(vector) == 100);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
-void test_dsc_vector_reserve(void) {
-    DSCVector *vector = dsc_vector_create();
-    dsc_vector_reserve(vector, 100);
-    assert(dsc_vector_capacity(vector) == 100);
-    dsc_vector_free(vector);
+void test_DSCVector_reserve(void) {
+    DSCVector vector = DSCVector_create();
+    assert(DSCVector_reserve(vector, 100));
+    assert(DSCVector_capacity(vector) == 100);
+    DSCVector_free(vector);
     tests_passed++;
 }
 
 int main(void) {
-    run_test(test_dsc_vector_create, "test_dsc_vector_create");
-    run_test(test_dsc_vector_free, "test_dsc_vector_free");
-    run_test(test_dsc_vector_push_back, "test_dsc_vector_push_back");
-    run_test(test_dsc_vector_pop_back, "test_dsc_vector_pop_back");
-    run_test(test_dsc_vector_insert, "test_dsc_vector_insert");
-    run_test(test_dsc_vector_erase, "test_dsc_vector_erase");
-    run_test(test_dsc_vector_at, "test_dsc_vector_at");
-    run_test(test_dsc_vector_empty, "test_dsc_vector_empty");
-    run_test(test_dsc_vector_size, "test_dsc_vector_size");
-    run_test(test_dsc_vector_capacity, "test_dsc_vector_capacity");
-    run_test(test_dsc_vector_reserve, "test_dsc_vector_reserve");
+    run_test(test_DSCVector_create, "test_DSCVector_create");
+    run_test(test_DSCVector_free, "test_DSCVector_free");
+    run_test(test_DSCVector_push_back, "test_DSCVector_push_back");
+    run_test(test_DSCVector_pop_back, "test_DSCVector_pop_back");
+    run_test(test_DSCVector_insert, "test_DSCVector_insert");
+    run_test(test_DSCVector_erase, "test_DSCVector_erase");
+    run_test(test_DSCVector_at, "test_DSCVector_at");
+    run_test(test_DSCVector_is_empty, "test_DSCVector_is_empty");
+    run_test(test_DSCVector_size, "test_DSCVector_size");
+    run_test(test_DSCVector_capacity, "test_DSCVector_capacity");
+    run_test(test_DSCVector_reserve, "test_DSCVector_reserve");
 
     printf("\nTest Results:\n");
     printf("Total tests run: %d\n", tests_run);
