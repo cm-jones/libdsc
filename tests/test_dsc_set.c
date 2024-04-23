@@ -30,14 +30,14 @@ void run_test(void (*test_func)(void), const char *name) {
     test_func();
 }
 
-void test_dsc_set_create() {
+void test_dsc_set_create(void) {
     DSCSet *set = dsc_set_create();
     assert(set != NULL);
     dsc_set_free(set);
     tests_passed++;
 }
 
-void test_dsc_set_insert() {
+void test_dsc_set_insert(void) {
     DSCSet *set = dsc_set_create();
     int value = 42;
     assert(dsc_set_insert(set, value) && dsc_set_contains(set, value));
@@ -45,7 +45,7 @@ void test_dsc_set_insert() {
     tests_passed++;
 }
 
-void test_dsc_set_insert_duplicate() {
+void test_dsc_set_insert_duplicate(void) {
     DSCSet *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
@@ -54,7 +54,7 @@ void test_dsc_set_insert_duplicate() {
     tests_passed++;
 }
 
-void test_dsc_set_erase() {
+void test_dsc_set_erase(void) {
     DSCSet *set = dsc_set_create();
     int value = 42;
     dsc_set_insert(set, value);
@@ -63,7 +63,7 @@ void test_dsc_set_erase() {
     tests_passed++;
 }
 
-void test_dsc_set_erase_nonexistent() {
+void test_dsc_set_erase_nonexistent(void) {
     DSCSet *set = dsc_set_create();
     int value = 42;
     assert(!dsc_set_erase(set, value));
@@ -71,7 +71,7 @@ void test_dsc_set_erase_nonexistent() {
     tests_passed++;
 }
 
-void test_dsc_set_size() {
+void test_dsc_set_size(void) {
     DSCSet *set = dsc_set_create();
     assert(dsc_set_size(set) == 0);
     dsc_set_insert(set, 42);
@@ -84,7 +84,7 @@ void test_dsc_set_size() {
     tests_passed++;
 }
 
-void test_dsc_set_empty() {
+void test_dsc_set_empty(void) {
     DSCSet *set = dsc_set_create();
     assert(dsc_set_empty(set));
     dsc_set_insert(set, 42);
@@ -93,7 +93,7 @@ void test_dsc_set_empty() {
     tests_passed++;
 }
 
-void test_dsc_set_clear() {
+void test_dsc_set_clear(void) {
     DSCSet *set = dsc_set_create();
     dsc_set_insert(set, 42);
     dsc_set_insert(set, 73);
@@ -103,7 +103,7 @@ void test_dsc_set_clear() {
     tests_passed++;
 }
 
-int main() {
+int main(void) {
     run_test(test_dsc_set_create, "test_dsc_set_create");
     run_test(test_dsc_set_insert, "test_dsc_set_insert");
     run_test(test_dsc_set_insert_duplicate, "test_dsc_set_insert_duplicate");

@@ -35,7 +35,7 @@ typedef struct DSCVector DSCVector;
  *
  * @return A pointer to the newly created vector, or NULL if memory allocation fails.
  */
-DSCVector *dsc_vector_create();
+DSCVector *dsc_vector_create(void);
 
 /**
  * @brief Destroys the vector and frees its memory.

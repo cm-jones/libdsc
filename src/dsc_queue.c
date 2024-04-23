@@ -41,7 +41,7 @@ static bool dsc_queue_resize(DSCQueue *queue, unsigned int new_capacity) {
     return true;
 }
 
-DSCQueue *dsc_queue_create() {
+DSCQueue *dsc_queue_create(void) {
     DSCQueue *new_queue = malloc(sizeof *new_queue);
     if (new_queue == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);

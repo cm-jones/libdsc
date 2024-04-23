@@ -62,7 +62,7 @@ static void dsc_map_rehash(DSCMap *map, unsigned int new_capacity) {
    map->capacity = new_capacity;
 }
 
-DSCMap *dsc_map_create() {
+DSCMap *dsc_map_create(void) {
    DSCMap *new_map = malloc(sizeof *new_map);
    if (new_map == NULL) {
        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);

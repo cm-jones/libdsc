@@ -51,7 +51,7 @@ static void dsc_node_destroy(DSCNode *node) {
     }
 }
 
-DSCList *dsc_list_create() {
+DSCList *dsc_list_create(void) {
     DSCList *new_list = malloc(sizeof *new_list);
     if (new_list == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
