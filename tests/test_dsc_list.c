@@ -20,7 +20,6 @@
 #include <stdio.h>
 
 #include "../include/dsc_list.h"
-#include "../include/dsc_node.h"
 
 int tests_run = 0;
 int tests_passed = 0;
@@ -34,109 +33,106 @@ void run_test(void (*test_func)(void), const char *name) {
 
 /* Test cases */
 
-void test_dsc_list_create(void) {
-    DSCList *list = dsc_list_create();
+void test_DSCList_create(void) {
+    DSCList list = DSCList_create();
     assert(list != NULL);
-    dsc_list_destroy(list);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_push_front(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_front(list, 42);
-    dsc_list_push_front(list, 73);
-    DSCNode *head = dsc_list_get_head(list);
-    assert(head->value == 73);
-    dsc_list_destroy(list);
+void test_DSCList_push_front(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_push_front(list, 42));
+    assert(DSCList_push_front(list, 73));
+    assert(DSCList_get_head(list) == 73);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_push_back(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_back(list, 42);
-    dsc_list_push_back(list, 73);
-    DSCNode *head = dsc_list_get_head(list);
-    assert(head->value == 42);
-    dsc_list_destroy(list);
+void test_DSCList_push_back(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_push_back(list, 42));
+    assert(DSCList_push_back(list, 73));
+    assert(DSCList_get_head(list) == 42);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_insert_after(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_front(list, 42);
-    DSCNode *head = dsc_list_get_head(list);
-    dsc_list_insert_after(list, head, 73);
-    DSCNode *next_node = head->next;
-    assert(next_node->value == 73);
-    dsc_list_destroy(list);
+void test_DSCList_insert(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_push_front(list, 42));
+    assert(DSCList_insert(list, 73, 1));
+    assert(DSCList_get_head(list) == 42);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_pop_front(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_front(list, 42);
-    dsc_list_push_front(list, 73);
-    dsc_list_pop_front(list);
-    DSCNode *head = dsc_list_get_head(list);
-    assert(head->value == 42);
-    dsc_list_destroy(list);
+void test_DSCList_pop_front(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_push_front(list, 42));
+    assert(DSCList_push_front(list, 73));
+    assert(DSCList_pop_front(list) == 73);
+    assert(DSCList_get_head(list) == 42);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_remove(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_front(list, 42);
-    dsc_list_push_front(list, 73);
-    dsc_list_remove(list, 73);
-    DSCNode *head = dsc_list_get_head(list);
-    assert(head->value == 42);
-    dsc_list_destroy(list);
+void test_DSCList_remove(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_push_front(list, 42));
+    assert(DSCList_push_front(list, 73));
+    assert(DSCList_remove(list, 73));
+    assert(DSCList_get_head(list) == 42);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_remove_all(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_front(list, 42);
-    dsc_list_push_front(list, 73);
-    dsc_list_push_front(list, 73);
-    dsc_list_remove_all(list, 73);
-    assert(dsc_list_front(list) == 42);
-    dsc_list_destroy(list);
+void test_DSCList_remove_all(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_push_front(list, 42));
+    assert(DSCList_push_front(list, 73));
+    assert(DSCList_push_front(list, 73));
+    assert(DSCList_remove_all(list, 73));
+    assert(DSCList_get_head(list) == 42);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_front(void) {
-    DSCList *list = dsc_list_create();
-    dsc_list_push_front(list, 42);
-    assert(dsc_list_front(list) == 42);
-    dsc_list_destroy(list);
+void test_DSCList_size(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_size(list) == 0);
+    assert(DSCList_push_front(list, 42));
+    assert(DSCList_size(list) == 1);
+    assert(DSCList_push_front(list, 73));
+    assert(DSCList_size(list) == 2);
+    DSCList_destroy(list);
     tests_passed++;
 }
 
-void test_dsc_list_empty(void) {
-    DSCList *list = dsc_list_create();
-    assert(dsc_list_empty(list));
-    dsc_list_push_front(list, 42);
-    assert(!dsc_list_empty(list));
-    dsc_list_destroy(list);
+void test_DSCList_is_empty(void) {
+    DSCList list = DSCList_create();
+    assert(DSCList_is_empty(list));
+    assert(DSCList_push_front(list, 42));
+    assert(!DSCList_is_empty(list));
+    DSCList_destroy(list);
     tests_passed++;
 }
 
 int main(void) {
-    run_test(test_dsc_list_create, "test_dsc_list_create");
-    run_test(test_dsc_list_push_front, "test_dsc_list_push_front");
-    run_test(test_dsc_list_push_back, "test_dsc_list_push_back");
-    run_test(test_dsc_list_insert_after, "test_dsc_list_insert_after");
-    run_test(test_dsc_list_pop_front, "test_dsc_list_pop_front");
-    run_test(test_dsc_list_remove, "test_dsc_list_remove");
-    run_test(test_dsc_list_remove_all, "test_dsc_list_remove_all");
-    run_test(test_dsc_list_front, "test_dsc_list_front");
-    run_test(test_dsc_list_empty, "test_dsc_list_empty");
+    run_test(test_DSCList_create, "test_DSCList_create");
+    run_test(test_DSCList_push_front, "test_DSCList_push_front");
+    run_test(test_DSCList_push_back, "test_DSCList_push_back");
+    run_test(test_DSCList_insert, "test_DSCList_insert");
+    run_test(test_DSCList_pop_front, "test_DSCList_pop_front");
+    run_test(test_DSCList_remove, "test_DSCList_remove");
+    run_test(test_DSCList_remove_all, "test_DSCList_remove_all");
+    run_test(test_DSCList_size, "test_DSCList_size");
+    run_test(test_DSCList_is_empty, "test_DSCList_is_empty");
 
     printf("\nTest Results:\n");
     printf("Total tests run: %d\n", tests_run);
     printf("Tests passed: %d\n", tests_passed);
-    printf("Tests failed: %d\n", tests_run - tests_passed);
+    printf("Tests failed: %d\n\n", tests_run - tests_passed);
 
     return (tests_passed == tests_run) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
