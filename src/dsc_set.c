@@ -22,20 +22,20 @@
 #include "../include/dsc_error.h"
 
 /* Represents an entry in the hash set. */
-struct dsc_set_entry_t {
+struct DSCSetEntry {
     int key;                          /* The key of the entry. */
-    struct dsc_set_entry_t *next;     /* Pointer to the next entry in case of collisions. */
+    struct DSCSetEntry *next;     /* Pointer to the next entry in case of collisions. */
 };
 
 /* Represents a hash set. */
 struct DSCSet {
-    struct dsc_set_entry_t **buckets; /* Array of pointers to entries. */
-    unsigned int size;                      /* The number of elements in the hash set. */
-    unsigned int capacity;                  /* The current capacity of the hash set. */
+    struct DSCSetEntry **buckets; /* Array of pointers to entries. */
+    unsigned int size;            /* The number of elements in the hash set. */
+    unsigned int capacity;        /* The current capacity of the hash set. */
 };
 
 static void dsc_set_rehash(DSCSet *set, unsigned int new_capacity) {
-    dsc_set_entry_t **new_buckets = calloc(new_capacity, sizeof(dsc_set_entry_t *));
+    DSCSetEntry **new_buckets = calloc(new_capacity, sizeof(DSCSetEntry *));
     if (new_buckets == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return;
@@ -43,9 +43,9 @@ static void dsc_set_rehash(DSCSet *set, unsigned int new_capacity) {
 
     /* Rehash all the elements into the new buckets. */
     for (unsigned int i = 0; i < set->capacity; ++i) {
-        dsc_set_entry_t *entry = set->buckets[i];
+        DSCSetEntry *entry = set->buckets[i];
         while (entry != NULL) {
-            dsc_set_entry_t *next = entry->next;
+            DSCSetEntry *next = entry->next;
 
             /* Rehash the value to determine the new index. */
             int index = dsc_hash(entry->key, new_capacity);
@@ -71,7 +71,7 @@ DSCSet *dsc_set_create(void) {
     new_set->size = 0;
     new_set->capacity = DSC_SET_INITIAL_CAPACITY;
 
-    new_set->buckets = calloc(new_set->capacity, sizeof(dsc_set_entry_t *));
+    new_set->buckets = calloc(new_set->capacity, sizeof(DSCSetEntry *));
     if (new_set->buckets == NULL) {
         free(new_set);
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -90,9 +90,9 @@ void dsc_set_free(DSCSet *set) {
 
     /* Free all the entries in the set */
     for (unsigned int i = 0; i < set->capacity; ++i) {
-        dsc_set_entry_t *curr = set->buckets[i];
+        DSCSetEntry *curr = set->buckets[i];
         while (curr != NULL) {
-            dsc_set_entry_t *next = curr->next;
+            DSCSetEntry *next = curr->next;
             free(curr);
             curr = next;
         }
@@ -122,7 +122,7 @@ bool dsc_set_insert(DSCSet *set, int value) {
     }
 
     /* Create a new entry */
-    dsc_set_entry_t *new_entry = malloc(sizeof *new_entry);
+    DSCSetEntry *new_entry = malloc(sizeof *new_entry);
     if (new_entry == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return false;
@@ -152,8 +152,8 @@ bool dsc_set_erase(DSCSet *set, int value) {
 
     int index = dsc_hash(value, set->capacity);
 
-    dsc_set_entry_t *prev = NULL;
-    dsc_set_entry_t *entry = set->buckets[index];
+    DSCSetEntry *prev = NULL;
+    DSCSetEntry *entry = set->buckets[index];
 
     while (entry != NULL) {
         if (entry->key == value) {
@@ -185,7 +185,7 @@ bool dsc_set_contains(const DSCSet *set, int value) {
     int index = dsc_hash(value, set->capacity);
 
     /* Search for the value in the bucket */
-    dsc_set_entry_t *entry = set->buckets[index];
+    DSCSetEntry *entry = set->buckets[index];
     while (entry != NULL) {
         if (entry->key == value) {
             dsc_set_error(DSC_ERROR_NONE);
@@ -226,9 +226,9 @@ void dsc_set_clear(DSCSet *set) {
 
     /* Free all the entries in the set. */
     for (unsigned int i = 0; i < set->capacity; ++i) {
-        dsc_set_entry_t *entry = set->buckets[i];
+        DSCSetEntry *entry = set->buckets[i];
         while (entry != NULL) {
-            dsc_set_entry_t *next = entry->next;
+            DSCSetEntry *next = entry->next;
             free(entry);
             entry = next;
         }

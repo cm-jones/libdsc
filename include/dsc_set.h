@@ -33,7 +33,7 @@
 #define DSC_SET_LOAD_FACTOR 0.75
 
 /* Forward declaration of the set entry structure */
-typedef struct dsc_set_entry_t dsc_set_entry_t;
+typedef struct DSCSetEntry DSCSetEntry;
 
 /* Forward declaration of the set structure */
 typedef struct DSCSet DSCSet;
