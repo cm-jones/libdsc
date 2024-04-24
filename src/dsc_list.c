@@ -31,7 +31,7 @@ struct DSCList {
     unsigned int size; // The size of the list
 };
 
-static DSCNode DSCNode_create(int value) {
+static DSCNode dsc_node_create(int value) {
     DSCNode new_node = malloc(sizeof new_node);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -45,7 +45,7 @@ static DSCNode DSCNode_create(int value) {
     return new_node;
 }
 
-static bool DSCNode_destroy(DSCNode node) {
+static bool dsc_node_destroy(DSCNode node) {
     if (node == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -54,7 +54,7 @@ static bool DSCNode_destroy(DSCNode node) {
     return true;
 }
 
-DSCList DSCList_create(void) {
+DSCList dsc_list_create(void) {
     DSCList new_list = malloc(sizeof new_list);
     if (new_list == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
@@ -68,7 +68,7 @@ DSCList DSCList_create(void) {
     return new_list;
 }
 
-bool DSCList_destroy(DSCList list) {
+bool dsc_list_destroy(DSCList list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -80,7 +80,7 @@ bool DSCList_destroy(DSCList list) {
     while (curr != NULL) {
         prev = curr;
         curr = curr->next;
-        DSCNode_destroy(prev);
+        dsc_node_destroy(prev);
     }
 
     free(list);
@@ -89,13 +89,13 @@ bool DSCList_destroy(DSCList list) {
     return true;
 }
 
-bool DSCList_push_front(DSCList list, int value) {
+bool dsc_list_push_front(DSCList list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
-    DSCNode new_node = DSCNode_create(value);
+    DSCNode new_node = dsc_node_create(value);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return false;
@@ -109,13 +109,13 @@ bool DSCList_push_front(DSCList list, int value) {
     return true;
 }
 
-bool DSCList_push_back(DSCList list, int value) {
+bool dsc_list_push_back(DSCList list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
 
-    DSCNode new_node = DSCNode_create(value);
+    DSCNode new_node = dsc_node_create(value);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return false;
@@ -142,7 +142,7 @@ bool DSCList_push_back(DSCList list, int value) {
     return true;
 }
 
-bool DSCList_insert(DSCList list, int value, int position) {
+bool dsc_list_insert(DSCList list, int value, int position) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -153,7 +153,7 @@ bool DSCList_insert(DSCList list, int value, int position) {
         return false;
     }
 
-    DSCNode new_node = DSCNode_create(value);
+    DSCNode new_node = dsc_node_create(value);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return false;
@@ -181,7 +181,7 @@ bool DSCList_insert(DSCList list, int value, int position) {
     return true;
 }
 
-int DSCList_pop_front(DSCList list) {
+int dsc_list_pop_front(DSCList list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -197,13 +197,13 @@ int DSCList_pop_front(DSCList list) {
 
     list->head = old_head->next;
     list->size--;
-    DSCNode_destroy(old_head);
+    dsc_node_destroy(old_head);
 
     dsc_set_error(DSC_ERROR_NONE);
     return result;
 }
 
-bool DSCList_remove(DSCList list, int value) {
+bool dsc_list_remove(DSCList list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -220,7 +220,7 @@ bool DSCList_remove(DSCList list, int value) {
         list->head = old_head->next;
         list->size--;
 
-        DSCNode_destroy(old_head);
+        dsc_node_destroy(old_head);
 
         dsc_set_error(DSC_ERROR_NONE);
         return true;;
@@ -234,7 +234,7 @@ bool DSCList_remove(DSCList list, int value) {
             prev->next = curr->next;
             list->size--;
 
-            DSCNode_destroy(curr);
+            dsc_node_destroy(curr);
 
             dsc_set_error(DSC_ERROR_NONE);
             return true;
@@ -248,7 +248,7 @@ bool DSCList_remove(DSCList list, int value) {
     return false;
 }
 
-bool DSCList_remove_all(DSCList list, int value) {
+bool dsc_list_remove_all(DSCList list, int value) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
@@ -268,12 +268,12 @@ bool DSCList_remove_all(DSCList list, int value) {
                 list->head = curr->next;
                 list->size--;
 
-                DSCNode_destroy(curr);
+                dsc_node_destroy(curr);
             } else {
                 prev->next = curr->next;
                 list->size--;
 
-                DSCNode_destroy(curr);
+                dsc_node_destroy(curr);
             }
 
             curr = curr->next;
@@ -287,7 +287,7 @@ bool DSCList_remove_all(DSCList list, int value) {
     return true;
 }
 
-int DSCList_get_head(const DSCList list) {
+int dsc_list_get_head(const DSCList list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return -1;
@@ -302,7 +302,7 @@ int DSCList_get_head(const DSCList list) {
     return list->head->value;
 }
 
-int DSCList_size(const DSCList list) {
+int dsc_list_size(const DSCList list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return -1;
@@ -312,7 +312,7 @@ int DSCList_size(const DSCList list) {
     return list->size;
 }
 
-bool DSCList_is_empty(const DSCList list) {
+bool dsc_list_is_empty(const DSCList list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return true;

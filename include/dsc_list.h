@@ -32,7 +32,7 @@ typedef struct DSCList *DSCList;
  *
  * @return A pointer to the newly created list, or NULL if memory allocation fails.
  */
-DSCList DSCList_create(void);
+DSCList dsc_list_create(void);
 
 /**
  * @brief Destroys the list and frees its memory.
@@ -40,7 +40,7 @@ DSCList DSCList_create(void);
  * @param list The list to destroy.
  * @return true if the list was destroyed successfully, false otherwise.
  */
-bool DSCList_destroy(DSCList list);
+bool dsc_list_destroy(DSCList list);
 
 /**
  * @brief Inserts a value at the beginning of the list.
@@ -49,7 +49,7 @@ bool DSCList_destroy(DSCList list);
  * @param value The value to insert.
  * @return true if the value was inserted successfully, false otherwise.
  */
-bool DSCList_push_front(DSCList list, int value);
+bool dsc_list_push_front(DSCList list, int value);
 
 /**
  * @brief Inserts a value at the end of the list.
@@ -58,7 +58,7 @@ bool DSCList_push_front(DSCList list, int value);
  * @param value The value to insert.
  * @return true if the value was inserted successfully, false otherwise.
  */
-bool DSCList_push_back(DSCList list, int value);
+bool dsc_list_push_back(DSCList list, int value);
 
 /**
  * @brief Inserts a value at a specific position in the list.
@@ -68,7 +68,7 @@ bool DSCList_push_back(DSCList list, int value);
  * @param position The position at which to insert the value.
  * @return true if the value was inserted successfully, false otherwise.
  */
-bool DSCList_insert(DSCList list, int value, int position);
+bool dsc_list_insert(DSCList list, int value, int position);
 
 /**
  * @brief Removes the first node from the list.
@@ -76,7 +76,7 @@ bool DSCList_insert(DSCList list, int value, int position);
  * @param list The list to remove the first node from.
  * @return The popped value, -1 on failure.
  */
-int DSCList_pop_front(DSCList list);
+int dsc_list_pop_front(DSCList list);
 
 /**
  * @brief Removes the first occurrence of a value from the list.
@@ -85,7 +85,7 @@ int DSCList_pop_front(DSCList list);
  * @param value The value to remove.
  * @return true if the value was removed successfully, false otherwise.
  */
-bool DSCList_remove(DSCList list, int value);
+bool dsc_list_remove(DSCList list, int value);
 
 /**
  * @brief Removes all occurrences of a value from the list.
@@ -94,7 +94,7 @@ bool DSCList_remove(DSCList list, int value);
  * @param value The value to remove.
  * @return true if the values were removed successfully, false otherwise.
  */
-bool DSCList_remove_all(DSCList list, int value);
+bool dsc_list_remove_all(DSCList list, int value);
 
 /**
  * @brief Retrieves the value of the first element in the list.
@@ -102,7 +102,7 @@ bool DSCList_remove_all(DSCList list, int value);
  * @param list The list to get the front element from.
  * @return The value of the front element, or -1 if the list is empty or NULL.
  */
-int DSCList_get_head(const DSCList list);
+int dsc_list_get_head(const DSCList list);
 
 /**
  * @brief Gets the size of the list.
@@ -110,7 +110,7 @@ int DSCList_get_head(const DSCList list);
  * @param list The list to get the size of.
  * @return The size of the list, or -1 if the list is NULL.
  */
-int DSCList_size(const DSCList list);
+int dsc_list_size(const DSCList list);
 
 /**
  * @brief Checks if the list is empty.
@@ -118,6 +118,6 @@ int DSCList_size(const DSCList list);
  * @param list The list to check.
  * @return true if the list is empty or NULL, false otherwise.
  */
-bool DSCList_is_empty(const DSCList list);
+bool dsc_list_is_empty(const DSCList list);
 
 #endif // __DSC_LIST_H__
