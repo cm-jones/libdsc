@@ -78,7 +78,6 @@ bool dsc_list_deinit(DSCList list) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
-    assert(list != NULL);
 
     DSCNode prev = NULL;
     DSCNode curr = list->head;
