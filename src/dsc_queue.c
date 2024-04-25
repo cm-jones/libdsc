@@ -76,23 +76,26 @@ void dsc_queue_free(DSCQueue queue) {
     dsc_set_error(DSC_ERROR_NONE);
 }
 
-void dsc_queue_push(DSCQueue queue, int value) {
+bool dsc_queue_push(DSCQueue queue, int value) {
     if (queue == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return;
+        return false;
     }
 
     /* Resize the queue if the size exceeds the capacity. */
     if (queue->size >= queue->capacity) {
         unsigned int new_capacity = queue->capacity * 1.5;
         if (!dsc_queue_resize(queue, new_capacity)) {
-            return;
+            dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+            return false;
         }
     }
 
     queue->values[queue->size] = value;
     queue->size++;
+
     dsc_set_error(DSC_ERROR_NONE);
+    return true;
 }
 
 int dsc_queue_pop(DSCQueue queue) {
@@ -109,7 +112,7 @@ int dsc_queue_pop(DSCQueue queue) {
     int result = queue->values[0];
 
     // Shift elements to the left
-    for (unsigned int i = 0; i < queue->size - 1; ++i) {
+    for (int i = 0; i < queue->size - 1; ++i) {
         queue->values[i] = queue->values[i + 1];
     }
 
@@ -125,7 +128,7 @@ int dsc_queue_front(const DSCQueue queue) {
         return -1;
     }
 
-    if (dsc_queue_empty(queue)) {
+    if (dsc_queue_is_empty(queue)) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return -1;
     }
