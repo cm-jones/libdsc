@@ -21,9 +21,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// Forward declaration of the node structure
-typedef struct DSCNode *DSCNode;
-
 // Forward declaration of the list structure
 typedef struct DSCList *DSCList;
 
@@ -32,7 +29,7 @@ typedef struct DSCList *DSCList;
  *
  * @return A pointer to the newly created list, or NULL if memory allocation fails.
  */
-DSCList dsc_list_create(void);
+DSCList dsc_list_init(void);
 
 /**
  * @brief Destroys the list and frees its memory.
@@ -40,7 +37,7 @@ DSCList dsc_list_create(void);
  * @param list The list to destroy.
  * @return true if the list was destroyed successfully, false otherwise.
  */
-bool dsc_list_destroy(DSCList list);
+bool dsc_list_deinit(DSCList list);
 
 /**
  * @brief Inserts a value at the beginning of the list.
@@ -99,10 +96,18 @@ bool dsc_list_remove_all(DSCList list, int value);
 /**
  * @brief Retrieves the value of the first element in the list.
  *
- * @param list The list to get the front element from.
+ * @param list The list to get the first element from.
  * @return The value of the front element, or -1 if the list is empty or NULL.
  */
 int dsc_list_get_head(const DSCList list);
+
+/**
+ * @brief Retrieves the value of the last element in the list.
+ *
+ * @param list The list to get the last element from.
+ * @return The value of the last element, or -1 if the list is empty or NULL.
+ */
+int dsc_list_get_tail(const DSCList list);
 
 /**
  * @brief Gets the size of the list.
