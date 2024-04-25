@@ -21,18 +21,20 @@
 #include "../include/dsc_list.h"
 #include "../include/dsc_error.h"
 
+typedef struct DSCNode *DSCNode;
+
 struct DSCNode {
-    int value;         // The value stored in the node
-    DSCNode next;      // The next node in the list
+    int value;    // The value stored in the node
+    DSCNode next; // The next node in the list
 };
 
 struct DSCList {
-    DSCNode head;      // The first node in the list
-    unsigned int size; // The size of the list
+    DSCNode head; // The first node in the list
+    int size;     // The size of the list
 };
 
-static DSCNode dsc_node_create(int value) {
-    DSCNode new_node = malloc(sizeof new_node);
+static DSCNode dsc_node_init(int value) {
+    DSCNode new_node = malloc(sizeof *new_node);
     if (new_node == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -45,17 +47,20 @@ static DSCNode dsc_node_create(int value) {
     return new_node;
 }
 
-static bool dsc_node_destroy(DSCNode node) {
+static bool dsc_node_deinit(DSCNode node) {
     if (node == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
+
     free(node);
+
+    dsc_set_error(DSC_ERROR_NONE);
     return true;
 }
 
-DSCList dsc_list_create(void) {
-    DSCList new_list = malloc(sizeof new_list);
+DSCList dsc_list_init(void) {
+    DSCList new_list = malloc(sizeof *new_list);
     if (new_list == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return NULL;
@@ -68,11 +73,12 @@ DSCList dsc_list_create(void) {
     return new_list;
 }
 
-bool dsc_list_destroy(DSCList list) {
+bool dsc_list_deinit(DSCList list) {
     if (list == NULL) {
         dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
         return false;
     }
+    assert(list != NULL);
 
     DSCNode prev = NULL;
     DSCNode curr = list->head;
@@ -80,7 +86,8 @@ bool dsc_list_destroy(DSCList list) {
     while (curr != NULL) {
         prev = curr;
         curr = curr->next;
-        dsc_node_destroy(prev);
+
+        dsc_node_deinit(prev);
     }
 
     free(list);
@@ -95,14 +102,14 @@ bool dsc_list_push_front(DSCList list, int value) {
         return false;
     }
 
-    DSCNode new_node = dsc_node_create(value);
-    if (new_node == NULL) {
+    DSCNode new_head = dsc_node_create(value);
+    if (new_head == NULL) {
         dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
         return false;
     }
 
-    new_node->next = list->head;
-    list->head = new_node;
+    new_head->next = list->head;
+    list->head = new_head;
     list->size++;
 
     dsc_set_error(DSC_ERROR_NONE);
@@ -121,6 +128,7 @@ bool dsc_list_push_back(DSCList list, int value) {
         return false;
     }
 
+    // Check if the list is empty
     if (list->head == NULL) {
         list->head = new_node;
         list->size++;
@@ -159,26 +167,31 @@ bool dsc_list_insert(DSCList list, int value, int position) {
         return false;
     }
 
+    int index = 0;
+
     DSCNode prev = NULL;
     DSCNode curr = list->head;
 
-    while (position != 0) {
-        if (curr == NULL) {
-            dsc_set_error(DSC_ERROR_OUT_OF_RANGE);
-            return false;
+    // Look for the right index to insert the new node
+    while (prev != NULL) {
+        // Insert the new node here
+        if (index == position) {
+            prev->next = new_node;
+            new_node->next = curr;
+            list->size++;
+
+            dsc_set_error(DSC_ERROR_NONE);
+            return true;
         }
 
         prev = curr;
         curr = curr->next;
-        position--;
+        index++;
     }
 
-    prev->next = new_node;
-    new_node->next = curr;
-    list->size++;
-
-    dsc_set_error(DSC_ERROR_NONE);
-    return true;
+    // Position is > list->size, invalid
+    dsc_set_error(DSC_ERROR_OUT_OF_RANGE);
+    return false;
 }
 
 int dsc_list_pop_front(DSCList list) {
@@ -187,17 +200,20 @@ int dsc_list_pop_front(DSCList list) {
         return -1;
     }
 
-    if (list->head == NULL) {
+    if (list->size == 0) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return -1;
     }
 
+    // Grab the value of the old head before we remove it
     DSCNode old_head = list->head;
     int result = old_head->value;
 
-    list->head = old_head->next;
+    // Make the second node in the list the new head
+    list->head = list->head->next;
     list->size--;
-    dsc_node_destroy(old_head);
+
+    dsc_node_deinit(old_head);
 
     dsc_set_error(DSC_ERROR_NONE);
     return result;
@@ -209,15 +225,16 @@ bool dsc_list_remove(DSCList list, int value) {
         return false;
     }
 
-    if (list->head == NULL) {
+    if (list->size == 0) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return false;
     }
 
+    // Check if we're removing the head
     if (list->head->value == value) {
         DSCNode old_head = list->head;
 
-        list->head = old_head->next;
+        list->head = list->head->next;
         list->size--;
 
         dsc_node_destroy(old_head);
@@ -229,6 +246,7 @@ bool dsc_list_remove(DSCList list, int value) {
     DSCNode prev = list->head;
     DSCNode curr = list->head->next;
 
+    // Look for the node we're going to remove
     while (curr != NULL) {
         if (curr->value == value) {
             prev->next = curr->next;
@@ -254,33 +272,34 @@ bool dsc_list_remove_all(DSCList list, int value) {
         return false;
     }
 
-    if (list->head == NULL) {
+    if (list->size == 0) {
         dsc_set_error(DSC_ERROR_KEY_NOT_FOUND);
         return false;
     }
 
-    DSCNode prev = NULL;
-    DSCNode curr = list->head;
+    // Check if we're removing the head
+    if (list->head->value == value) {
+        DSCNode old_head = list->head;
+
+        list->head = list->head->next;
+        list->size--;
+
+        dsc_node_destroy(old_head);
+    }
+
+    DSCNode prev = list->head;
+    DSCNode curr = list->head->next;
 
     while (curr != NULL) {
         if (curr->value == value) {
-            if (prev == NULL) {
-                list->head = curr->next;
-                list->size--;
+            prev->next = curr->next;
+            list->size--;
 
-                dsc_node_destroy(curr);
-            } else {
-                prev->next = curr->next;
-                list->size--;
-
-                dsc_node_destroy(curr);
-            }
-
-            curr = curr->next;
-        } else {
-            prev = curr;
-            curr = curr->next;
+            dsc_node_destroy(curr);
         }
+
+        prev = curr;
+        curr = curr->next;
     }
 
     dsc_set_error(DSC_ERROR_NONE);
@@ -293,13 +312,36 @@ int dsc_list_get_head(const DSCList list) {
         return -1;
     }
 
-    if (list->head == NULL) {
+    if (list->size == 0) {
         dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
         return -1;
     }
 
     dsc_set_error(DSC_ERROR_NONE);
     return list->head->value;
+}
+
+int dsc_list_get_tail(const DSCList list) {
+    if (list == NULL) {
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
+        return -1;
+    }
+
+    if (list->size == 0) {
+        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
+        return -1;
+    }
+
+    DSCNode curr = list->head;
+
+    while (curr->next != NULL) {
+        curr = curr->next;
+    }
+
+    // Now curr is the tail of the list
+
+    dsc_set_error(DSC_ERROR_NONE);
+    return curr->value;
 }
 
 int dsc_list_size(const DSCList list) {
@@ -319,5 +361,5 @@ bool dsc_list_is_empty(const DSCList list) {
     }
 
     dsc_set_error(DSC_ERROR_NONE);
-    return list->head == NULL;
+    return list->size == 0;
 }

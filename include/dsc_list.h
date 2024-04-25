@@ -44,6 +44,7 @@ bool dsc_list_deinit(DSCList list);
  *
  * @param list The list to insert the value into.
  * @param value The value to insert.
+ * 
  * @return true if the value was inserted successfully, false otherwise.
  */
 bool dsc_list_push_front(DSCList list, int value);
