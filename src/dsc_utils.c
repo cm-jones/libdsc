@@ -20,7 +20,7 @@
 
 #include "../include/dsc_utils.h"
 
-int dsc_utils_compare(void *ptr1, void *ptr2, DSCType type) {
+int dsc_compare(void *ptr1, void *ptr2, DSCType type) {
     if (!dsc_type_is_valid(type)) {
         return -1;
     }
@@ -64,7 +64,7 @@ int dsc_utils_compare(void *ptr1, void *ptr2, DSCType type) {
     }
 }
 
-uint32_t dsc_utils_hash(void *key, DSCType key_type, size_t capacity) {
+uint32_t dsc_hash(void *key, DSCType key_type, size_t capacity) {
     uint32_t hash;
 
     switch (key_type) {
