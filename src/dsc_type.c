@@ -29,7 +29,7 @@ bool dsc_type_is_valid(DSCType type) {
     return type > 0 && type < DSC_TYPE_COUNT;
 }
 
-size_t dsc_type_sizeof(DSCType type) {
+size_t dsc_sizeof(DSCType type) {
     switch (type) {
         case DSC_TYPE_CHAR:
             return sizeof(char);
@@ -69,7 +69,7 @@ size_t dsc_type_sizeof(DSCType type) {
     }
 }
 
-DSCType dsc_type_typeof(void *data) {
+DSCType dsc_typeof(void *data) {
     CHECK_TYPE(char, DSC_TYPE_CHAR)
     CHECK_TYPE(unsigned char, DSC_TYPE_UCHAR)
     CHECK_TYPE(short, DSC_TYPE_SHORT)
