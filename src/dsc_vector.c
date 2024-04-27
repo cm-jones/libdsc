@@ -72,7 +72,7 @@ bool dsc_vector_shrink_to_fit(DSCVector vector) {
 
 DSCVector dsc_vector_init(DSCType type) {
     // Check whether type is a valid DSCType
-    if (type < 0 || type >= DSC_TYPE_COUNT) {
+    if (type <= 0 || type >= DSC_TYPE_COUNT) {
         return NULL;
     }
 

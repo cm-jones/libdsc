@@ -55,7 +55,7 @@ static bool dsc_queue_resize(DSCQueue queue, size_t new_capacity) {
 
 DSCQueue dsc_queue_init(DSCType type) {
     // Check whether type is a valid DSCType
-    if (type < 0 || type >= DSC_TYPE_COUNT) {
+    if (type <= 0 || type >= DSC_TYPE_COUNT) {
         return NULL;
     }
 

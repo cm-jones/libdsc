@@ -71,7 +71,7 @@ static bool dsc_set_rehash(DSCSet set, size_t new_capacity) {
 
 DSCSet dsc_set_init(DSCType type) {
     // Check whether type is a valid DSCType
-    if (type < 0 || type >= DSC_TYPE_COUNT) {
+    if (type <= 0 || type >= DSC_TYPE_COUNT) {
         return NULL;
     }
 
@@ -80,15 +80,15 @@ DSCSet dsc_set_init(DSCType type) {
         return NULL;
     }
 
-    new_set->size = 0;
-    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
-
     new_set->buckets = calloc(new_set->capacity, sizeof(DSCSetEntry *));
     if (!new_set->buckets) {
         free(new_set);
         return NULL;
     }
 
+    new_set->size = 0;
+    new_set->capacity = DSC_SET_INITIAL_CAPACITY;
+    new_set->type = type;
     new_set->error = DSC_ERROR_OK;
 
     return new_set;

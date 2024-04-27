@@ -52,7 +52,7 @@ static bool dsc_stack_resize(DSCStack stack, size_t new_capacity) {
 
 DSCStack dsc_stack_init(DSCType type) {
     // Check whether type is a valid DSCType
-    if (type < 0 || type >= DSC_TYPE_COUNT) {
+    if (type <= 0 || type >= DSC_TYPE_COUNT) {
         return NULL;
     }
 
