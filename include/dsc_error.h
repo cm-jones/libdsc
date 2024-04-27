@@ -60,8 +60,8 @@
  * @constant DSC_ERROR_KEY_NOT_FOUND
  *           The specified key was not found in the container.
  *
- * @constant DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS
- *           The specified key already exists in the hashmap.
+ * @constant DSC_ERROR_KEY_ALREADY_EXISTS
+ *           The specified key already exists in the set or map.
  */
 typedef enum DSCError {
     DSC_ERROR_OK,
@@ -71,7 +71,7 @@ typedef enum DSCError {
     DSC_ERROR_OUT_OF_MEMORY,
     DSC_ERROR_EMPTY_CONTAINER,
     DSC_ERROR_KEY_NOT_FOUND,
-    DSC_ERROR_HASHMAP_KEY_ALREADY_EXISTS
+    DSC_ERROR_KEY_ALREADY_EXISTS
 } DSCError;
 
 #endif // __DSC_ERROR_H__
