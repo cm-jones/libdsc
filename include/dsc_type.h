@@ -72,7 +72,7 @@ bool dsc_type_is_valid(DSCType type);
 /**
  * @brief Returns the size of the specified data type.
  *
- * The dsc_type_sizeof function takes a DSCType value representing a data type and
+ * The dsc_sizeof function takes a DSCType value representing a data type and
  * returns the size of that type in bytes. This function is used when initializing
  * a new container to determine the size of the elements based on the provided
  * data type.
@@ -80,12 +80,12 @@ bool dsc_type_is_valid(DSCType type);
  * @param type The DSCType value representing the data type.
  * @return The size of the specified data type in bytes, or 0 if the type is unknown.
  */
-size_t dsc_type_sizeof(DSCType type);
+size_t dsc_sizeof(DSCType type);
 
 /**
  * @brief Determines the type of the data pointed to by a void pointer.
  *
- * The dsc_type_typeof function takes a void pointer to the data and attempts to
+ * The dsc_typeof function takes a void pointer to the data and attempts to
  * determine its type based on the size of the dereferenced pointer. It compares
  * the size of the dereferenced pointer with the sizes of known types defined in
  * the DSCType enum and returns the corresponding DSCType value if a match is
@@ -101,6 +101,6 @@ size_t dsc_type_sizeof(DSCType type);
  *       It is the caller's responsibility to ensure that the data pointer is
  *       valid and points to the correct type.
  */
-DSCType dsc_type_typeof(void *data);
+DSCType dsc_typeof(void *data);
 
 #endif // __DSC_TYPE_H__

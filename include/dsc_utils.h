@@ -42,7 +42,7 @@
  *       values of the specified type. It is the caller's responsibility to ensure
  *       that the pointers are valid and the type matches the actual data type.
  */
-int dsc_utils_compare(void *a, void *b, DSCType type);
+int dsc_compare(void *a, void *b, DSCType type);
 
 /**
  * @brief Calculates the hash value for a given key and capacity.
@@ -54,6 +54,6 @@ int dsc_utils_compare(void *a, void *b, DSCType type);
  * @param capacity The capacity of the hash set or map.
  * @return The calculated hash value.
  */
-uint32_t dsc_utils_hash(void *key, DSCType key_type, size_t capacity);
+uint32_t dsc_hash(void *key, DSCType key_type, size_t capacity);
 
 #endif // __DSC_UTILS_H__
