@@ -44,7 +44,7 @@
  * @constant DSC_TYPE_STRING    String type (character pointer).
  * @constant DSC_TYPE_BOOL      Boolean type.
  * @constant DSC_TYPE_POINTER   Generic pointer type.
- * @constant DSC_TYPE_COUNT     The total number of enum values.
+ * @constant DSC_TYPE_COUNT     The total number of types.
  */
 typedef enum DSCType {
     DSC_TYPE_UNKNOWN,
@@ -67,10 +67,12 @@ typedef enum DSCType {
     DSC_TYPE_COUNT
 } DSCType;
 
+bool dsc_type_is_valid(DSCType type);
+
 /**
  * @brief Returns the size of the specified data type.
  *
- * The dsc_size_of function takes a DSCType value representing a data type and
+ * The dsc_type_sizeof function takes a DSCType value representing a data type and
  * returns the size of that type in bytes. This function is used when initializing
  * a new container to determine the size of the elements based on the provided
  * data type.
@@ -78,12 +80,12 @@ typedef enum DSCType {
  * @param type The DSCType value representing the data type.
  * @return The size of the specified data type in bytes, or 0 if the type is unknown.
  */
-size_t dsc_size_of(DSCType type);
+size_t dsc_type_sizeof(DSCType type);
 
 /**
  * @brief Determines the type of the data pointed to by a void pointer.
  *
- * The dsc_type_of function takes a void pointer to the data and attempts to
+ * The dsc_type_typeof function takes a void pointer to the data and attempts to
  * determine its type based on the size of the dereferenced pointer. It compares
  * the size of the dereferenced pointer with the sizes of known types defined in
  * the DSCType enum and returns the corresponding DSCType value if a match is
@@ -99,6 +101,6 @@ size_t dsc_size_of(DSCType type);
  *       It is the caller's responsibility to ensure that the data pointer is
  *       valid and points to the correct type.
  */
-DSCType dsc_type_of(void *data);
+DSCType dsc_type_typeof(void *data);
 
 #endif // __DSC_TYPE_H__
