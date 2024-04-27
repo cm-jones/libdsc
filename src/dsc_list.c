@@ -75,20 +75,18 @@ static bool dsc_node_deinit(DSCNode node) {
 /* Constructor and destructor for a DSCList */
 
 DSCList dsc_list_init(DSCType type) {
-    DSCList list = malloc(sizeof *list);
-    if (!list) {
+    DSCList new_list = malloc(sizeof *new_list);
+    if (!new_list) {
         return NULL;
     }
 
-    list->head = NULL;
-    list->tail = NULL;
+    new_list->head = NULL;
+    new_list->tail = NULL;
+    new_list->size = 0;
+    new_list->type = type;
+    new_list->error = DSC_ERROR_OK;
 
-    list->size = 0;
-    list->type = type;
-
-    list->error = DSC_ERROR_OK;
-
-    return list;
+    return new_list;
 }
 
 bool dsc_list_deinit(DSCList list) {
