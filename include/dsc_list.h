@@ -19,111 +19,143 @@
 #define __DSC_LIST_H__
 
 #include <stdbool.h>
-#include <stddef.h>
 
-// Forward declaration of the list structure
+#include "dsc_type.h"
+#include "dsc_error.h"
+
 typedef struct DSCList *DSCList;
 
 /**
- * @brief Creates a new list.
+ * @brief Creates a new empty doubly linked list.
+ *
+ * @param type The type of the elements in the list.
  *
  * @return A pointer to the newly created list, or NULL if memory allocation fails.
  */
-DSCList dsc_list_init(void);
+DSCList dsc_list_init(DSCType type);
 
 /**
  * @brief Destroys the list and frees its memory.
  *
  * @param list The list to destroy.
- * @return true if the list was destroyed successfully, false otherwise.
+ *
+ * @return true if the list was successfully destroyed, false otherwise.
  */
 bool dsc_list_deinit(DSCList list);
-
-/**
- * @brief Inserts a value at the beginning of the list.
- *
- * @param list The list to insert the value into.
- * @param value The value to insert.
- * 
- * @return true if the value was inserted successfully, false otherwise.
- */
-bool dsc_list_push_front(DSCList list, int value);
-
-/**
- * @brief Inserts a value at the end of the list.
- *
- * @param list The list to insert the value into.
- * @param value The value to insert.
- * @return true if the value was inserted successfully, false otherwise.
- */
-bool dsc_list_push_back(DSCList list, int value);
-
-/**
- * @brief Inserts a value at a specific position in the list.
- *
- * @param list The list to insert the value into.
- * @param value The value to insert.
- * @param position The position at which to insert the value.
- * @return true if the value was inserted successfully, false otherwise.
- */
-bool dsc_list_insert(DSCList list, int value, int position);
-
-/**
- * @brief Removes the first node from the list.
- *
- * @param list The list to remove the first node from.
- * @return The popped value, -1 on failure.
- */
-int dsc_list_pop_front(DSCList list);
-
-/**
- * @brief Removes the first occurrence of a value from the list.
- *
- * @param list The list to remove the value from.
- * @param value The value to remove.
- * @return true if the value was removed successfully, false otherwise.
- */
-bool dsc_list_remove(DSCList list, int value);
-
-/**
- * @brief Removes all occurrences of a value from the list.
- *
- * @param list The list to remove the values from.
- * @param value The value to remove.
- * @return true if the values were removed successfully, false otherwise.
- */
-bool dsc_list_remove_all(DSCList list, int value);
-
-/**
- * @brief Retrieves the value of the first element in the list.
- *
- * @param list The list to get the first element from.
- * @return The value of the front element, or -1 if the list is empty or NULL.
- */
-int dsc_list_get_head(const DSCList list);
-
-/**
- * @brief Retrieves the value of the last element in the list.
- *
- * @param list The list to get the last element from.
- * @return The value of the last element, or -1 if the list is empty or NULL.
- */
-int dsc_list_get_tail(const DSCList list);
-
-/**
- * @brief Gets the size of the list.
- *
- * @param list The list to get the size of.
- * @return The size of the list, or -1 if the list is NULL.
- */
-int dsc_list_size(const DSCList list);
 
 /**
  * @brief Checks if the list is empty.
  *
  * @param list The list to check.
- * @return true if the list is empty or NULL, false otherwise.
+ *
+ * @return true if the list is empty, false otherwise.
  */
 bool dsc_list_is_empty(const DSCList list);
+
+/**
+ * @brief Gets the number of elements in the list.
+ *
+ * @param list The list to get the size of.
+ *
+ * @return The number of elements in the list, or -1 if the list is NULL.
+ */
+int dsc_list_size(const DSCList list);
+
+/**
+ * @brief Gets the element at the front of the list.
+ *
+ * @param list The list to get the front element from.
+ *
+ * @return A pointer to the front element, or NULL if the list is empty or NULL.
+ */
+void *dsc_list_front(const DSCList list);
+
+/**
+ * @brief Gets the element at the back of the list.
+ *
+ * @param list The list to get the back element from.
+ *
+ * @return A pointer to the back element, or NULL if the list is empty or NULL.
+ */
+void *dsc_list_back(const DSCList list);
+
+/**
+ * @brief Gets the element at the specified position in the list.
+ *
+ * @param list The list to get the element from.
+ * @param position The position of the element to get.
+ *
+ * @return A pointer to the element at the specified position, or NULL if the
+ *         position is out of range or the list is empty or NULL.
+ */
+void *dsc_list_at(const DSCList list, int position);
+
+/**
+ * @brief Inserts an element at the front of the list.
+ *
+ * @param list The list to insert the element into.
+ * @param data A pointer to the element to insert.
+ *
+ * @return true if the element was successfully inserted, false otherwise.
+ */
+bool dsc_list_push_front(DSCList list, void *data);
+
+/**
+ * @brief Removes the element at the front of the list.
+ *
+ * @param list The list to remove the front element from.
+ *
+ * @return A pointer to the removed element, or NULL if the list is empty or NULL.
+ */
+void *dsc_list_pop_front(DSCList list);
+
+/**
+ * @brief Inserts an element at the back of the list.
+ *
+ * @param list The list to insert the element into.
+ * @param data A pointer to the element to insert.
+ *
+ * @return true if the element was successfully inserted, false otherwise.
+ */
+bool dsc_list_push_back(DSCList list, void *data);
+
+/**
+ * @brief Removes the element at the back of the list.
+ *
+ * @param list The list to remove the back element from.
+ *
+ * @return A pointer to the removed element, or NULL if the list is empty or NULL.
+ */
+void *dsc_list_pop_back(DSCList list);
+
+/**
+ * @brief Inserts an element at the specified position in the list.
+ *
+ * @param list The list to insert the element into.
+ * @param data A pointer to the element to insert.
+ * @param position The position at which to insert the element.
+ *
+ * @return true if the element was successfully inserted, false otherwise.
+ */
+bool dsc_list_insert(DSCList list, void *data, int position);
+
+/**
+ * @brief Removes the element at the specified position from the list.
+ *
+ * @param list The list to remove the element from.
+ * @param position The position of the element to remove.
+ *
+ * @return true if the element was successfully removed, false otherwise.
+ */
+bool dsc_list_erase(DSCList list, int position);
+
+/**
+ * @brief Retrieves the last error code.
+ *
+ * @param list The list to get the error code from.
+ *
+ * @return The last error code.
+ */
+DSCError dsc_error(const DSCList list);
 
 #endif // __DSC_LIST_H__
