@@ -66,6 +66,19 @@ typedef enum DSCType {
 } DSCType;
 
 /**
+ * @brief Returns the size of the specified data type.
+ *
+ * The dsc_size_of function takes a DSCType value representing a data type and
+ * returns the size of that type in bytes. This function is used when initializing
+ * a new container to determine the size of the elements based on the provided
+ * data type.
+ *
+ * @param type The DSCType value representing the data type.
+ * @return The size of the specified data type in bytes, or 0 if the type is unknown.
+ */
+size_t dsc_size_of(DSCType type);
+
+/**
  * @brief Determines the type of the data pointed to by a void pointer.
  *
  * The dsc_type_of function takes a void pointer to the data and attempts to
