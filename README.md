@@ -4,16 +4,16 @@
 
 ## Description
 
-libdsc is an open-source C library featuring robust and efficient implementations of the following data structures:
+libdsc is an open-source C library featuring robust, efficient, and generic implementations of the following containers:
 
 - Vectors: similar to `std::vector`
-- Lists:   similar to `std::forward_list`
+- Lists:   similar to `std::list`
 - Stacks:  similar to `std::stack`
 - Queues:  similar to `std::queue`
 - Sets:    similar to `std::unordered_set`
 - Maps:    similar to `std::unordered_map`
 
-The libdsc APIs closely resemble those found for the corresponding containers in the C++ Standard Library, which provides familiarity and ease of use to C++ developers.
+The APIs closely resemble those found for the corresponding containers in the C++ Standard Library, which provides familiarity and ease of use to C++ developers.
 
 ## Version
 
@@ -40,23 +40,26 @@ To use libdsc in your C project, follow these steps:
 
 4. Use the library functions in your code, for example:
    ```c
-   DSCSet *set = dsc_set_create();
-   if (set == NULL) {
+   DSCSet set = dsc_set_init(DSC_TYPE_INT);
+   if (!set) {
       // Handle memory allocation error ...
    }
 
-   for (int i = 0; i < 100; ++i) {
-      dsc_set_insert(set, i);
+   for (size_t i = 0; i < 100; ++i) {
+      if (!dsc_set_insert(set, i)) {
+         DSCError errno = dsc_error_get(set);
+         // Handle error code ...
+      }
    }
    
    dsc_set_insert(set, 0);    // Returns false
    dsc_set_contains(set, 99); // Returns true
    dsc_set_erase(set, 53);    // Returns true
-   dsc_set_size(set);         // Returns 99
+   int size = dsc_set_size(set); // Returns 99
 
    // Use other set functions as needed ...
 
-   dsc_set_free(set);
+   dsc_set_deinit(set);
    ```
 
 ## Build
