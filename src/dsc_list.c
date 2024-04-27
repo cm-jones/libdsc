@@ -431,8 +431,6 @@ bool dsc_list_erase(DSCList list, int position) {
     }
 
     // Should never reach here
-    assert(0);
-
     return false;
 }
 
