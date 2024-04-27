@@ -44,6 +44,7 @@
  * @constant DSC_TYPE_STRING    String type (character pointer).
  * @constant DSC_TYPE_BOOL      Boolean type.
  * @constant DSC_TYPE_POINTER   Generic pointer type.
+ * @constant DSC_TYPE_COUNT     The total number of enum values.
  */
 typedef enum DSCType {
     DSC_TYPE_UNKNOWN,
@@ -62,7 +63,8 @@ typedef enum DSCType {
     DSC_TYPE_LDOUBLE,
     DSC_TYPE_STRING,
     DSC_TYPE_BOOL,
-    DSC_TYPE_POINTER
+    DSC_TYPE_POINTER,
+    DSC_TYPE_COUNT
 } DSCType;
 
 /**
