@@ -19,7 +19,9 @@
 #define __DSC_VECTOR_H__
 
 #include <stdbool.h>
-#include <stddef.h>
+
+#include "../include/dsc_type.h"
+#include "../include/dsc_error.h"
 
 /**
  * @def DSC_VECTOR_INITIAL_CAPACITY
@@ -27,105 +29,142 @@
  */
 #define DSC_VECTOR_INITIAL_CAPACITY 16
 
-// Forward declaration of the vector structure
+/* Forward declaration of the vector structure */
+
 typedef struct DSCVector *DSCVector;
 
 /**
- * @brief Creates a new empty vector.
+ * @brief Initializes a new DSCVector with the specified element type.
  *
- * @return A pointer to the newly created vector, or NULL if memory allocation fails.
+ * @param type The type of elements to be stored in the vector.
+ * @return A pointer to the newly created DSCVector, or NULL if initialization fails.
  */
-DSCVector DSCVector_create(void);
+DSCVector dsc_vector_init(DSCType type);
 
 /**
- * @brief Destroys the vector and frees its memory.
+ * @brief Deinitializes and frees the memory allocated for the DSCVector.
  *
- * @param vector The vector to destroy.
- * @return true if the vector was destroyed successfully, false otherwise.
+ * @param vector The DSCVector to deinitialize.
+ * @return true if deinitialization is successful, false otherwise.
  */
-bool DSCVector_free(DSCVector vector);
+bool dsc_vector_deinit(DSCVector vector);
+
+/* Capacity */
 
 /**
- * @brief Inserts an element at the end of the vector.
+ * @brief Checks if the DSCVector is empty.
  *
- * @param vector The vector to push the element into.
- * @param value The value to push.
- * @return true if the element was inserted successfully, false otherwise.
- */
-bool DSCVector_push_back(DSCVector vector, int value);
-
-/**
- * @brief Removes the last element from the vector.
- *
- * @param vector The vector to pop from.
- * @return true if the element was popped successfully, false otherwise.
- */
-bool DSCVector_pop_back(DSCVector vector);
-
-/**
- * @brief Inserts an element at the specified position in the vector.
- *
- * @param vector The vector to insert the element into.
- * @param value The value to insert.
- * @param position The position at which to insert the element.
- * @return true if the element was inserted successfully, false otherwise.
- */
-bool DSCVector_insert(DSCVector vector, int value, int position);
-
-/**
- * @brief Removes the element at the specified position from the vector.
- *
- * @param vector The vector to erase the element from.
- * @param position The position of the element to erase.
- * @return true if the element was removed successfully, false otherwise.
- */
-bool DSCVector_erase(DSCVector vector, int position);
-
-/**
- * @brief Retrieves the value of the element at the specified index.
- *
- * @param vector The vector to get the element from.
- * @param index The index of the element to retrieve.
- *
- * @return The value of the element at the specified index, or -1 if the vector is NULL or the index is out of bounds.
- */
-int DSCVector_at(const DSCVector vector, int index);
-
-/**
- * @brief Checks if the vector is empty.
- *
- * @param vector The vector to check.
- *
+ * @param vector The DSCVector to check.
  * @return true if the vector is empty, false otherwise.
  */
-bool DSCVector_is_empty(const DSCVector vector);
+bool dsc_vector_is_empty(const DSCVector vector);
 
 /**
- * @brief Gets the number of elements in the vector.
+ * @brief Returns the number of elements in the DSCVector.
  *
- * @param vector The vector to get the size of.
- *
- * @return The number of elements in the vector, -1 if the vector is NULL.
+ * @param vector The DSCVector to get the size of.
+ * @return The number of elements in the vector, or -1 if the vector is NULL.
  */
-int DSCVector_size(const DSCVector vector);
+int dsc_vector_size(const DSCVector vector);
 
 /**
- * @brief Gets the maximum number of elements the vector can hold before needing to allocate more memory.
+ * @brief Returns the current capacity of the DSCVector.
  *
- * @param vector The vector to get the capacity of.
- *
- * @return The maximum number of elements the vector can hold, or -1 if the vector is NULL.
+ * @param vector The DSCVector to get the capacity of.
+ * @return The current capacity of the vector, or -1 if the vector is NULL.
  */
-int DSCVector_capacity(const DSCVector vector);
+int dsc_vector_capacity(const DSCVector vector);
+
+/* Element access */
 
 /**
- * @brief Reserves memory for the vector to hold at least the specified number of elements.
+ * @brief Returns the element at the specified index in the DSCVector.
  *
- * @param vector The vector to reserve memory for.
- * @param new_capacity The minimum capacity to reserve.
- * 
- * @return true if the operation was successful, false otherwise.
+ * @param vector The DSCVector to access.
+ * @param index The index of the element to retrieve.
+ * @return A pointer to the element at the specified index, or NULL if the index is out of bounds or the vector is NULL.
  */
-bool DSCVector_reserve(DSCVector vector, int new_capacity);
+void *dsc_vector_at(const DSCVector vector, size_t index);
+
+/**
+ * @brief Returns the last element in the DSCVector.
+ *
+ * @param vector The DSCVector to access.
+ * @return A pointer to the last element in the vector, or NULL if the vector is empty or NULL.
+ */
+void *dsc_vector_back(const DSCVector vector);
+
+/* Modifiers */
+
+/**
+ * @brief Appends an element to the end of the DSCVector.
+ *
+ * @param vector The DSCVector to append the element to.
+ * @param data The element to append.
+ * @return true if the element is successfully appended, false otherwise.
+ */
+bool dsc_vector_push_back(DSCVector vector, void *data);
+
+/**
+ * @brief Removes the last element from the DSCVector and returns it.
+ *
+ * @param vector The DSCVector to remove the last element from.
+ * @return A pointer to the removed element, or NULL if the vector is empty or NULL.
+ */
+void *dsc_vector_pop_back(DSCVector vector);
+
+/**
+ * @brief Inserts an element at the specified index in the DSCVector.
+ *
+ * @param vector The DSCVector to insert the element into.
+ * @param data The element to insert.
+ * @param index The index at which to insert the element.
+ * @return true if the element is successfully inserted, false otherwise.
+ */
+bool dsc_vector_insert(DSCVector vector, void *data, size_t index);
+
+/**
+ * @brief Removes the element at the specified index from the DSCVector.
+ *
+ * @param vector The DSCVector to remove the element from.
+ * @param index The index of the element to remove.
+ * @return true if the element is successfully removed, false otherwise.
+ */
+bool dsc_vector_erase(DSCVector vector, size_t index);
+
+/**
+ * @brief Reserves the specified capacity for the DSCVector.
+ *
+ * @param vector The DSCVector to reserve capacity for.
+ * @param new_capacity The new capacity to reserve.
+ * @return true if the capacity is successfully reserved, false otherwise.
+ */
+bool dsc_vector_reserve(DSCVector vector, size_t new_capacity);
+
+/**
+ * @brief Shrinks the capacity of the DSCVector to fit its current size.
+ *
+ * @param vector The DSCVector to shrink.
+ * @return true if the capacity is successfully shrunk, false otherwise.
+ */
+bool dsc_vector_shrink_to_fit(DSCVector vector);
+
+/**
+ * @brief Removes all elements from the DSCVector without deallocating the underlying memory.
+ *
+ * @param vector The DSCVector to clear.
+ * @return true if the vector is successfully cleared, false otherwise.
+ */
+bool dsc_vector_clear(DSCVector vector);
+
+/* Error handling */
+
+/**
+ * @brief Returns the most recent error code of the DSCVector.
+ *
+ * @param vector The DSCVector to get the error code from.
+ * @return The most recent error code of the vector.
+ */
+DSCError dsc_error_get(const DSCVector vector);
 
 #endif // __DSC_VECTOR_H__
