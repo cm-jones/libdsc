@@ -380,8 +380,6 @@ bool dsc_list_insert(DSCList list, void *data, int position) {
     }
 
     // Should never reach here
-    assert(0);
-
     return false;
 }
 
