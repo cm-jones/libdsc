@@ -19,37 +19,42 @@
 
 #include "../include/dsc_map.h"
 #include "../include/dsc_utils.h"
-#include "../include/dsc_error.h"
 
-/* Represents a hash map entry. */
+/* Represents a hash map entry */
+
+typedef struct DSCMapEntry *DSCMapEntry;
+
 struct DSCMapEntry {
-   int key;                       /* Key of the entry. */
-   int value;                     /* Value associated with the key. */
-   struct DSCMapEntry *next;  /* Pointer to the next entry in the same bucket. */
+   void *key;             /* Key of the entry */
+   void *value;           /* Value associated with the key */
+   DSCMapEntry next;      /* Pointer to the next entry in the same bucket */
 };
 
-/* Represents a hash map. */
+/* Represents a hash map  */
+
 struct DSCMap {
-   struct DSCMapEntry **buckets;  /* Array of buckets (linked lists). */
-   unsigned int size;                       /* Number of entries in the map. */
-   unsigned int capacity;                   /* Number of buckets in the map. */
+    DSCMapEntry *buckets; /* Array of pointers to entries */
+    size_t size;          /* The number of elements currently in the hash map */
+    size_t capacity;      /* The current capacity of the hash map */
+    DSCType key_type;     /* The type of the keys in the map */
+    DSCType value_type;   /* The type of the values in the map */
+    DSCError error;       /* The most recent error code */
 };
 
-static void dsc_map_rehash(DSCMap *map, unsigned int new_capacity) {
-   DSCMapEntry **new_buckets = calloc(new_capacity, sizeof(DSCMapEntry *));
-   if (new_buckets == NULL) {
-       dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
-       return;
+static bool dsc_map_rehash(DSCMap map, size_t new_capacity) {
+   DSCMapEntry *new_buckets = calloc(new_capacity, sizeof(DSCMapEntry *));
+   if (!new_buckets) {
+       return false;
    }
 
-   /* Rehash all the elements into the new buckets. */
-   for (unsigned int i = 0; i < map->capacity; ++i) {
-       DSCMapEntry *entry = map->buckets[i];
-       while (entry != NULL) {
-           DSCMapEntry *next = entry->next;
+   // Rehash all the elements into the new buckets
+   for (size_t i = 0; i < map->capacity; ++i) {
+       DSCMapEntry entry = map->buckets[i];
+       while (entry) {
+           DSCMapEntry next = entry->next;
 
-           /* Rehash the value to determine the new index. */
-           int index = dsc_hash(entry->key, new_capacity);
+           // Rehash the value to determine the new index
+           uint32_t index = dsc_hash(entry->key, new_capacity);
 
            entry->next = new_buckets[index];
            new_buckets[index] = entry;
@@ -60,12 +65,14 @@ static void dsc_map_rehash(DSCMap *map, unsigned int new_capacity) {
    free(map->buckets);
    map->buckets = new_buckets;
    map->capacity = new_capacity;
+
+   return true;
 }
 
-DSCMap *dsc_map_create(void) {
-   DSCMap *new_map = malloc(sizeof *new_map);
-   if (new_map == NULL) {
-       dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+DSCMap dsc_map_create(DSCType key_type, DSCType value_type) {
+    
+   DSCMap new_map = malloc(sizeof *new_map);
+   if (!new_map) {
        return NULL;
    }
 

@@ -21,6 +21,9 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "dsc_type.h"
+#include "dsc_error.h"
+
 /**
  * @def DSC_MAP_INITIAL_CAPACITY
  * @brief The initial capacity of the hash map.
@@ -33,90 +36,40 @@
  */
 #define DSC_MAP_LOAD_FACTOR 0.75
 
-/* Forward declaration of the map entry structure */
-typedef struct DSCMapEntry DSCMapEntry;
-
 /* Forward declaration of the map structure */
-typedef struct DSCMap DSCMap;
 
-/**
- * @brief Creates a new empty map.
- *
- * @return A pointer to the newly created map, or NULL if memory allocation fails.
- */
-DSCMap *dsc_map_create(void);
+typedef struct DSCMap *DSCMap;
 
-/**
- * @brief Destroys the map and frees its memory.
- *
- * @param map The map to destroy.
- */
-void dsc_map_free(DSCMap *map);
+/* Constructor and destructor for a DSCMap */
 
-/**
- * @brief Inserts a key-value pair into the map.
- *
- * @param map The map to insert the key-value pair into.
- * @param key The key to insert.
- * @param value The value to associate with the key.
- *
- * @return true if the key-value pair was inserted successfully, false if the key already exists.
- */
-bool dsc_map_insert(DSCMap *map, int key, int value);
+DSCMap dsc_map_init(DSCType key_type, DSCType value_type);
 
-/**
- * @brief Erases the key-value pair with the given key from the map.
- *
- * @param map The map to erase the key-value pair from.
- * @param key The key to erase.
- *
- * @return true if the key-value pair was erased successfully, false if the key was not found.
- */
-bool dsc_map_erase(DSCMap *map, int key);
+bool dsc_map_free(DSCMap map);
 
-/**
- * @brief Retrieves the value associated with the given key.
- *
- * @param map The map to retrieve the value from.
- * @param key The key to retrieve the value for.
- *
- * @return The value associated with the key, or 0 if the key is not found.
- */
-int dsc_map_get(const DSCMap *map, int key);
+/* Capacity */
 
-/**
- * @brief Checks if the map contains the given key.
- *
- * @param map The map to check.
- * @param key The key to check for.
- *
- * @return true if the key exists in the map, false otherwise.
- */
-bool dsc_map_contains(const DSCMap *map, int key);
+bool dsc_map_empty(const DSCMap map);
 
-/**
- * @brief Gets the number of key-value pairs in the map.
- *
- * @param map The map to get the size of.
- *
- * @return The number of key-value pairs in the map, -1 if the map is NULL.
- */
-int dsc_map_size(const DSCMap *map);
+int dsc_map_size(const DSCMap map);
 
-/**
- * @brief Checks if the map is empty.
- *
- * @param map The map to check.
- *
- * @return true if the map is empty, false otherwise.
- */
-bool dsc_map_empty(const DSCMap *map);
+int dsc_map_capacity(const DSCMap map);
 
-/**
- * @brief Clears all key-value pairs from the map.
- *
- * @param map The map to clear.
- */
-void dsc_map_clear(DSCMap *map);
+/* Element access */
 
-#endif /* __DSC_MAP_H__ */
+void *dsc_map_get(const DSCMap map, void *key);
+
+bool dsc_map_contains(const DSCMap map, void *key);
+
+/* Modifiers */
+
+bool dsc_map_insert(DSCMap map, void *key, void *value);
+
+bool dsc_map_erase(DSCMap map, void *key);
+
+bool dsc_map_clear(DSCMap map);
+
+/* Error handling */
+
+DSCError dsc_error_get(const DSCMap map);
+
+#endif // __DSC_MAP_H__
