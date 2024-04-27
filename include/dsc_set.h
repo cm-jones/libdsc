@@ -117,8 +117,8 @@ bool dsc_set_erase(DSCSet set, void *data);
  * @brief Removes all elements from the DSCSet.
  *
  * @param set The DSCSet to clear.
- * @return true if the clear operation is successful, false otherwise.
+ * @return The last error code.
  */
-bool dsc_set_clear(DSCSet set);
+DSCError dsc_set_error(DSCSet set);
 
 #endif // __DSC_SET_H__

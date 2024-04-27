@@ -129,6 +129,6 @@ void *dsc_queue_pop(DSCQueue queue);
  *
  * @return The last error code.
  */
-DSCError dsc_error_get(const DSCQueue queue);
+DSCError dsc_queue_error(const DSCQueue queue);
 
 #endif // __DSC_QUEUE_H__

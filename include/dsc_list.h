@@ -156,6 +156,6 @@ bool dsc_list_erase(DSCList list, size_t position);
  *
  * @return The last error code.
  */
-DSCError dsc_error_get(const DSCList list);
+DSCError dsc_list_error(const DSCList list);
 
 #endif // __DSC_LIST_H__

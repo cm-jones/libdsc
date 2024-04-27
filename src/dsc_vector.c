@@ -302,10 +302,8 @@ bool dsc_vector_clear(DSCVector vector) {
     return true;
 }
 
-DSCError dsc_error_get(const DSCVector vector) {
-    if (!vector) {
-        return DSC_ERROR_INVALID_ARGUMENT;
-    }
+/* Error handling */
 
+DSCError dsc_vector_error(const DSCVector vector) {
     return vector->error;
 }

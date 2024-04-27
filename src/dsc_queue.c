@@ -167,6 +167,8 @@ void *dsc_queue_pop(DSCQueue queue) {
     return data;
 }
 
-DSCError dsc_error_get(const DSCQueue queue) {
+/* Error handling */
+
+DSCError dsc_queue_error(const DSCQueue queue) {
     return queue->error;
 }

@@ -165,6 +165,6 @@ bool dsc_vector_clear(DSCVector vector);
  * @param vector The DSCVector to get the error code from.
  * @return The most recent error code of the vector.
  */
-DSCError dsc_error_get(const DSCVector vector);
+DSCError dsc_vector_error(const DSCVector vector);
 
 #endif // __DSC_VECTOR_H__

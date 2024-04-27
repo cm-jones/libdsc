@@ -210,7 +210,7 @@ bool dsc_set_insert(DSCSet set, void *key) {
 
     // Resize the set if the load factor exceeds the threshold
     if (set->size >= DSC_SET_LOAD_FACTOR * set->capacity) {
-        size_t new_capacity = dsc_next_prime(set->capacity * 2);
+        size_t new_capacity = set->capacity * 2;
         if (!dsc_set_rehash(set, new_capacity)) {
             set->error = DSC_ERROR_OUT_OF_MEMORY;
             return false;
@@ -302,4 +302,10 @@ bool dsc_set_clear(DSCSet set) {
     set->error = DSC_ERROR_OK;
 
     return true;
+}
+
+/* Error handling */
+
+DSCError dsc_set_error(const DSCSet set) {
+    return set->error;
 }

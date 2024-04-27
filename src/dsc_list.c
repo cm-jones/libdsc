@@ -438,6 +438,8 @@ bool dsc_list_erase(DSCList list, size_t position) {
     return false;
 }
 
-DSCError dsc_error_get(const DSCList list) {
+/* Error handling */
+
+DSCError dsc_list_error(const DSCList list) {
     return list->error;
 }

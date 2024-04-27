@@ -30,10 +30,6 @@ struct DSCStack {
     DSCError error;  /* The most recent error code */
 };
 
-DSCError dsc_error_get(const DSCStack stack) {
-    return stack->error;
-}
-
 /* Helper function for resizing a DSCStack when its size is equal to or greater than its capacity */
 
 static bool dsc_stack_resize(DSCStack stack, size_t new_capacity) {
@@ -185,6 +181,8 @@ void *dsc_stack_pop(DSCStack stack) {
     return result;
 }
 
-DSCError dsc_error_get(const DSCStack stack) {
+/* Error handling */
+
+DSCError dsc_stack_error(const DSCStack stack) {
     return stack->error;
 }

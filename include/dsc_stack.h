@@ -106,6 +106,6 @@ void *dsc_stack_pop(DSCStack stack);
  *
  * @return The last error code.
  */
-DSCError dsc_error_get(const DSCStack stack);
+DSCError dsc_stack_error(const DSCStack stack);
 
 #endif /* __DSC_STACK_H__ */
