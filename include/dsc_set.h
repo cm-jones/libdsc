@@ -20,6 +20,9 @@
 
 #include <stdbool.h>
 
+#include "dsc_type.h"
+#include "dsc_error.h"
+
 /**
  * @def DSC_SET_INITIAL_CAPACITY
  * @brief The initial capacity of the hash set.
@@ -32,74 +35,90 @@
  */
 #define DSC_SET_LOAD_FACTOR 0.75
 
-/* Forward declaration of the set entry structure */
-typedef struct DSCSetEntry DSCSetEntry;
-
 /* Forward declaration of the set structure */
-typedef struct DSCSet DSCSet;
+typedef struct DSCSet *DSCSet;
 
 /**
- * @brief Creates a new hash set.
+ * @brief Initializes a new DSCSet with the specified element type.
  *
- * @return A pointer to the newly created hash set, or NULL if memory allocation fails.
+ * @param type The type of elements to be stored in the set.
+ * @return A pointer to the newly created DSCSet, or NULL if initialization fails.
  */
-DSCSet *dsc_set_create(void);
+DSCSet dsc_set_init(DSCType type);
 
 /**
- * @brief Destroys the hash set and frees its memory.
+ * @brief Deinitializes and frees the memory allocated for the DSCSet.
  *
- * @param set The hash set to destroy.
+ * @param set The DSCSet to deinitialize.
+ * @return true if deinitialization is successful, false otherwise.
  */
-void dsc_set_free(DSCSet *set);
+bool dsc_set_deinit(DSCSet set);
 
 /**
- * @brief Inserts an element into the hash set.
+ * @brief Checks if the DSCSet is empty.
  *
- * @param set The hash set to insert the element into.
- * @param value The value to insert.
- * @return true if the element was inserted successfully, false if the element already exists.
+ * @param set The DSCSet to check.
+ * @return true if the set is empty, false otherwise.
  */
-bool dsc_set_insert(DSCSet *set, int value);
+bool dsc_set_is_empty(const DSCSet set);
 
 /**
- * @brief Erases an element from the hash set.
+ * @brief Returns the number of elements in the DSCSet.
  *
- * @param set The hash set to erase the element from.
- * @param value The value to erase.
- * @return true if the element was erased successfully, false if the element was not found.
+ * @param set The DSCSet to get the size of.
+ * @return The number of elements in the set, or -1 if the set is NULL.
  */
-bool dsc_set_erase(DSCSet *set, int value);
+int dsc_set_size(const DSCSet set);
 
 /**
- * @brief Checks if an element exists in the hash set.
+ * @brief Returns the current capacity of the DSCSet.
  *
- * @param set The hash set to check.
- * @param value The value to check for.
- * @return true if the element exists, false otherwise.
+ * @param set The DSCSet to get the capacity of.
+ * @return The capacity of the set, or -1 if the set is NULL.
  */
-bool dsc_set_contains(const DSCSet *set, int value);
+int dsc_set_capacity(const DSCSet set);
 
 /**
- * @brief Gets the size of the hash set.
+ * @brief Returns the current load factor of the DSCSet.
  *
- * @param set The hash set to get the size of.
- * @return The size of the hash set, -1 if the set is NULL.
+ * @param set The DSCSet to get the load factor of.
+ * @return The current load factor of the set, or -1.0 if the set is NULL.
  */
-int dsc_set_size(const DSCSet *set);
+double dsc_set_load_factor(const DSCSet set);
 
 /**
- * @brief Checks if the hash set is empty.
+ * @brief Checks if the DSCSet contains the specified element.
  *
- * @param set The hash set to check.
- * @return true if the hash set is empty, false otherwise.
+ * @param set The DSCSet to search in.
+ * @param data The element to search for.
+ * @return true if the element is found in the set, false otherwise.
  */
-bool dsc_set_empty(const DSCSet *set);
+bool dsc_set_contains(const DSCSet set, void *data);
 
 /**
- * @brief Clears all elements from the hash set.
+ * @brief Inserts an element into the DSCSet.
  *
- * @param set The hash set to clear.
+ * @param set The DSCSet to insert the element into.
+ * @param data The element to insert.
+ * @return true if the insertion is successful, false otherwise.
  */
-void dsc_set_clear(DSCSet *set);
+bool dsc_set_insert(DSCSet set, void *data);
+
+/**
+ * @brief Removes an element from the DSCSet.
+ *
+ * @param set The DSCSet to remove the element from.
+ * @param data The element to remove.
+ * @return true if the removal is successful, false otherwise.
+ */
+bool dsc_set_erase(DSCSet set, void *data);
+
+/**
+ * @brief Removes all elements from the DSCSet.
+ *
+ * @param set The DSCSet to clear.
+ * @return true if the clear operation is successful, false otherwise.
+ */
+bool dsc_set_clear(DSCSet set);
 
 #endif // __DSC_SET_H__
