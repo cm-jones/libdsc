@@ -15,6 +15,7 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <stddef.h>
 #include <stdbool.h>
 
 #include "../include/dsc_type.h"
@@ -23,6 +24,46 @@
     if (sizeof(*(type *)data) == sizeof(type)) { \
         return enum_type; \
     }
+
+size_t dsc_size_of(DSCType type) {
+    switch (type) {
+        case DSC_TYPE_CHAR:
+            return sizeof(char);
+        case DSC_TYPE_UCHAR:
+            return sizeof(unsigned char);
+        case DSC_TYPE_SHORT:
+            return sizeof(short);
+        case DSC_TYPE_USHORT:
+            return sizeof(unsigned short);
+        case DSC_TYPE_INT:
+            return sizeof(int);
+        case DSC_TYPE_UINT:
+            return sizeof(unsigned int);
+        case DSC_TYPE_LONG:
+            return sizeof(long);
+        case DSC_TYPE_ULONG:
+            return sizeof(unsigned long);
+        case DSC_TYPE_LLONG:
+            return sizeof(long long);
+        case DSC_TYPE_ULLONG:
+            return sizeof(unsigned long long);
+        case DSC_TYPE_FLOAT:
+            return sizeof(float);
+        case DSC_TYPE_DOUBLE:
+            return sizeof(double);
+        case DSC_TYPE_LDOUBLE:
+            return sizeof(long double);
+        case DSC_TYPE_STRING:
+            return sizeof(char *);
+        case DSC_TYPE_BOOL:
+            return sizeof(bool);
+        case DSC_TYPE_POINTER:
+            return sizeof(void *);
+        default:
+            // Unknown type
+            return 0;
+    }
+}
 
 DSCType dsc_type_of(void *data) {
     CHECK_TYPE(char, DSC_TYPE_CHAR)
