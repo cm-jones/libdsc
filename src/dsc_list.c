@@ -35,15 +35,11 @@ struct DSCList {
     DSCNode head;   /* The first node in the list */
     DSCNode tail;   /* The last node in the list */
 
-    size_t size;    /* The size of the list */
+    size_t size;    /* The number of elements currently in the list */
 
     DSCType type;   /* The type of the list elements */
-    DSCError error; /* The last error code */
+    DSCError error; /* The most recent error code */
 };
-
-DSCError dsc_error(const DSCList list) {
-    return list->error;
-}
 
 /* Constructor and destructor for a DSCNode. Not exposed to the user. */
 
@@ -440,4 +436,8 @@ bool dsc_list_erase(DSCList list, int position) {
     assert(0);
 
     return false;
+}
+
+DSCError dsc_error_get(const DSCList list) {
+    return list->error;
 }
