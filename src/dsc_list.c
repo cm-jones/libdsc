@@ -34,9 +34,7 @@ struct DSCNode {
 struct DSCList {
     DSCNode head;   /* The first node in the list */
     DSCNode tail;   /* The last node in the list */
-
     size_t size;    /* The number of elements currently in the list */
-
     DSCType type;   /* The type of the list elements */
     DSCError error; /* The most recent error code */
 };
@@ -50,7 +48,6 @@ static DSCNode dsc_node_init(void *data) {
     }
     
     node->data = data;
-    
     node->prev = NULL;
     node->next = NULL;
 
@@ -75,6 +72,11 @@ static bool dsc_node_deinit(DSCNode node) {
 /* Constructor and destructor for a DSCList */
 
 DSCList dsc_list_init(DSCType type) {
+    // Check whether type is a valid DSCType
+    if (type < 0 || type >= DSC_TYPE_COUNT) {
+        return NULL;
+    }
+
     DSCList new_list = malloc(sizeof *new_list);
     if (!new_list) {
         return NULL;
@@ -174,7 +176,7 @@ void *dsc_list_back(const DSCList list) {
     return list->tail->data;
 }
 
-void *dsc_list_at(const DSCList list, int position) {
+void *dsc_list_at(const DSCList list, size_t position) {
     if (!list) {
         return NULL;
     }
@@ -184,7 +186,12 @@ void *dsc_list_at(const DSCList list, int position) {
         return NULL;
     }
 
-    int index = 0;
+    if (position >= list->size) {
+        list->error = DSC_ERROR_OUT_OF_RANGE;
+        return NULL;
+    }
+
+    size_t index = 0;
 
     DSCNode curr = list->head;
 
@@ -328,7 +335,7 @@ void *dsc_list_pop_back(DSCList list) {
     return data;
 }
 
-bool dsc_list_insert(DSCList list, void *data, int position) {
+bool dsc_list_insert(DSCList list, void *data, size_t position) {
     if (!list) {
         return false;
     }
@@ -338,7 +345,7 @@ bool dsc_list_insert(DSCList list, void *data, int position) {
         return false;
     }
 
-    if (position < 0 || position > list->size) {
+    if (position > list->size) {
         list->error = DSC_ERROR_OUT_OF_RANGE;
         return false;
     }
@@ -357,7 +364,7 @@ bool dsc_list_insert(DSCList list, void *data, int position) {
         return false;
     }
 
-    int index = 0;
+    size_t index = 0;
     DSCNode curr = list->head;
 
     while (curr) {
@@ -383,7 +390,7 @@ bool dsc_list_insert(DSCList list, void *data, int position) {
     return false;
 }
 
-bool dsc_list_erase(DSCList list, int position) {
+bool dsc_list_erase(DSCList list, size_t position) {
     if (!list) {
         return false;
     }
@@ -393,7 +400,7 @@ bool dsc_list_erase(DSCList list, int position) {
         return false;
     }
 
-    if (position < 0 || position >= list->size) {
+    if (position >= list->size) {
         list->error = DSC_ERROR_OUT_OF_RANGE;
         return false;
     }
@@ -408,7 +415,7 @@ bool dsc_list_erase(DSCList list, int position) {
         return true;
     }
 
-    int index = 0;
+    size_t index = 0;
     DSCNode curr = list->head;
 
     while (curr) {

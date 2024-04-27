@@ -88,7 +88,7 @@ void *dsc_list_back(const DSCList list);
  * @return A pointer to the element at the specified position, or NULL if the
  *         position is out of range or the list is empty or NULL.
  */
-void *dsc_list_at(const DSCList list, int position);
+void *dsc_list_at(const DSCList list, size_t position);
 
 /**
  * @brief Inserts an element at the front of the list.
@@ -137,7 +137,7 @@ void *dsc_list_pop_back(DSCList list);
  *
  * @return true if the element was successfully inserted, false otherwise.
  */
-bool dsc_list_insert(DSCList list, void *data, int position);
+bool dsc_list_insert(DSCList list, void *data, size_t position);
 
 /**
  * @brief Removes the element at the specified position from the list.
@@ -147,7 +147,7 @@ bool dsc_list_insert(DSCList list, void *data, int position);
  *
  * @return true if the element was successfully removed, false otherwise.
  */
-bool dsc_list_erase(DSCList list, int position);
+bool dsc_list_erase(DSCList list, size_t position);
 
 /**
  * @brief Retrieves the last error code.
