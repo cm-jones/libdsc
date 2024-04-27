@@ -52,7 +52,7 @@ static bool dsc_set_rehash(DSCSet set, size_t new_capacity) {
             DSCSetEntry next = entry->next;
 
             /* Rehash the value to determine the new index. */
-            uint32_t index = dsc_hash(entry->key, new_capacity);
+            uint32_t index = dsc_hash(entry->key, set->type, new_capacity);
 
             entry->next = new_buckets[index];
             new_buckets[index] = entry;
@@ -70,8 +70,7 @@ static bool dsc_set_rehash(DSCSet set, size_t new_capacity) {
 /* Constructor and destructor for a DSCSet */
 
 DSCSet dsc_set_init(DSCType type) {
-    // Check whether type is a valid DSCType
-    if (type <= 0 || type >= DSC_TYPE_COUNT) {
+    if (!dsc_type_is_valid(type)) {
         return NULL;
     }
 
@@ -167,13 +166,13 @@ bool dsc_set_contains(const DSCSet set, void *key) {
     }
 
     // Check if the type of the key is valid
-    if (dsc_type_of(key) != set->type) {
+    if (dsc_typeof(key) != set->type) {
         set->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
 
     // Hash the value to determine the bucket index
-    uint32_t index = dsc_hash(key, set->capacity);
+    uint32_t index = dsc_hash(key, set->type, set->capacity);
 
     // Search for the value in the bucket
     DSCSetEntry entry = set->buckets[index];
@@ -199,7 +198,7 @@ bool dsc_set_insert(DSCSet set, void *key) {
     }
 
     // Check if the type of the new key is valid
-    if (dsc_type_of(key) != set->type) {
+    if (dsc_typeof(key) != set->type) {
         set->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
@@ -229,7 +228,7 @@ bool dsc_set_insert(DSCSet set, void *key) {
     new_entry->next = NULL;
 
     // Hash the value to determine the bucket index
-    uint32_t index = dsc_hash(key, set->capacity);
+    uint32_t index = dsc_hash(key, set->type, set->capacity);
 
     // Insert the new entry at the beginning of the bucket
     new_entry->next = set->buckets[index];
@@ -247,12 +246,12 @@ bool dsc_set_erase(DSCSet set, void *key) {
     }
 
     // Check if the type of the key is valid
-    if (dsc_type_of(key) != set->type) {
+    if (dsc_typeof(key) != set->type) {
         set->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
 
-    uint32_t index = dsc_hash(key, set->capacity);
+    uint32_t index = dsc_hash(key, set->type, set->capacity);
 
     DSCSetEntry entry = set->buckets[index];
     DSCSetEntry prev = NULL;

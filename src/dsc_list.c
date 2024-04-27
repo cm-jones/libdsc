@@ -72,8 +72,7 @@ static bool dsc_node_deinit(DSCNode node) {
 /* Constructor and destructor for a DSCList */
 
 DSCList dsc_list_init(DSCType type) {
-    // Check whether type is a valid DSCType
-    if (type < 0 || type >= DSC_TYPE_COUNT) {
+    if (!dsc_type_is_valid(type)) {
         return NULL;
     }
 
@@ -218,7 +217,7 @@ bool dsc_list_push_front(DSCList list, void *data) {
         return false;
     }
 
-    if (dsc_type_of(data) != list->type) {
+    if (dsc_typeof(data) != list->type) {
         list->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
@@ -279,7 +278,7 @@ bool dsc_list_push_back(DSCList list, void *data) {
         return false;
     }
 
-    if (dsc_type_of(data) != list->type) {
+    if (dsc_typeof(data) != list->type) {
         list->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
@@ -340,7 +339,7 @@ bool dsc_list_insert(DSCList list, void *data, size_t position) {
         return false;
     }
 
-    if (dsc_type_of(data) != list->type) {
+    if (dsc_typeof(data) != list->type) {
         list->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }

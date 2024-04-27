@@ -71,8 +71,7 @@ bool dsc_vector_shrink_to_fit(DSCVector vector) {
 /* Constructor and destructor for a DSCVector */
 
 DSCVector dsc_vector_init(DSCType type) {
-    // Check whether type is a valid DSCType
-    if (type <= 0 || type >= DSC_TYPE_COUNT) {
+    if (!dsc_type_is_valid(type)) {
         return NULL;
     }
 
@@ -175,7 +174,7 @@ bool dsc_vector_push_back(DSCVector vector, void *data) {
     }
 
     // Check if the type of the new element is valid
-    if (dsc_type_of(data) != vector->type) {
+    if (dsc_typeof(data) != vector->type) {
         vector->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
@@ -219,7 +218,7 @@ bool dsc_vector_insert(DSCVector vector, void *data, size_t index) {
     }
 
     // Check if the type of the new element is the same as the type of the vector
-    if (dsc_type_of(data) != vector->type) {
+    if (dsc_typeof(data) != vector->type) {
         vector->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }

@@ -36,7 +36,7 @@ struct DSCQueue {
 /* Helper function for resizing a DSCQueue when its size is equal to or greater than its capacity */
 
 static bool dsc_queue_resize(DSCQueue queue, size_t new_capacity) {
-    void **new_data = realloc(queue->data, new_capacity * dsc_size_of(queue->type));
+    void **new_data = realloc(queue->data, new_capacity * dsc_sizeof(queue->type));
     if (!new_data) {
         return false;
     }
@@ -44,7 +44,7 @@ static bool dsc_queue_resize(DSCQueue queue, size_t new_capacity) {
     // Rearrange elements in case of circular buffer
     if (queue->front > queue->rear) {
         size_t count = queue->capacity - queue->front;
-        memmove(new_data + new_capacity - count, queue->data + queue->front, count * dsc_size_of(queue->type));
+        memmove(new_data + new_capacity - count, queue->data + queue->front, count * dsc_sizeof(queue->type));
         queue->front = new_capacity - count;
     }
 
@@ -54,8 +54,7 @@ static bool dsc_queue_resize(DSCQueue queue, size_t new_capacity) {
 }
 
 DSCQueue dsc_queue_init(DSCType type) {
-    // Check whether type is a valid DSCType
-    if (type <= 0 || type >= DSC_TYPE_COUNT) {
+    if (!dsc_type_is_valid(type)) {
         return NULL;
     }
 
@@ -70,7 +69,7 @@ DSCQueue dsc_queue_init(DSCType type) {
     new_queue->capacity = DSC_QUEUE_INITIAL_CAPACITY;
     new_queue->type = type;
 
-    new_queue->data = malloc(new_queue->capacity * dsc_size_of(type));
+    new_queue->data = malloc(new_queue->capacity * dsc_sizeof(type));
     if (!new_queue->data) {
         free(new_queue);
         return NULL;
@@ -138,7 +137,7 @@ bool dsc_queue_push(DSCQueue queue, void *data) {
     }
 
     // Check if the type of the new element matches the type of the queue
-    if (dsc_type_of(data) != queue->type) {
+    if (dsc_typeof(data) != queue->type) {
         queue->error = DSC_ERROR_TYPE_MISMATCH;
         return false;
     }
