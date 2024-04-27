@@ -1,4 +1,3 @@
-```markdown
 # DSC Type System
 
 The DSC library provides a type system to support generic containers that can store elements of different data types. The type system is defined in the `dsc_type.h` header file and includes an enumeration `DSCType` representing various data types, as well as a function `dsc_type_of` for determining the type of a given data pointer.
