@@ -17,127 +17,175 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <stdint.h>
 
 #include "../include/dsc_stack.h"
-#include "../include/dsc_error.h"
 
-/* Represents a stack. */
+/* Represents a stack */
+
 struct DSCStack {
-    int *values;     /* Array of values stored in the stack. */
-    unsigned int size;     /* The number of elements in the stack. */
-    unsigned int capacity; /* The current capacity of the stack. */
+    void **data;     /* Array of elements (void pointers) stored in the stack */
+    size_t size;     /* The number of elements currently in the stack */
+    size_t capacity; /* The current capacity of the stack */
+    DSCType type;    /* The type of the elements in the stack */
+    DSCError error;  /* The most recent error code */
 };
 
-static bool dsc_stack_resize(DSCStack *stack, unsigned int new_capacity) {
-    int *new_values = realloc(stack->values, new_capacity * sizeof(int));
-    if (new_values == NULL) {
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+DSCError dsc_error_get(const DSCStack stack) {
+    return stack->error;
+}
+
+/* Helper function for resizing a DSCStack when its size is equal to or greater than its capacity */
+
+static bool dsc_stack_resize(DSCStack stack, size_t new_capacity) {
+    void **new_data = realloc(stack->data, new_capacity * dsc_sizeof(stack->type));
+    if (!new_data) {
         return false;
     }
 
-    stack->values = new_values;
+    stack->data = new_data;
     stack->capacity = new_capacity;
+
     return true;
 }
 
-DSCStack *dsc_stack_create(void) {
-    DSCStack *new_stack = malloc(sizeof *new_stack);
-    if (new_stack == NULL) {
-        dsc_set_error(DSC_ERROR_OUT_OF_MEMORY);
+/* Constructor and destructor for a DSCStack */
+
+DSCStack dsc_stack_init(DSCType type) {
+    // Check whether type is a valid DSCType
+    if (type < 0 || type >= DSC_TYPE_COUNT) {
+        return NULL;
+    }
+
+    DSCStack new_stack = malloc(sizeof *new_stack);
+    if (!new_stack) {
         return NULL;
     }
 
     new_stack->size = 0;
     new_stack->capacity = DSC_STACK_INITIAL_CAPACITY;
-    new_stack->values = NULL;
+    new_stack->type = type;
 
-    if (!dsc_stack_resize(new_stack, new_stack->capacity)) {
+    new_stack->data = malloc(new_stack->capacity * dsc_sizeof(new_stack->type));
+    if (!new_stack->data) {
         free(new_stack);
         return NULL;
     }
 
-    dsc_set_error(DSC_ERROR_NONE);
+    new_stack->error = DSC_ERROR_OK;
+
     return new_stack;
 }
 
-void dsc_stack_free(DSCStack *stack) {
-    if (stack == NULL) {
-        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return;
+bool dsc_stack_deinit(DSCStack stack) {
+    if (!stack) {
+        return false;
     }
 
-    free(stack->values);
+    free(stack->data);
     free(stack);
 
-    dsc_set_error(DSC_ERROR_NONE);
+    return true;
 }
 
-void dsc_stack_push(DSCStack *stack, int value) {
-    if (stack == NULL) {
-        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return;
+/* Capacity */
+
+bool dsc_stack_is_empty(const DSCStack stack) {
+    if (!stack) {
+        return false;
     }
 
-    /* Resize the stack if the size exceeds the capacity. */
-    if (stack->size >= stack->capacity) {
-        unsigned int new_capacity = stack->capacity * 1.5;
-        if (!dsc_stack_resize(stack, new_capacity)) {
-            return;
-        }
-    }
+    stack->error = DSC_ERROR_OK;
 
-    stack->values[stack->size] = value;
-    stack->size++;
-    dsc_set_error(DSC_ERROR_NONE);
-}
-
-void dsc_stack_pop(DSCStack *stack) {
-    if (stack == NULL) {
-        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return;
-    }
-
-    if (dsc_stack_empty(stack)) {
-        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
-        return;
-    }
-
-    stack->size--;
-    dsc_set_error(DSC_ERROR_NONE);
-}
-
-int DSCStackop(const DSCStack *stack) {
-    if (stack == NULL) {
-        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return -1;
-    }
-
-    if (dsc_stack_empty(stack)) {
-        dsc_set_error(DSC_ERROR_EMPTY_CONTAINER);
-        return -1;
-    }
-
-    dsc_set_error(DSC_ERROR_NONE);
-    return stack->values[stack->size - 1];
-}
-
-bool dsc_stack_empty(const DSCStack *stack) {
-    if (stack == NULL) {
-        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
-        return true;
-    }
-
-    dsc_set_error(DSC_ERROR_NONE);
     return stack->size == 0;
 }
 
-int dsc_stack_size(const DSCStack *stack) {
-    if (stack == NULL) {
-        dsc_set_error(DSC_ERROR_INVALID_ARGUMENT);
+int dsc_stack_size(const DSCStack stack) {
+    if (!stack) {
         return -1;
     }
 
-    dsc_set_error(DSC_ERROR_NONE);
+    stack->error = DSC_ERROR_OK;
+
     return stack->size;
+}
+
+int dsc_stack_capacity(const DSCStack stack) {
+    if (!stack) {
+        return -1;
+    }
+
+    stack->error = DSC_ERROR_OK;
+
+    return stack->capacity;
+}
+
+/* Element access */
+
+void *dsc_stack_top(const DSCStack stack) {
+    if (stack == NULL) {
+        return NULL;
+    }
+
+    if (dsc_stack_is_empty(stack)) {
+        stack->error = DSC_ERROR_EMPTY_CONTAINER;
+        return NULL;
+    }
+
+    stack->error = DSC_ERROR_OK;
+
+    return stack->data[stack->size - 1];
+}
+
+/* Modifiers */
+
+bool dsc_stack_push(DSCStack stack, void *data) {
+    if (!stack) {
+        return false;
+    }
+
+    // Check if the type of the new element is the same as the type of the stack
+    if (sizeof(*data) != dsc_sizeof(stack->type)) {
+        stack->error = DSC_ERROR_TYPE_MISMATCH;
+        return false;
+    }
+
+    // Resize the stack if the size exceeds the capacity
+    if (stack->size >= stack->capacity) {
+        size_t new_capacity = stack->capacity * 1.5;
+        if (!dsc_stack_resize(stack, new_capacity)) {
+            stack->error = DSC_ERROR_OUT_OF_MEMORY;
+            return false;
+        }
+    }
+
+    stack->data[stack->size] = data;
+    stack->size++;
+
+    stack->error = DSC_ERROR_OK;
+
+    return true;
+}
+
+void *dsc_stack_pop(DSCStack stack) {
+    if (!stack) {
+        return NULL;
+    }
+
+    if (dsc_stack_is_empty(stack)) {
+        stack->error = DSC_ERROR_EMPTY_CONTAINER;
+        return NULL;
+    }
+
+    // Get the popped element so we can return it after freeing it
+    void *result = stack->data[stack->size - 1];
+    stack->data[stack->size - 1] = NULL;
+    stack->size--;
+
+    stack->error = DSC_ERROR_OK;
+
+    return result;
+}
+
+DSCError dsc_error_get(const DSCStack stack) {
+    return stack->error;
 }
