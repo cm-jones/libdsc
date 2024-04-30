@@ -84,7 +84,7 @@ int dsc_vector_capacity(const DSCVector vector);
  * @param index The index of the element to retrieve.
  * @return A pointer to the element at the specified index, or NULL if the index is out of bounds or the vector is NULL.
  */
-void *dsc_vector_at(const DSCVector vector, size_t index);
+void *dsc_vector_at(const DSCVector vector, int index);
 
 /**
  * @brief Returns the last element in the DSCVector.
@@ -121,7 +121,7 @@ void *dsc_vector_pop_back(DSCVector vector);
  * @param index The index at which to insert the element.
  * @return true if the element is successfully inserted, false otherwise.
  */
-bool dsc_vector_insert(DSCVector vector, void *data, size_t index);
+bool dsc_vector_insert(DSCVector vector, void *data, int index);
 
 /**
  * @brief Removes the element at the specified index from the DSCVector.
@@ -130,7 +130,7 @@ bool dsc_vector_insert(DSCVector vector, void *data, size_t index);
  * @param index The index of the element to remove.
  * @return true if the element is successfully removed, false otherwise.
  */
-bool dsc_vector_erase(DSCVector vector, size_t index);
+bool dsc_vector_erase(DSCVector vector, int index);
 
 /**
  * @brief Reserves the specified capacity for the DSCVector.
@@ -139,7 +139,7 @@ bool dsc_vector_erase(DSCVector vector, size_t index);
  * @param new_capacity The new capacity to reserve.
  * @return true if the capacity is successfully reserved, false otherwise.
  */
-bool dsc_vector_reserve(DSCVector vector, size_t new_capacity);
+bool dsc_vector_reserve(DSCVector vector, int new_capacity);
 
 /**
  * @brief Shrinks the capacity of the DSCVector to fit its current size.

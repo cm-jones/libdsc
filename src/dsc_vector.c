@@ -23,18 +23,16 @@
 /* Represents a vector (dynamic array) */
 
 struct DSCVector {
-    void **data;     /* Array of elements (void pointers) stored in the vector */
-
-    size_t size;     /* The number of elements currently in the vector */
-    size_t capacity; /* The current capacity of the vector */
-
-    DSCType type;    /* The type of the elements in the vector */
-    DSCError error;  /* The most recent error code */
+    void **data;    /* Array of elements (void pointers) stored in the vector */
+    int size;       /* The number of elements currently in the vector */
+    int capacity;   /* The current capacity of the vector */
+    DSCType type;   /* The type of the elements in the vector */
+    DSCError error; /* The most recent error code */
 };
 
 /* Helper function for resizing a DSCVector when its size is equal to or greater than its capacity */
 
-static bool dsc_vector_resize(DSCVector vector, size_t new_capacity) {
+static bool dsc_vector_resize(DSCVector vector, int new_capacity) {
     void **new_data = realloc(vector->data, new_capacity * dsc_sizeof(vector->type));
     if (!new_data) {
         return false;
@@ -83,6 +81,7 @@ DSCVector dsc_vector_init(DSCType type) {
     new_vector->size = 0;
     new_vector->capacity = DSC_VECTOR_INITIAL_CAPACITY;
     new_vector->type = type;
+    new_vector->error = DSC_ERROR_OK;
 
     new_vector->data = malloc(new_vector->capacity * dsc_sizeof(type));
     if (!new_vector->data) {
@@ -136,12 +135,12 @@ int dsc_vector_capacity(const DSCVector vector) {
     return vector->capacity;
 }
 
-void *dsc_vector_at(const DSCVector vector, size_t index) {
+void *dsc_vector_at(const DSCVector vector, int index) {
     if (!vector) {
         return NULL;
     }
 
-    if (index >= vector->size) {
+    if (index < 0 || index >= vector->size) {
         vector->error = DSC_ERROR_OUT_OF_RANGE;
         return NULL;
     }
@@ -181,7 +180,7 @@ bool dsc_vector_push_back(DSCVector vector, void *data) {
 
     // Resize the vector if the size exceeds the capacity
     if (vector->size >= vector->capacity) {
-        size_t new_capacity = vector->capacity * 2;
+        int new_capacity = vector->capacity * 2;
         if (!dsc_vector_resize(vector, new_capacity)) {
             vector->error = DSC_ERROR_OUT_OF_MEMORY;
             return false;
@@ -206,13 +205,12 @@ void *dsc_vector_pop_back(DSCVector vector) {
         return NULL;
     }
 
-    vector->size--;
     vector->error = DSC_ERROR_OK;
 
-    return vector->data[vector->size];
+    return vector->data[vector->size--];
 }
 
-bool dsc_vector_insert(DSCVector vector, void *data, size_t index) {
+bool dsc_vector_insert(DSCVector vector, void *data, int index) {
     if (!vector) {
         return false;
     }
@@ -224,14 +222,14 @@ bool dsc_vector_insert(DSCVector vector, void *data, size_t index) {
     }
 
     // Check if the index is out of range
-    if (index > vector->size) {
+    if (index < 0 || index > vector->size) {
         vector->error = DSC_ERROR_OUT_OF_RANGE;
         return false;
     }
 
     // Resize the vector if the size exceeds the capacity
     if (vector->size >= vector->capacity) {
-        size_t new_capacity = vector->capacity * 2;
+        int new_capacity = vector->capacity * 2;
         if (!dsc_vector_resize(vector, new_capacity)) {
             vector->error = DSC_ERROR_OUT_OF_MEMORY;
             return false;
@@ -239,7 +237,7 @@ bool dsc_vector_insert(DSCVector vector, void *data, size_t index) {
     }
 
     // Shift elements to the right to make room for the new element
-    for (size_t i = vector->size; i > index; --i) {
+    for (int i = vector->size; i > index; --i) {
         vector->data[i] = vector->data[i - 1];
     }
 
@@ -250,18 +248,18 @@ bool dsc_vector_insert(DSCVector vector, void *data, size_t index) {
     return true;
 }
 
-bool dsc_vector_erase(DSCVector vector, size_t index) {
+bool dsc_vector_erase(DSCVector vector, int index) {
     if (!vector) {
         return false;
     }
 
-    if (index >= vector->size) {
+    if (index < 0 || index >= vector->size) {
         vector->error = DSC_ERROR_OUT_OF_RANGE;
         return false;
     }
 
     // Shift elements to the left to fill the gap
-    for (size_t i = index; i < vector->size - 1; ++i) {
+    for (int i = index; i < vector->size - 1; ++i) {
         vector->data[i] = vector->data[i + 1];
     }
 
@@ -271,7 +269,7 @@ bool dsc_vector_erase(DSCVector vector, size_t index) {
     return true;
 }
 
-bool dsc_vector_reserve(DSCVector vector, size_t new_capacity) {
+bool dsc_vector_reserve(DSCVector vector, int new_capacity) {
     if (!vector) {
         return false;
     }
