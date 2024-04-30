@@ -18,6 +18,8 @@
 #ifndef __DSC_TYPE_H__
 #define __DSC_TYPE_H__
 
+#include <stddef.h>
+
 /**
  * @enum DSCType
  * @brief Represents the data types available in the DSC library.
@@ -29,18 +31,9 @@
  *
  * @constant DSC_TYPE_UNKNOWN   Unknown or unrecognized type.
  * @constant DSC_TYPE_CHAR      Character type.
- * @constant DSC_TYPE_UCHAR     Unsigned character type.
- * @constant DSC_TYPE_SHORT     Short integer type.
- * @constant DSC_TYPE_USHORT    Unsigned short integer type.
  * @constant DSC_TYPE_INT       Integer type.
- * @constant DSC_TYPE_UINT      Unsigned integer type.
- * @constant DSC_TYPE_LONG      Long integer type.
- * @constant DSC_TYPE_ULONG     Unsigned long integer type.
- * @constant DSC_TYPE_LLONG     Long long integer type.
- * @constant DSC_TYPE_ULLONG    Unsigned long long integer type.
  * @constant DSC_TYPE_FLOAT     Single-precision floating-point type.
  * @constant DSC_TYPE_DOUBLE    Double-precision floating-point type.
- * @constant DSC_TYPE_LDOUBLE   Long double-precision floating-point type.
  * @constant DSC_TYPE_STRING    String type (character pointer).
  * @constant DSC_TYPE_BOOL      Boolean type.
  * @constant DSC_TYPE_POINTER   Generic pointer type.
@@ -49,18 +42,9 @@
 typedef enum DSCType {
     DSC_TYPE_UNKNOWN,
     DSC_TYPE_CHAR,
-    DSC_TYPE_UCHAR,
-    DSC_TYPE_SHORT,
-    DSC_TYPE_USHORT,
     DSC_TYPE_INT,
-    DSC_TYPE_UINT,
-    DSC_TYPE_LONG,
-    DSC_TYPE_ULONG,
-    DSC_TYPE_LLONG,
-    DSC_TYPE_ULLONG,
     DSC_TYPE_FLOAT,
     DSC_TYPE_DOUBLE,
-    DSC_TYPE_LDOUBLE,
     DSC_TYPE_STRING,
     DSC_TYPE_BOOL,
     DSC_TYPE_POINTER,
