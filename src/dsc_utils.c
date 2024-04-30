@@ -28,30 +28,12 @@ int dsc_compare(void *ptr1, void *ptr2, DSCType type) {
     switch (type) {
         case DSC_TYPE_CHAR:
             return (*(char *) ptr1 - *(char *) ptr2);
-        case DSC_TYPE_UCHAR:
-            return (*(unsigned char *) ptr1 - *(unsigned char *) ptr2);
-        case DSC_TYPE_SHORT:
-            return (*(short *) ptr1 - *(short *) ptr2);
-        case DSC_TYPE_USHORT:
-            return (*(unsigned short *) ptr1 - *(unsigned short *) ptr2);
         case DSC_TYPE_INT:
             return (*(int *) ptr1 - *(int *) ptr2);
-        case DSC_TYPE_UINT:
-            return (*(unsigned int *) ptr1 - *(unsigned int *) ptr2);
-        case DSC_TYPE_LONG:
-            return (*(long *) ptr1 - *(long *) ptr2);
-        case DSC_TYPE_ULONG:
-            return (*(unsigned long *) ptr1 - *(unsigned long *) ptr2);
-        case DSC_TYPE_LLONG:
-            return (*(long long *) ptr1 - *(long long *) ptr2);
-        case DSC_TYPE_ULLONG:
-            return (*(unsigned long long *) ptr1 - *(unsigned long long *) ptr2);
         case DSC_TYPE_FLOAT:
             return (*(float *) ptr1 > *(float *) ptr2) - (*(float *) ptr1 < *(float *) ptr2);
         case DSC_TYPE_DOUBLE:
             return (*(double *) ptr1 > *(double *) ptr2) - (*(double *) ptr1 < *(double *) ptr2);
-        case DSC_TYPE_LDOUBLE:
-            return (*(long double *) ptr1 > *(long double *) ptr2) - (*(long double *) ptr1 < *(long double *) ptr2);
         case DSC_TYPE_BOOL:
             return (*(bool *) ptr1 - *(bool *) ptr2);
         case DSC_TYPE_POINTER:
@@ -74,40 +56,10 @@ uint32_t dsc_hash(void *key, DSCType key_type, size_t capacity) {
         case DSC_TYPE_CHAR:
             hash = *(char *) key;
             break;
-        case DSC_TYPE_UCHAR:
-            hash = *(unsigned char *) key;
-            break;
-        case DSC_TYPE_SHORT:
-            hash = *(short *) key;
-            break;
-        case DSC_TYPE_USHORT:
-            hash = *(unsigned short *) key;
-            break;
-        case DSC_TYPE_INT:
-            hash = *(int *) key;
-            break;
-        case DSC_TYPE_UINT:
-            hash = *(unsigned int *) key;
-            break;
-        case DSC_TYPE_LONG:
-            hash = *(long *) key;
-            break;
-        case DSC_TYPE_ULONG:
-            hash = *(unsigned long *) key;
-            break;
-        case DSC_TYPE_LLONG:
-            hash = *(long long *) key;
-            break;
-        case DSC_TYPE_ULLONG:
-            hash = *(unsigned long long *) key;
-            break;
         case DSC_TYPE_FLOAT:
             hash = *(uint32_t *) key;
             break;
         case DSC_TYPE_DOUBLE:
-            hash = *(uint32_t *) key;
-            break;
-        case DSC_TYPE_LDOUBLE:
             hash = *(uint32_t *) key;
             break;
         case DSC_TYPE_STRING:
