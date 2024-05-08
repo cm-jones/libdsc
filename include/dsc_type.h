@@ -18,73 +18,69 @@
 #ifndef __DSC_TYPE_H__
 #define __DSC_TYPE_H__
 
-#include <stddef.h>
-
 /**
- * @enum DSCType
  * @brief Represents the data types available in the DSC library.
  *
  * The DSCType enum defines a set of constants representing different data types
  * that can be used with the containers in the DSC library. It includes commonly
- * used primitive types, as well as some additional types like strings, booleans,
- * and pointers.
- *
- * @constant DSC_TYPE_UNKNOWN   Unknown or unrecognized type.
- * @constant DSC_TYPE_CHAR      Character type.
- * @constant DSC_TYPE_INT       Integer type.
- * @constant DSC_TYPE_FLOAT     Single-precision floating-point type.
- * @constant DSC_TYPE_DOUBLE    Double-precision floating-point type.
- * @constant DSC_TYPE_STRING    String type (character pointer).
- * @constant DSC_TYPE_BOOL      Boolean type.
- * @constant DSC_TYPE_POINTER   Generic pointer type.
- * @constant DSC_TYPE_COUNT     The total number of types.
+ * used primitive types, as well as some additional types like strings and
+ * booleans.
  */
-typedef enum DSCType {
-    DSC_TYPE_UNKNOWN,
-    DSC_TYPE_CHAR,
-    DSC_TYPE_INT,
-    DSC_TYPE_FLOAT,
-    DSC_TYPE_DOUBLE,
-    DSC_TYPE_STRING,
-    DSC_TYPE_BOOL,
-    DSC_TYPE_POINTER,
-    DSC_TYPE_COUNT
-} DSCType;
+typedef enum DSCType DSCType;
 
+enum DSCType {
+    DSC_TYPE_UNKNOWN,   /** Unknown or unrecognized type. */
+    DSC_TYPE_CHAR,      /** Character type. */
+    DSC_TYPE_INT,       /** Integer type. */
+    DSC_TYPE_FLOAT,     /** Single-precision floating-point type. */
+    DSC_TYPE_DOUBLE,    /** Double-precision floating-point type. */
+    DSC_TYPE_STRING,    /** String type (character pointer). */
+    DSC_TYPE_BOOL,      /** Boolean type. */
+    DSC_TYPE_COUNT      /** The total number of types. */
+};
+
+/**
+ * @brief Union for storing generic data.
+ *
+ * The DSCData union provides a way to store generic data of different types.
+ * It allows containers to hold elements of various types without the need for
+ * explicit type casting.
+ */
+typedef union DSCData DSCData;
+
+union DSCData {
+    char c;     /** Character value. */
+    int i;      /** Integer value. */
+    float f;    /** Single-precision floating-point value. */
+    double d;   /** Double-precision floating-point value. */
+    char *s;    /** String value (character pointer). */
+    bool b;     /** Boolean value. */
+};
+
+/**
+ * @brief Checks if the specified data type is valid.
+ *
+ * The dsc_type_is_valid function takes a DSCType value representing a data
+ * type and returns a boolean value indicating whether the type is a valid
+ * type defined in the DSCType enum.
+ *
+ * @param type The DSCType value representing the data type.
+ * @return true if the type is a valid type, false otherwise.
+ */
 bool dsc_type_is_valid(DSCType type);
 
 /**
  * @brief Returns the size of the specified data type.
  *
- * The dsc_sizeof function takes a DSCType value representing a data type and
- * returns the size of that type in bytes. This function is used when initializing
- * a new container to determine the size of the elements based on the provided
- * data type.
+ * The dsc_size_of function takes a DSCType value representing a data type and
+ * returns the size of that type in bytes. This function is used when
+ * initializing a new container to determine the size of the elements based on
+ * the provided data type.
  *
  * @param type The DSCType value representing the data type.
- * @return The size of the specified data type in bytes, or 0 if the type is unknown.
+ * @return The size of the specified data type in bytes, or 0 if the type is
+ * unknown.
  */
-size_t dsc_sizeof(DSCType type);
-
-/**
- * @brief Determines the type of the data pointed to by a void pointer.
- *
- * The dsc_typeof function takes a void pointer to the data and attempts to
- * determine its type based on the size of the dereferenced pointer. It compares
- * the size of the dereferenced pointer with the sizes of known types defined in
- * the DSCType enum and returns the corresponding DSCType value if a match is
- * found. If no match is found, it returns DSC_TYPE_UNKNOWN.
- *
- * @param data Pointer to the data.
- * @return The DSCType value representing the type of the data, or DSC_TYPE_UNKNOWN
- *         if the type cannot be determined.
- *
- * @note This function assumes that the data pointer is a valid pointer to the
- *       actual data. If the pointer is invalid or points to a different type
- *       than the one stored in the container, the behavior is undefined.
- *       It is the caller's responsibility to ensure that the data pointer is
- *       valid and points to the correct type.
- */
-DSCType dsc_typeof(void *data);
+size_t dsc_size_of(DSCType type);
 
 #endif // __DSC_TYPE_H__
