@@ -18,6 +18,8 @@
 #ifndef __DSC_TYPE_H__
 #define __DSC_TYPE_H__
 
+#include <stddef.h>
+
 /**
  * @brief Represents the data types available in the DSC library.
  *
