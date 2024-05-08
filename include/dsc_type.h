@@ -19,6 +19,7 @@
 #define __DSC_TYPE_H__
 
 #include <stddef.h>
+#include <stdbool.h>
 
 /**
  * @brief Represents the data types available in the DSC library.
@@ -31,14 +32,14 @@
 typedef enum DSCType DSCType;
 
 enum DSCType {
-    DSC_TYPE_UNKNOWN,   /** Unknown or unrecognized type. */
-    DSC_TYPE_CHAR,      /** Character type. */
-    DSC_TYPE_INT,       /** Integer type. */
-    DSC_TYPE_FLOAT,     /** Single-precision floating-point type. */
-    DSC_TYPE_DOUBLE,    /** Double-precision floating-point type. */
-    DSC_TYPE_STRING,    /** String type (character pointer). */
-    DSC_TYPE_BOOL,      /** Boolean type. */
-    DSC_TYPE_COUNT      /** The total number of types. */
+    DSC_TYPE_UNKNOWN, /** Unknown or unrecognized type. */
+    DSC_TYPE_CHAR,    /** Character type. */
+    DSC_TYPE_INT,     /** Integer type. */
+    DSC_TYPE_FLOAT,   /** Single-precision floating-point type. */
+    DSC_TYPE_DOUBLE,  /** Double-precision floating-point type. */
+    DSC_TYPE_STRING,  /** String type (character pointer). */
+    DSC_TYPE_BOOL,    /** Boolean type. */
+    DSC_TYPE_COUNT    /** The total number of types. */
 };
 
 /**
@@ -51,12 +52,18 @@ enum DSCType {
 typedef union DSCData DSCData;
 
 union DSCData {
-    char c;     /** Character value. */
-    int i;      /** Integer value. */
-    float f;    /** Single-precision floating-point value. */
-    double d;   /** Double-precision floating-point value. */
-    char *s;    /** String value (character pointer). */
-    bool b;     /** Boolean value. */
+    char c;           /** Character value. */
+    char *c_ptr;      /** Pointer to character array. */
+    int i;            /** Integer value. */
+    int *i_ptr;       /** Pointer to integer array. */
+    float f;          /** Single-precision floating-point value. */
+    float *f_ptr;     /** Pointer to single-precision floating-point array. */
+    double d;         /** Double-precision floating-point value. */
+    double *d_ptr;    /** Pointer to double-precision floating-point array. */
+    char *s;          /** String value (character pointer). */
+    char **s_ptr;     /** Pointer to array of strings (character pointers). */
+    bool b;           /** Boolean value. */
+    bool *b_ptr;      /** Pointer to boolean array. */
 };
 
 /**
