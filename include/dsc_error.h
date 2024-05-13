@@ -20,8 +20,8 @@
  * @brief This file defines the error codes used in libdsc.
  */
 
-#ifndef __DSC_ERROR_H__
-#define __DSC_ERROR_H__
+#ifndef DSC_ERROR_H
+#define DSC_ERROR_H
 
 /**
  * @brief The DSCError type represents the various error codes used in libdsc.
@@ -42,4 +42,4 @@ enum DSCError {
     DSC_ERROR_ALREADY_EXISTS    /** Element already exists. */
 };
 
-#endif // __DSC_ERROR_H__
+#endif // DSC_ERROR_H

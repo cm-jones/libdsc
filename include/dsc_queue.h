@@ -15,120 +15,32 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __DSC_QUEUE_H__
-#define __DSC_QUEUE_H__
-
-#include <stdbool.h>
-#include <stddef.h>
+#ifndef DSC_QUEUE_H
+#define DSC_QUEUE_H
 
 #include "dsc_type.h"
 #include "dsc_error.h"
 
-/**
- * @def DSC_QUEUE_INITIAL_CAPACITY
- * @brief The initial capacity of the queue.
- */
 #define DSC_QUEUE_INITIAL_CAPACITY 16
 
-/* Forward declaration of the queue structure */
-typedef struct DSCQueue *DSCQueue;
+typedef struct DSCQueue DSCQueue;
 
-/* Constructor and destructor for a DSCQueue */
+DSCError dsc_queue_init(DSCQueue *new_queue, DSCType type);
 
-/**
- * @brief Creates a new empty queue.
- *
- * @param type The type of the elements in the queue.
- *
- * @return A pointer to the newly created queue, or NULL if memory allocation fails.
- */
-DSCQueue dsc_queue_init(DSCType type);
+DSCError dsc_queue_deinit(DSCQueue *queue);
 
-/**
- * @brief Destroys the queue and frees its memory.
- *
- * @param queue The queue to destroy.
- *
- * @return true if the queue was destroyed successfully, false otherwise.
- *
- * @note This function frees the memory allocated for the queue and its elements.
- *       It is the responsibility of the caller to ensure that any dynamically
- *       allocated elements are properly freed before calling this function.
- */
-bool dsc_queue_deinit(DSCQueue queue);
+DSCError dsc_queue_size(const DSCQueue *queue, size_t *size);
 
-/* Capacity */
+DSCError dsc_queue_capacity(const DSCQueue *queue, size_t *capacity);
 
-/**
- * @brief Checks if the queue is empty.
- *
- * @param queue The queue to check.
- *
- * @return true if the queue is empty, false otherwise.
- */
-bool dsc_queue_is_empty(const DSCQueue queue);
+DSCError dsc_queue_is_empty(const DSCQueue *queue, bool *is_empty);
 
-/**
- * @brief Gets the number of elements in the queue.
- *
- * @param queue The queue to get the size of.
- *
- * @return The number of elements in the queue, or -1 if the queue is NULL.
- */
-int dsc_queue_size(const DSCQueue queue);
+DSCError dsc_queue_front(const DSCQueue *queue, void *front);
 
-/* Element access */
+DSCError dsc_queue_back(const DSCQueue *queue, void *back);
 
-/**
- * @brief Retrieves the value of the element at the front of the queue without removing it.
- *
- * @param queue The queue to get the front element from.
- *
- * @return The value of the front element, or NULL if the queue is empty or NULL.
- */
-void *dsc_queue_front(const DSCQueue queue);
+DSCError dsc_queue_push(DSCQueue *queue, void *data);
 
-/**
- * @brief Retrieves the value of the element at the back of the queue without removing it.
- *
- * @param queue The queue to get the back element from.
- *
- * @return The value of the back element, or NULL if the queue is empty or NULL.
- */
-void *dsc_queue_back(const DSCQueue queue);
+DSCError dsc_queue_pop(DSCQueue *queue, void *data);
 
-/* Modifiers */
-
-/**
- * @brief Inserts an element at the end of the queue.
- *
- * @param queue The queue to push the element into.
- * @param data The value to push.
- *
- * @return true if the element was inserted successfully, false otherwise.
- *
- * @note The type of the element must match the type specified during queue initialization.
- */
-bool dsc_queue_push(DSCQueue queue, void *data);
-
-/**
- * @brief Removes the element at the front of the queue.
- *
- * @param queue The queue to pop from.
- *
- * @return The popped value, or NULL if the queue is empty or NULL.
- *
- * @note The caller is responsible for freeing the memory of the popped element if necessary.
- */
-void *dsc_queue_pop(DSCQueue queue);
-
-/**
- * @brief Retrieves the last error code.
- *
- * @param queue The queue to get the error code from.
- *
- * @return The last error code.
- */
-DSCError dsc_queue_error(const DSCQueue queue);
-
-#endif // __DSC_QUEUE_H__
+#endif // DSC_QUEUE_H

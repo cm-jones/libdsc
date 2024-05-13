@@ -15,97 +15,30 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __DSC_STACK_H__
-#define __DSC_STACK_H__
+#ifndef DSC_STACK_H
+#define DSC_STACK_H
 
-#include <stdbool.h>
+#include "dsc_type.h"
+#include "dsc_error.h"
 
-#include "../include/dsc_type.h"
-#include "../include/dsc_error.h"
-
-/**
- * @def DSC_STACK_INITIAL_CAPACITY
- * @brief The initial capacity of the stack.
- */
 #define DSC_STACK_INITIAL_CAPACITY 16
 
-/* Forward declaration of the stack structure */
+typedef struct DSCStack DSCStack;
 
-typedef struct DSCStack *DSCStack;
+DSCError dsc_stack_init(DSCStack *new_stack, DSCType type);
 
-/* Constructor and destructor for a DSCStack */
+DSCError dsc_stack_deinit(DSCStack *stack);
 
-/**
- * @brief Creates a new empty stack.
- *
- * @return A pointer to the newly created stack, or NULL if memory allocation fails.
- */
-DSCStack dsc_stack_init(DSCType type);
+DSCError dsc_stack_size(const DSCStack *stack, size_t *size);
 
-/**
- * @brief Destroys the stack and frees its memory.
- *
- * @param stack The stack to destroy.
- */
-bool dsc_stack_deinit(DSCStack stack);
+DSCError dsc_stack_capacity(const DSCStack *stack, size_t *capacity);
 
-/* Capacity */
+DSCError dsc_stack_is_empty(const DSCStack *stack, bool *is_empty);
 
-/**
- * @brief Checks if the stack is empty.
- *
- * @param stack The stack to check.
- *
- * @return true if the stack is empty, false otherwise.
- */
-bool dsc_stack_is_empty(const DSCStack stack);
+DSCError dsc_stack_top(const DSCStack *stack, void *top);
 
-/**
- * @brief Gets the number of elements in the stack.
- *
- * @param stack The stack to get the size of.
- *
- * @return The number of elements in the stack, -1 if the stack is NULL.
- */
-int dsc_stack_size(const DSCStack stack);
+DSCError dsc_stack_push(DSCStack *stack, void *data);
 
-int dsc_stack_capacity(const DSCStack stack);
+DSCError dsc_stack_pop(DSCStack *stack, void *top);
 
-/* Element access */
-
-/**
- * @brief Retrieves the value of the top element on the stack without removing it.
- *
- * @param stack The stack to get the top element from.
- *
- * @return The value of the top element.
- */
-void *dsc_stack_top(const DSCStack stack);
-
-/* Modifiers */
-
-/**
- * @brief Pushes an element onto the top of the stack.
- *
- * @param stack The stack to push the element onto.
- * @param value The value to push.
- */
-bool dsc_stack_push(DSCStack stack, void *data);
-
-/**
- * @brief Removes the top element from the stack.
- *
- * @param stack The stack to pop from.
- */
-void *dsc_stack_pop(DSCStack stack);
-
-/**
- * @brief Retrieves the last error code.
- *
- * @param stack The stack to get the error code from.
- *
- * @return The last error code.
- */
-DSCError dsc_stack_error(const DSCStack stack);
-
-#endif /* __DSC_STACK_H__ */
+#endif // DSC_STACK_H

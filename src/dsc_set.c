@@ -20,39 +20,64 @@
 #include "../include/dsc_set.h"
 #include "../include/dsc_utils.h"
 
-/* Represents an entry in the hash set. */
-
-typedef struct DSCSetEntry *DSCSetEntry;
+typedef struct DSCSetEntry DSCSetEntry;
 
 struct DSCSetEntry {
-    void *key;        /* The key of the entry */
-    DSCSetEntry next; /* Pointer to the next entry in case of collisions */
+    DSCData key;           // The key stored in the entry
+    DSCSetEntry *next;     // Pointer to the next entry in case of collisions
 };
-
-/* Represents a hash set */
 
 struct DSCSet {
-    DSCSetEntry *buckets; /* Array of pointers to entries */
-    size_t size;          /* The number of elements currently in the hash set */
-    size_t capacity;      /* The current capacity of the hash set */
-    DSCType type;         /* The type of the set elements */
-    DSCError error;       /* The most recent error code */
+    DSCSetEntry **buckets; // Array of pointers to entries
+    size_t size;           // The number of elements currently in the hash set
+    size_t capacity;       // The current capacity of the hash set
+    DSCType type;          // The type of the set elements
 };
 
-static bool dsc_set_rehash(DSCSet set, size_t new_capacity) {
-    DSCSetEntry *new_buckets = calloc(new_capacity, sizeof(DSCSetEntry *));
-    if (!new_buckets) {
+static bool dsc_set_rehash(DSCSet *set, size_t new_capacity) {
+    DSCSetEntry **new_buckets = calloc(new_capacity, sizeof(DSCSetEntry *));
+    if (new_buckets == NULL) {
         return false;
     }
 
-    // Rehash all the elements into the new buckets. */
+    // Rehash all the elements into the new buckets
     for (size_t i = 0; i < set->capacity; ++i) {
-        DSCSetEntry entry = set->buckets[i];
+        DSCSetEntry *entry = set->buckets[i];
         while (entry) {
-            DSCSetEntry next = entry->next;
+            DSCSetEntry *next = entry->next;
+            uint32_t index;
 
-            /* Rehash the value to determine the new index. */
-            uint32_t index = dsc_hash(entry->key, set->type, new_capacity);
+            switch (set->type) {
+                case DSC_TYPE_CHAR: {
+                    index = dsc_hash(&entry->key.c, set->type, new_capacity);
+                    break;
+                }
+
+                case DSC_TYPE_INT: {
+                    index = dsc_hash(&entry->key.i, set->type, new_capacity);
+                    break;
+                }
+
+                case DSC_TYPE_FLOAT: {
+                    index = dsc_hash(&entry->key.f, set->type, new_capacity);
+                    break;
+                }
+
+                case DSC_TYPE_DOUBLE: {
+                    index = dsc_hash(&entry->key.d, set->type, new_capacity);
+                    break;
+                }
+
+                case DSC_TYPE_STRING: {
+                    index = dsc_hash(&entry->key.s, set->type, new_capacity);
+                    break;
+                }
+
+                case DSC_TYPE_BOOL: {
+                    index = dsc_hash(&entry->key.s, set->type, new_capacity);
+                    break;
+                }
+            }
 
             entry->next = new_buckets[index];
             new_buckets[index] = entry;
@@ -67,42 +92,44 @@ static bool dsc_set_rehash(DSCSet set, size_t new_capacity) {
     return true;
 }
 
-/* Constructor and destructor for a DSCSet */
-
-DSCSet dsc_set_init(DSCType type) {
+DSCError dsc_set_init(DSCSet *new_set, DSCType type) {
     if (!dsc_type_is_valid(type)) {
-        return NULL;
+        return DSC_ERROR_INVALID_TYPE;
     }
 
-    DSCSet new_set = malloc(sizeof *new_set);
-    if (!new_set) {
-        return NULL;
-    }
-
-    new_set->buckets = calloc(new_set->capacity, sizeof(DSCSetEntry *));
-    if (!new_set->buckets) {
-        free(new_set);
-        return NULL;
+    new_set = malloc(sizeof new_set);
+    if (new_set == NULL) {
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     new_set->size = 0;
     new_set->capacity = DSC_SET_INITIAL_CAPACITY;
     new_set->type = type;
-    new_set->error = DSC_ERROR_OK;
 
-    return new_set;
+    new_set->buckets = calloc(new_set->capacity, sizeof(DSCSetEntry *));
+    if (new_set->buckets == NULL) {
+        free(new_set);
+        return DSC_ERROR_OUT_OF_MEMORY;
+    }
+
+    return DSC_ERROR_OK;
 }
 
-bool dsc_set_deinit(DSCSet set) {
-    if (!set) { 
-        return false;
+DSCError dsc_set_deinit(DSCSet *set) {
+    if (set == NULL) { 
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     // Free all of the entries in the set
     for (size_t i = 0; i < set->capacity; ++i) {
-        DSCSetEntry curr = set->buckets[i];
+        DSCSetEntry *curr = set->buckets[i];
+
         while (curr) {
-            DSCSetEntry next = curr->next;
+            if (set->type == DSC_TYPE_STRING) {
+                free(curr->key.s);
+            }
+
+            DSCSetEntry *next = curr->next;
             free(curr);
             curr = next;
         }
@@ -112,119 +139,181 @@ bool dsc_set_deinit(DSCSet set) {
     free(set->buckets);
     free(set);
     
-    return true;
+    return DSC_ERROR_OK;
 }
 
-/* Capacity */
-
-bool dsc_set_is_empty(const DSCSet set) {
-    if (!set) {
-        return false;
+DSCError dsc_set_size(const DSCSet *set, size_t *size) {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    set->error = DSC_ERROR_OK;
+    *size = set->size;
 
-    return set->size == 0;
+    return DSC_ERROR_OK;
 }
 
-int dsc_set_size(const DSCSet set) {
-    if (!set) {
-        return -1;
+DSCError dsc_set_capacity(const DSCSet *set, size_t *capacity) {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    set->error = DSC_ERROR_OK;
+    *capacity = set->capacity;
 
-    return set->size;
+    return DSC_ERROR_OK;
 }
 
-int dsc_set_capacity(const DSCSet set) {
-    if (!set) {
-        return -1;
+DSCError dsc_set_load_factor(const DSCSet *set, double *load_factor) {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    set->error = DSC_ERROR_OK;
+    *load_factor = (double) set->size / set->capacity;
 
-    return set->capacity;
+    return DSC_ERROR_OK;
 }
 
-double dsc_set_load_factor(const DSCSet set) {
-    if (!set) {
-        return -1.0;
+DSCError dsc_set_is_empty(const DSCSet *set, bool *is_empty) {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    set->error = DSC_ERROR_OK;
+    *is_empty = set->size == 0;
 
-    return (double) set->size / set->capacity;
+    return DSC_ERROR_OK;
 }
 
-
-/* Element access */
-
-bool dsc_set_contains(const DSCSet set, void *key) {
-    if (!set) {
-        return false;
-    }
-
-    // Check if the type of the key is valid
-    if (dsc_typeof(key) != set->type) {
-        set->error = DSC_ERROR_TYPE_MISMATCH;
-        return false;
+DSCError dsc_set_contains(const DSCSet *set, void *key, bool *contains) {
+    if (set == NULL || key == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     // Hash the value to determine the bucket index
     uint32_t index = dsc_hash(key, set->type, set->capacity);
 
+    *contains = false;
+
     // Search for the value in the bucket
-    DSCSetEntry entry = set->buckets[index];
+    DSCSetEntry *entry = set->buckets[index];
     while (entry) {
-        if (entry->key == key) {
-            set->error = DSC_ERROR_OK;
-            return true;
+        switch (set->type) {
+            case DSC_TYPE_CHAR: {
+                if (entry->key.c == *(char *) key) {
+                    *contains = true;
+                    return DSC_ERROR_OK;
+                }
+    
+                break;
+            }
+
+            case DSC_TYPE_INT: {
+                if (entry->key.i == *(int *) key) {
+                    *contains = true;
+                    return DSC_ERROR_OK;
+                }
+
+                break;
+            }
+
+            case DSC_TYPE_FLOAT: {
+                if (entry->key.f == *(float *) key) {
+                    *contains = true;
+                    return DSC_ERROR_OK;
+                }
+
+                break;
+            }
+
+            case DSC_TYPE_DOUBLE: {
+                if (entry->key.d == *(double *) key) {
+                    *contains = true;
+                    return DSC_ERROR_OK;
+                }
+
+                break;
+            }
+
+            case DSC_TYPE_STRING: {
+                if (strcmp(entry->key.s, *(char **) key) == 0) {
+                    *contains = true;
+                    return DSC_ERROR_OK;
+                }
+
+                break;
+            }
+
+            case DSC_TYPE_BOOL: {
+                if (entry->key.b == *(bool *) key) {
+                    *contains = true;
+                    return DSC_ERROR_OK;
+                }
+
+                break;
+            }
         }
 
         entry = entry->next;
     }
 
-    set->error = DSC_ERROR_KEY_NOT_FOUND;
-
-    return false;
+    return DSC_ERROR_NOT_FOUND;
 }
 
-/* Modifiers */
-
-bool dsc_set_insert(DSCSet set, void *key) {
-    if (!set) {
-        return false;
+DSCError dsc_set_insert(DSCSet *set, void *key) {
+    if (set == NULL || key == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // Check if the type of the new key is valid
-    if (dsc_typeof(key) != set->type) {
-        set->error = DSC_ERROR_TYPE_MISMATCH;
-        return false;
-    }
+    bool contains;
+    dsc_set_contains(set, key, &contains);
 
-    if (dsc_set_contains(set, key)) {
-        set->error = DSC_ERROR_KEY_ALREADY_EXISTS;
-        return false;
+    if (contains) {
+        return DSC_ERROR_ALREADY_EXISTS;
     }
 
     // Resize the set if the load factor exceeds the threshold
     if (set->size >= DSC_SET_LOAD_FACTOR * set->capacity) {
         size_t new_capacity = set->capacity * 2;
         if (!dsc_set_rehash(set, new_capacity)) {
-            set->error = DSC_ERROR_OUT_OF_MEMORY;
-            return false;
+            return DSC_ERROR_OUT_OF_MEMORY;
         }
     }
 
-    // Create a new entry
-    DSCSetEntry new_entry = malloc(sizeof *new_entry);
-    if (!new_entry) {
-        set->error = DSC_ERROR_OUT_OF_MEMORY;
-        return false;
+    DSCSetEntry *new_entry = malloc(sizeof new_entry);
+    if (new_entry == NULL) {
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
-    new_entry->key = key;
+    switch (set->type) {
+        case DSC_TYPE_CHAR: {
+            new_entry->key.c = *(char *) key;
+            break;
+        }
+
+        case DSC_TYPE_INT: {
+            new_entry->key.i = *(int *) key;
+            break;
+        }
+
+        case DSC_TYPE_FLOAT: {
+            new_entry->key.f = *(float *) key;
+            break;
+        }
+
+        case DSC_TYPE_DOUBLE: {
+            new_entry->key.d = *(double *) key;
+            break;
+        }
+
+        case DSC_TYPE_STRING: {
+            dsc_str_cpy(&new_entry->key.s, *(char **) key);
+            break;
+        }
+
+        case DSC_TYPE_BOOL: {
+            new_entry->key.b = *(bool *) key;
+            break;
+        }
+    }
+
     new_entry->next = NULL;
 
     // Hash the value to determine the bucket index
@@ -235,77 +324,145 @@ bool dsc_set_insert(DSCSet set, void *key) {
     set->buckets[index] = new_entry;
     set->size++;
 
-    set->error = DSC_ERROR_OK;
-
-    return true;
+    return DSC_ERROR_OK;
 }
 
-bool dsc_set_erase(DSCSet set, void *key) {
-    if (!set) {
-        return false;
-    }
-
-    // Check if the type of the key is valid
-    if (dsc_typeof(key) != set->type) {
-        set->error = DSC_ERROR_TYPE_MISMATCH;
-        return false;
+DSCError dsc_set_erase(DSCSet *set, void *key) {
+    if (set == NULL || key == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     uint32_t index = dsc_hash(key, set->type, set->capacity);
 
-    DSCSetEntry entry = set->buckets[index];
-    DSCSetEntry prev = NULL;
+    DSCSetEntry *curr = set->buckets[index];
+    DSCSetEntry *prev = NULL;
 
-    while (entry) {
-        if (entry->key == key) {
-            if (!prev) {
-                set->buckets[index] = entry->next;
-            } else {
-                prev->next = entry->next;
+    while (curr) {
+        switch (set->type) {
+            case DSC_TYPE_CHAR: {
+                if (curr->key.c == *(char *) key) {
+                    if (!prev) {
+                        set->buckets[index] = curr->next;
+                    } else {
+                        prev->next = curr->next;
+                    }
+
+                    free(curr);
+                    set->size--;
+
+                    return DSC_ERROR_OK;
+                }
             }
-        
-            free(entry);
-            set->size--;
-            set->error = DSC_ERROR_OK;
 
-            return true;
+            case DSC_TYPE_INT: {
+                if (curr->key.i == *(int *) key) {
+                    if (!prev) {
+                        set->buckets[index] = curr->next;
+                    } else {
+                        prev->next = curr->next;
+                    }
+
+                    free(curr);
+                    set->size--;
+
+                    return DSC_ERROR_OK;
+                }
+            }
+
+            case DSC_TYPE_FLOAT: {
+                if (curr->key.f == *(float *) key) {
+                    if (!prev) {
+                        set->buckets[index] = curr->next;
+                    } else {
+                        prev->next = curr->next;
+                    }
+
+                    free(curr);
+                    set->size--;
+
+                    return DSC_ERROR_OK;
+                }
+            }
+
+            case DSC_TYPE_DOUBLE: {
+                if (curr->key.d == *(double *) key) {
+                    if (!prev) {
+                        set->buckets[index] = curr->next;
+                    } else {
+                        prev->next = curr->next;
+                    }
+
+                    free(curr);
+                    set->size--;
+
+                    return DSC_ERROR_OK;
+                }
+            }
+
+            case DSC_TYPE_STRING: {
+                if (strcmp(curr->key.s, *(char **) key) == 0) {
+                    if (!prev) {
+                        set->buckets[index] = curr->next;
+                    } else {
+                        prev->next = curr->next;
+                    }
+
+                    free(curr->key.s);
+                    free(curr);
+                    set->size--;
+
+                    return DSC_ERROR_OK;
+                }
+            }
+
+            case DSC_TYPE_BOOL: {
+                if (curr->key.b == *(bool *) key) {
+                    if (!prev) {
+                        set->buckets[index] = curr->next;
+                    } else {
+                        prev->next = curr->next;
+                    }
+
+                    free(curr);
+                    set->size--;
+
+                    return DSC_ERROR_OK;
+                }
+            }
         }
 
-        prev = entry;
-        entry = entry->next;
+        prev = curr;
+        curr = curr->next;
     }
 
-    set->error = DSC_ERROR_KEY_NOT_FOUND;
-
-    return false;
+    return DSC_ERROR_NOT_FOUND;
 }
 
-bool dsc_set_clear(DSCSet set) {
-    if (!set) {
-        return false;
+DSCError dsc_set_clear(DSCSet *set) {
+    if (set == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     // Free all the entries in the set
     for (size_t i = 0; i < set->capacity; ++i) {
-        DSCSetEntry entry = set->buckets[i];
+        DSCSetEntry *curr = set->buckets[i];
 
-        while (entry) {
-            DSCSetEntry next = entry->next;
-            free(entry);
-            entry = next;
+        while (curr) {
+            DSCSetEntry *next = curr->next;
+
+            if (set->type == DSC_TYPE_STRING) {
+                free(curr->key.s);
+                curr->key.s = NULL;
+            }
+
+            free(curr);
+            curr = next;
         }
 
         set->buckets[i] = NULL;
     }
 
     set->size = 0;
-    set->error = DSC_ERROR_OK;
 
-    return true;
-}
-
-/* Error handling */
-
-DSCError dsc_set_error(const DSCSet set) {
-    return set->error;
+    return DSC_ERROR_OK;
 }

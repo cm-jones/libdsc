@@ -21,73 +21,65 @@
 #include "../include/dsc_stack.h"
 
 struct DSCStack {
-    union {
-        char *c;     // An array of characters
-        int *i;      // An array of integers
-        float *f;    // An array of floats
-        double *d;   // An array of doubles
-        char **s;    // An array of strings
-        bool *b;     // An array of booleans
-    } data;          // The data stored in the stack
-
+    DSCData data;    // The data stored in the stack
     size_t size;     // The number of elements currently in the stack
     size_t capacity; // The current capacity of the stack
     DSCType type;    // The type of the elements in the stack
 };
 
-static bool dsc_stack_resize(DSCStack stack, size_t new_capacity) {
+static bool dsc_stack_resize(DSCStack *stack, size_t new_capacity) {
     switch (stack->type) {
         case DSC_TYPE_CHAR: {
-            char **new_data = realloc(stack->data.c, new_capacity * sizeof(char));
+            char *new_data = realloc(stack->data.c_ptr, new_capacity * sizeof(char));
             if (new_data == NULL) {
                 return false;
             }
-            stack->data.c = new_data;
+            stack->data.c_ptr = new_data;
             break;
         }
 
         case DSC_TYPE_INT: {
-            int *new_data = realloc(stack->data.i, new_capacity * sizeof(int));
+            int *new_data = realloc(stack->data.i_ptr, new_capacity * sizeof(int));
             if (new_data == NULL) {
                 return false;
             }
-            stack->data.i = new_data;
+            stack->data.i_ptr = new_data;
             break;
         }
 
         case DSC_TYPE_FLOAT: {
-            float *new_data = realloc(stack->data.f, new_capacity * sizeof(float));
+            float *new_data = realloc(stack->data.f_ptr, new_capacity * sizeof(float));
             if (new_data == NULL) {
                 return false;
             }
-            stack->data.f = new_data;
+            stack->data.f_ptr = new_data;
             break;
         }
     
         case DSC_TYPE_DOUBLE: {
-            double *new_data = realloc(stack->data.d, new_capacity * sizeof(double));
+            double *new_data = realloc(stack->data.d_ptr, new_capacity * sizeof(double));
             if (new_data == NULL) {
                 return false;
             }
-            stack->data.d = new_data;
+            stack->data.d_ptr = new_data;
             break;
         }
     
         case DSC_TYPE_STRING: {
-            char **new_data = realloc(stack->data.s, new_capacity * sizeof(char *));
+            char **new_data = realloc(stack->data.s_ptr, new_capacity * sizeof(char *));
             if (new_data == NULL) {
-            return false;
+                return false;
             }
-            stack->data.s = new_data;
+            stack->data.s_ptr = new_data;
             break;
         }
     
         case DSC_TYPE_BOOL: {
-            bool *new_data = realloc(stack->data.b, new_capacity * sizeof(bool));
+            bool *new_data = realloc(stack->data.b_ptr, new_capacity * sizeof(bool));
             if (new_data == NULL) {
                 return false;
             }
-            stack->data.b = new_data;
+            stack->data.b_ptr = new_data;
             break;
         }
 
@@ -100,14 +92,15 @@ static bool dsc_stack_resize(DSCStack stack, size_t new_capacity) {
     return true;
 }
 
-DSCStack dsc_stack_init(DSCType type) {
+DSCError dsc_stack_init(DSCStack *new_stack, DSCType type) {
     if (!dsc_type_is_valid(type)) {
-        return NULL;
+        return DSC_ERROR_INVALID_TYPE;
     }
 
-    DSCStack new_stack = malloc(sizeof(DSCStack));
+    new_stack = malloc(sizeof(struct DSCStack));
+
     if (new_stack == NULL) {
-        return NULL;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     new_stack->size = 0;
@@ -116,119 +109,136 @@ DSCStack dsc_stack_init(DSCType type) {
 
     switch (type) {
         case DSC_TYPE_CHAR: {
-            new_stack->data.c = malloc(new_stack->capacity * sizeof(char));
-            if (new_stack->data.c == NULL) {
+            new_stack->data.c_ptr = malloc(new_stack->capacity * sizeof(char));
+
+            if (new_stack->data.c_ptr == NULL) {
                 free(new_stack);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            return new_stack;
+            break;
         }
 
         case DSC_TYPE_INT: {
-            new_stack->data.i = malloc(new_stack->capacity * sizeof(int));
-            if (new_stack->data.i == NULL) {
+            new_stack->data.i_ptr = malloc(new_stack->capacity * sizeof(int));
+
+            if (new_stack->data.i_ptr == NULL) {
                 free(new_stack);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            return new_stack;
+            break;
         }
 
         case DSC_TYPE_FLOAT: {
-            new_stack->data.f = malloc(new_stack->capacity * sizeof(float));
-            if (new_stack->data.f == NULL) {
+            new_stack->data.f_ptr = malloc(new_stack->capacity * sizeof(float));
+
+            if (new_stack->data.f_ptr == NULL) {
                 free(new_stack);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
             
-            return new_stack;
+            break;
         }
 
         case DSC_TYPE_DOUBLE: {
-            new_stack->data.d = malloc(new_stack->capacity * sizeof(double));
-            if (new_stack->data.d == NULL) {
+            new_stack->data.d_ptr = malloc(new_stack->capacity * sizeof(double));
+
+            if (new_stack->data.d_ptr == NULL) {
                 free(new_stack);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
             
-            return new_stack;
+            break;
         }
 
         case DSC_TYPE_STRING: {
-            new_stack->data.s = malloc(new_stack->capacity * sizeof(char *));
-            if (new_stack->data.s == NULL) {
+            new_stack->data.s_ptr = malloc(new_stack->capacity * sizeof(char *));
+
+            if (new_stack->data.s_ptr == NULL) {
                 free(new_stack);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
             
-            return new_stack;
+            break;
         }
 
         case DSC_TYPE_BOOL: {
-            new_stack->data.b = malloc(new_stack->capacity * sizeof(bool));
-            if (new_stack->data.b == NULL) {
+            new_stack->data.b_ptr = malloc(new_stack->capacity * sizeof(bool));
+    
+            if (new_stack->data.b_ptr == NULL) {
                 free(new_stack);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
-            
-            return new_stack;
+
+            break;
+        }
+
+        default: {
+            free(new_stack);
+            return DSC_ERROR_INVALID_TYPE;
         }
     }
 
-    free(new_stack);
-
-    return NULL;
+    return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_deinit(DSCStack stack) {
+DSCError dsc_stack_deinit(DSCStack *stack) {
     if (stack == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     switch (stack->type) {
         case DSC_TYPE_CHAR: {
-            free(stack->data.c);
+            free(stack->data.c_ptr);
+            stack->data.c_ptr = NULL;
             break;
         }
         
         case DSC_TYPE_INT: {
-            free(stack->data.i);
+            free(stack->data.i_ptr);
+            stack->data.i_ptr = NULL;
             break;
         }
 
         case DSC_TYPE_FLOAT: {
-            free(stack->data.f);
+            free(stack->data.f_ptr);
+            stack->data.f_ptr = NULL;
             break;
         }
 
         case DSC_TYPE_DOUBLE: {
-            free(stack->data.d);
+            free(stack->data.d_ptr);
+            stack->data.d_ptr = NULL;
             break;
         }
 
         case DSC_TYPE_STRING: {
-            for (size_t i = 0; i < stack->size; i++) {
-                free(stack->data.s[i]);
+            for (size_t i = 0; i < stack->size; ++i) {
+                free(stack->data.s_ptr[i]);
+                stack->data.s_ptr[i] = NULL;
             }
 
-            free(stack->data.s);
+            free(stack->data.s_ptr);
+            stack->data.s_ptr = NULL;
             break;
         }
 
         case DSC_TYPE_BOOL: {
-            free(stack->data.b);
+            free(stack->data.b_ptr);
+            stack->data.b_ptr = NULL;
             break;
         }
     }
 
     free(stack);
+    stack = NULL;
 
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_size(const DSCStack stack, size_t *result) {
-    if (stack == NULL || result == NULL) {
+DSCError dsc_stack_size(const DSCStack *stack, size_t *result) {
+    if (stack == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -237,8 +247,8 @@ DSCError dsc_stack_size(const DSCStack stack, size_t *result) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_capacity(const DSCStack stack, size_t *result) {
-    if (stack == NULL || result == NULL) {
+DSCError dsc_stack_capacity(const DSCStack *stack, size_t *result) {
+    if (stack == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -247,8 +257,8 @@ DSCError dsc_stack_capacity(const DSCStack stack, size_t *result) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_is_empty(const DSCStack stack, bool *result) {
-    if (stack == NULL || result == NULL) {
+DSCError dsc_stack_is_empty(const DSCStack *stack, bool *result) {
+    if (stack == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -257,9 +267,7 @@ DSCError dsc_stack_is_empty(const DSCStack stack, bool *result) {
     return DSC_ERROR_OK;
 }
 
-#include <string.h>
-
-DSCError dsc_stack_top(const DSCStack stack, void *result) {
+DSCError dsc_stack_top(const DSCStack *stack, void *result) {
     if (stack == NULL || result == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -270,58 +278,59 @@ DSCError dsc_stack_top(const DSCStack stack, void *result) {
 
     switch (stack->type) {
         case DSC_TYPE_CHAR: {
-            *(char *) result = stack->data.c[stack->size - 1];
+            *(char *) result = stack->data.c_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_INT: {
-            *(int *) result = stack->data.i[stack->size - 1];
+            *(int *) result = stack->data.i_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_FLOAT: {
-            *(float *) result = stack->data.f[stack->size - 1];
+            *(float *) result = stack->data.f_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_DOUBLE: {
-            *(double *) result = stack->data.d[stack->size - 1];
+            *(double *) result = stack->data.d_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_STRING: {
-            const char *s = stack->data.s[stack->size - 1];
+            const char *s = stack->data.s_ptr[stack->size - 1];
             size_t string_size = strlen(s);
             size_t result_size = strlen((char *) result);
 
             if (string_size >= result_size) {
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-        
-            strncpy((char *) result, s, string_size + 1);
+
+            strncpy((char *) result, s, result_size - 1);
+            ((char *) result)[result_size - 1] = '\0';
             break;
         }
 
         case DSC_TYPE_BOOL: {
-            *(bool *) result = stack->data.b[stack->size - 1];
+            *(bool *) result = stack->data.b_ptr[stack->size - 1];
             break;
         }
 
         default:
-            return DSC_ERROR_TYPE_MISMATCH;
+            return DSC_ERROR_INVALID_TYPE;
     }
 
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_push(DSCStack stack, void *data) {
+DSCError dsc_stack_push(DSCStack *stack, void *data) {
     if (stack == NULL || data == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // Resize the stack if its size is equal to or exceeds its capacity
+    // Resize the stack if its size is equal to or greater than its capacity
     if (stack->size >= stack->capacity) {
-        size_t new_capacity = stack->capacity * 1.5;
+        size_t new_capacity = stack->capacity * 2;
         if (!dsc_stack_resize(stack, new_capacity)) {
             return DSC_ERROR_OUT_OF_MEMORY;
         }
@@ -329,37 +338,46 @@ DSCError dsc_stack_push(DSCStack stack, void *data) {
 
     switch (stack->type) {
         case DSC_TYPE_CHAR: {
-            stack->data.c[stack->size] = *(char *) data;
+            stack->data.c_ptr[stack->size] = *(char *) data;
             break;
         }
 
         case DSC_TYPE_INT: {
-            stack->data.i[stack->size] = *(int *) data;
+            stack->data.i_ptr[stack->size] = *(int *) data;
             break;
         }
 
         case DSC_TYPE_FLOAT: {
-            stack->data.f[stack->size] = *(float *) data;
+            stack->data.f_ptr[stack->size] = *(float *) data;
             break;
         }
 
         case DSC_TYPE_DOUBLE: {
-            stack->data.d[stack->size] = *(double *) data;
+            stack->data.d_ptr[stack->size] = *(double *) data;
             break;
         }
 
         case DSC_TYPE_STRING: {
-            stack->data.s[stack->size] = strdup(*(char **) data);
+            const char *str = *(char **) data;
+            size_t str_len = strlen(str);
+    
+            stack->data.s_ptr[stack->size] = malloc(str_len + 1);
+            if (stack->data.s_ptr[stack->size] == NULL) {
+                return DSC_ERROR_OUT_OF_MEMORY;
+            }
+
+            strncpy(stack->data.s_ptr[stack->size], str, str_len);
+            memset(stack->data.s_ptr[stack->size] + str_len, '\0', 1);
             break;
         }
 
         case DSC_TYPE_BOOL: {
-            stack->data.b[stack->size] = *(bool *) data;
+            stack->data.b_ptr[stack->size] = *(bool *) data;
             break;
         }
 
         default:
-            return DSC_ERROR_TYPE_MISMATCH;
+            return DSC_ERROR_INVALID_TYPE;
     }
 
     stack->size++;
@@ -367,7 +385,7 @@ DSCError dsc_stack_push(DSCStack stack, void *data) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_pop(DSCStack stack, void *data) {
+DSCError dsc_stack_pop(DSCStack *stack, void *data) {
     if (stack == NULL || data == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -379,38 +397,39 @@ DSCError dsc_stack_pop(DSCStack stack, void *data) {
     // Get the popped element so we can return it after freeing it
     switch (stack->type) {
         case DSC_TYPE_CHAR: {
-            *(char *) data = stack->data.c[stack->size - 1];
+            *(char *) data = stack->data.c_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_INT: {
-            *(int *) data = stack->data.i[stack->size - 1];
+            *(int *) data = stack->data.i_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_FLOAT: {
-            *(float *) data = stack->data.f[stack->size - 1];
+            *(float *) data = stack->data.f_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_DOUBLE: {
-            *(double *) data = stack->data.d[stack->size - 1];
+            *(double *) data = stack->data.d_ptr[stack->size - 1];
             break;
         }
 
         case DSC_TYPE_STRING: {
-            *(char **) data = stack->data.s[stack->size - 1];
-            stack->data.s[stack->size - 1] = NULL;
+            *(char **) data = stack->data.s_ptr[stack->size - 1];
+            free(stack->data.s_ptr[stack->size - 1]);
+            stack->data.s_ptr[stack->size - 1] = NULL;
             break;
         }
 
         case DSC_TYPE_BOOL: {
-            *(bool *) data = stack->data.b[stack->size - 1];
+            *(bool *) data = stack->data.b_ptr[stack->size - 1];
             break;
         }
 
         default:
-            return DSC_ERROR_TYPE_MISMATCH;
+            return DSC_ERROR_INVALID_TYPE;
     }
 
     stack->size--;
