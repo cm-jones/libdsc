@@ -15,14 +15,14 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __LIBDSC_H__
-#define __LIBDSC_H__
+#ifndef LIBDSC_H
+#define LIBDSC_H
 
-#include "dsc_list.h"
 #include "dsc_vector.h"
+#include "dsc_list.h"
 #include "dsc_stack.h"
 #include "dsc_queue.h"
-#include "dsc_map.h"
 #include "dsc_set.h"
+#include "dsc_map.h"
 
-#endif /* __LIBDSC_H__ */
+#endif // LIBDSC_H
