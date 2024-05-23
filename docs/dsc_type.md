@@ -22,7 +22,7 @@ The `DSCType` enumeration defines a set of constants representing different data
 - `DSC_TYPE_LDOUBLE`: Long double-precision floating-point type.
 - `DSC_TYPE_STRING`: String type (character pointer).
 - `DSC_TYPE_BOOL`: Boolean type.
-- `DSC_TYPE_POINTER`: Generic pointer type.
+
 
 These constants can be used to specify the type of elements stored in the containers provided by the DSC library.
 
