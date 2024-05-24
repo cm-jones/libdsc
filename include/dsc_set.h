@@ -18,6 +18,7 @@
 #ifndef DSC_SET_H
 #define DSC_SET_H
 
+#include "dsc_data.h"
 #include "dsc_type.h"
 #include "dsc_error.h"
 
@@ -31,18 +32,18 @@ DSCError dsc_set_init(DSCSet *new_set, DSCType type);
 
 DSCError dsc_set_deinit(DSCSet *set);
 
-DSCError dsc_set_size(const DSCSet *set, size_t *size);
+DSCError dsc_set_size(const DSCSet *set, size_t *result);
 
-DSCError dsc_set_capacity(const DSCSet *set, size_t *capacity);
+DSCError dsc_set_capacity(const DSCSet *set, size_t *result);
 
 DSCError dsc_set_load_factor(const DSCSet *set, double *load_factor);
 
-DSCError dsc_set_is_empty(const DSCSet *set, bool *is_empty);
+DSCError dsc_set_empty(const DSCSet *set, bool *result);
 
-DSCError dsc_set_contains(const DSCSet *set, void *data, bool *contains);
+DSCError dsc_set_contains(const DSCSet *set, void *key, bool *result);
 
-DSCError dsc_set_insert(DSCSet *set, void *data);
+DSCError dsc_set_insert(DSCSet *set, void *key);
 
-DSCError dsc_set_erase(DSCSet *set, void *data);
+DSCError dsc_set_erase(DSCSet *set, void *key);
 
 #endif // DSC_SET_H
