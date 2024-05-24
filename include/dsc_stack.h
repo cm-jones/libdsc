@@ -18,6 +18,7 @@
 #ifndef DSC_STACK_H
 #define DSC_STACK_H
 
+#include "dsc_data.h"
 #include "dsc_type.h"
 #include "dsc_error.h"
 
@@ -29,16 +30,16 @@ DSCError dsc_stack_init(DSCStack *new_stack, DSCType type);
 
 DSCError dsc_stack_deinit(DSCStack *stack);
 
-DSCError dsc_stack_size(const DSCStack *stack, size_t *size);
+DSCError dsc_stack_size(const DSCStack *stack, size_t *result);
 
-DSCError dsc_stack_capacity(const DSCStack *stack, size_t *capacity);
+DSCError dsc_stack_capacity(const DSCStack *stack, size_t *result);
 
-DSCError dsc_stack_is_empty(const DSCStack *stack, bool *is_empty);
+DSCError dsc_stack_empty(const DSCStack *stack, bool *result);
 
-DSCError dsc_stack_top(const DSCStack *stack, void *top);
+DSCError dsc_stack_top(const DSCStack *stack, void *result);
 
-DSCError dsc_stack_push(DSCStack *stack, void *data);
+DSCError dsc_stack_push(DSCStack *stack, void *value);
 
-DSCError dsc_stack_pop(DSCStack *stack, void *top);
+DSCError dsc_stack_pop(DSCStack *stack, void *result);
 
 #endif // DSC_STACK_H
