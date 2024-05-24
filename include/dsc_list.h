@@ -18,6 +18,7 @@
 #ifndef DSC_LIST_H
 #define DSC_LIST_H
 
+#include "dsc_data.h"
 #include "dsc_type.h"
 #include "dsc_error.h"
 
@@ -27,26 +28,26 @@ DSCError dsc_list_init(DSCList *new_list, DSCType type);
 
 DSCError dsc_list_deinit(DSCList *list);
 
-DSCError dsc_list_size(const DSCList *list, size_t *size);
+DSCError dsc_list_size(const DSCList *list, size_t *result);
 
-DSCError dsc_list_is_empty(const DSCList *list, bool *is_empty);
+DSCError dsc_list_empty(const DSCList *list, bool *result);
 
-DSCError dsc_list_front(const DSCList *list, void *front);
+DSCError dsc_list_front(const DSCList *list, void *result);
 
-DSCError dsc_list_back(const DSCList *list, void *back);
+DSCError dsc_list_back(const DSCList *list, void *result);
 
-DSCError dsc_list_at(const DSCList *list, size_t position, void *data);
+DSCError dsc_list_at(const DSCList *list, size_t index, void *result);
 
 DSCError dsc_list_push_front(DSCList *list, void *data);
 
-DSCError dsc_list_pop_front(DSCList *list, void *front);
+DSCError dsc_list_pop_front(DSCList *list, void *result);
 
 DSCError dsc_list_push_back(DSCList *list, void *data);
 
-DSCError dsc_list_pop_back(DSCList *list, void *back);
+DSCError dsc_list_pop_back(DSCList *list, void *result);
 
-DSCError dsc_list_insert(DSCList *list, void *data, size_t position);
+DSCError dsc_list_insert(DSCList *list, void *data, size_t index);
 
-DSCError dsc_list_erase(DSCList *list, size_t position);
+DSCError dsc_list_erase(DSCList *list, size_t index);
 
 #endif // DSC_LIST_H
