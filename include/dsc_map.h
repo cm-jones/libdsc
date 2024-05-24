@@ -18,6 +18,7 @@
 #ifndef DSC_MAP_H
 #define DSC_MAP_H
 
+#include "dsc_data.h"
 #include "dsc_type.h"
 #include "dsc_error.h"
 
@@ -31,15 +32,15 @@ DSCError dsc_map_init(DSCMap *new_map, DSCType key_type, DSCType value_type);
 
 DSCError dsc_map_deinit(DSCMap *map);
 
-DSCError dsc_map_size(const DSCMap *map, size_t *size);
+DSCError dsc_map_size(const DSCMap *map, size_t *result);
 
-DSCError dsc_map_capacity(const DSCMap *map, size_t *capacity);
+DSCError dsc_map_capacity(const DSCMap *map, size_t *result);
 
-DSCError dsc_map_is_empty(const DSCMap *map, bool *is_empty);
+DSCError dsc_map_empty(const DSCMap *map, bool *result);
 
-DSCError dsc_map_get(const DSCMap *map, void *key, void *value);
+DSCError dsc_map_get(const DSCMap *map, void *key, void *result);
 
-DSCError dsc_map_contains(const DSCMap *map, void *key, bool *contains);
+DSCError dsc_map_contains(const DSCMap *map, void *key, bool *result);
 
 DSCError dsc_map_insert(DSCMap *map, void *key, void *value);
 
