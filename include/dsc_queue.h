@@ -18,8 +18,10 @@
 #ifndef DSC_QUEUE_H
 #define DSC_QUEUE_H
 
+#include "dsc_data.h"
 #include "dsc_type.h"
 #include "dsc_error.h"
+#include "dsc_utils.h"
 
 #define DSC_QUEUE_INITIAL_CAPACITY 16
 
@@ -29,18 +31,18 @@ DSCError dsc_queue_init(DSCQueue *new_queue, DSCType type);
 
 DSCError dsc_queue_deinit(DSCQueue *queue);
 
-DSCError dsc_queue_size(const DSCQueue *queue, size_t *size);
+DSCError dsc_queue_size(const DSCQueue *queue, size_t *result);
 
-DSCError dsc_queue_capacity(const DSCQueue *queue, size_t *capacity);
+DSCError dsc_queue_capacity(const DSCQueue *queue, size_t *result);
 
-DSCError dsc_queue_is_empty(const DSCQueue *queue, bool *is_empty);
+DSCError dsc_queue_empty(const DSCQueue *queue, bool *result);
 
-DSCError dsc_queue_front(const DSCQueue *queue, void *front);
+DSCError dsc_queue_front(const DSCQueue *queue, void *result);
 
-DSCError dsc_queue_back(const DSCQueue *queue, void *back);
+DSCError dsc_queue_back(const DSCQueue *queue, void *result);
 
 DSCError dsc_queue_push(DSCQueue *queue, void *data);
 
-DSCError dsc_queue_pop(DSCQueue *queue, void *data);
+DSCError dsc_queue_pop(DSCQueue *queue, void *result);
 
 #endif // DSC_QUEUE_H
