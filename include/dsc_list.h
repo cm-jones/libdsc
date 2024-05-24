@@ -24,30 +24,122 @@
 
 typedef struct DSCList DSCList;
 
+/**
+ * @brief Initialize a new list.
+ *
+ * @param new_list Pointer to the list to initialize.
+ * @param type The data type stored in the list.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_init(DSCList *new_list, DSCType type);
 
+/**
+ * @brief Deinitialize a list, freeing all allocated memory.
+ *
+ * @param list Pointer to the list to deinitialize.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_deinit(DSCList *list);
 
+/**
+ * @brief Get the current size of the list.
+ *
+ * @param list Pointer to the list.
+ * @param result Pointer to store the size.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_size(const DSCList *list, size_t *result);
 
+/**
+ * @brief Check if the list is empty.
+ *
+ * @param list Pointer to the list.
+ * @param result Pointer to store the boolean result.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_empty(const DSCList *list, bool *result);
 
+/**
+ * @brief Get the element at the front of the list.
+ *
+ * @param list Pointer to the list.
+ * @param result Pointer to store the element data.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_front(const DSCList *list, void *result);
 
+/**
+ * @brief Get the element at the back of the list.
+ *
+ * @param list Pointer to the list.
+ * @param result Pointer to store the element data.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_back(const DSCList *list, void *result);
 
+/**
+ * @brief Get the element at the specified index.
+ *
+ * @param list Pointer to the list.
+ * @param index The index of the element.
+ * @param result Pointer to store the element data.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_at(const DSCList *list, size_t index, void *result);
 
+/**
+ * @brief Push an element onto the front of the list.
+ *
+ * @param list Pointer to the list.
+ * @param data Pointer to the element data to push.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_push_front(DSCList *list, void *data);
 
+/**
+ * @brief Pop an element from the front of the list.
+ *
+ * @param list Pointer to the list.
+ * @param result Pointer to store the popped element data.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_pop_front(DSCList *list, void *result);
 
+/**
+ * @brief Push an element onto the back of the list.
+ *
+ * @param list Pointer to the list.
+ * @param data Pointer to the element data to push.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_push_back(DSCList *list, void *data);
 
+/**
+ * @brief Pop an element from the back of the list.
+ *
+ * @param list Pointer to the list.
+ * @param result Pointer to store the popped element data.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_pop_back(DSCList *list, void *result);
 
+/**
+ * @brief Insert an element at the specified index.
+ *
+ * @param list Pointer to the list.
+ * @param data Pointer to the element data to insert.
+ * @param index The index at which to insert the element.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_insert(DSCList *list, void *data, size_t index);
 
+/**
+ * @brief Erase the element at the specified index.
+ *
+ * @param list Pointer to the list.
+ * @param index The index of the element to erase.
+ * @return DSCError code indicating success or failure.
+ */
 DSCError dsc_list_erase(DSCList *list, size_t index);
 
 #endif // DSC_LIST_H
