@@ -1,10 +1,10 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O3 -I. -I/usr/include -I/usr/local/include
-LDFLAGS = -L. -ldsc -lm
+CFLAGS = -Wall -Wextra -O3 -I. -I/opt/homebrew/Cellar/googletest/1.14.0/include
+LDFLAGS = -L. -ldsc -lm -L/opt/homebrew/Cellar/googletest/1.14.0/lib -lgtest
 
 LIBNAME = libdsc.a
 SONAME = libdsc.so
-DIST_NAME = libdsc-0.1.0-alpha
+DIST_NAME = libdsc-0.2.0
 
 SRCS = $(wildcard src/*.c)
 OBJS = $(SRCS:.c=.o)
