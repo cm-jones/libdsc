@@ -26,6 +26,13 @@
 
 typedef struct DSCStack DSCStack;
 
+struct DSCStack {
+    DSCData data;     // The data stored in the stack
+    size_t size;      // The number of elements currently in the stack
+    size_t capacity;  // The current capacity of the stack
+    DSCType type;     // The type of the elements in the stack
+};
+
 /**
  * @brief Initialize a new stack.
  *
