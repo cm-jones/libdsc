@@ -17,25 +17,6 @@
 
 #include "../include/dsc_type.h"
 
-bool dsc_type_is_valid(DSCType type) {
-    return type > DSC_TYPE_UNKNOWN && type < DSC_TYPE_COUNT;
-}
-
-size_t dsc_size_of(DSCType type) {
-    switch (type) {
-        case DSC_TYPE_CHAR:
-            return sizeof(char);
-        case DSC_TYPE_INT:
-            return sizeof(int);
-        case DSC_TYPE_FLOAT:
-            return sizeof(float);
-        case DSC_TYPE_DOUBLE:
-            return sizeof(double);
-        case DSC_TYPE_STRING:
-            return sizeof(char *);
-        case DSC_TYPE_BOOL:
-            return sizeof(bool);
-        default:
-            return 0;
-    }
+bool dsc_type_invalid(DSCType type) {
+    return type <= DSC_TYPE_UNKNOWN || type >= DSC_TYPE_COUNT;
 }

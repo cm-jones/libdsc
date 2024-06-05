@@ -15,81 +15,41 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#ifndef __DSC_TYPE_H__
-#define __DSC_TYPE_H__
+#ifndef DSC_TYPE_H
+#define DSC_TYPE_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 /**
- * @brief Represents the data types available in the DSC library.
+ * @brief Represents the data types available in libdsc.
  *
  * The DSCType enum defines a set of constants representing different data types
- * that can be used with the containers in the DSC library. It includes commonly
- * used primitive types, as well as some additional types like strings and
+ * that can be used with the containers in libdsc. It includes commonly used
+ * primitive types, as well as some additional types like strings and
  * booleans.
  */
-typedef enum DSCType DSCType;
-
-enum DSCType {
+typedef enum DSCType {
     DSC_TYPE_UNKNOWN, /** Unknown or unrecognized type. */
+    DSC_TYPE_BOOL,    /** Boolean type. */
     DSC_TYPE_CHAR,    /** Character type. */
     DSC_TYPE_INT,     /** Integer type. */
     DSC_TYPE_FLOAT,   /** Single-precision floating-point type. */
     DSC_TYPE_DOUBLE,  /** Double-precision floating-point type. */
     DSC_TYPE_STRING,  /** String type (character pointer). */
-    DSC_TYPE_BOOL,    /** Boolean type. */
     DSC_TYPE_COUNT    /** The total number of types. */
-};
+} DSCType;
 
 /**
- * @brief Union for storing generic data.
+ * @brief Checks if the specified data type is invalid.
  *
- * The DSCData union provides a way to store generic data of different types.
- * It allows containers to hold elements of various types without the need for
- * explicit type casting.
- */
-typedef union DSCData DSCData;
-
-union DSCData {
-    char c;           /** Character value. */
-    char *c_ptr;      /** Pointer to character array. */
-    int i;            /** Integer value. */
-    int *i_ptr;       /** Pointer to integer array. */
-    float f;          /** Single-precision floating-point value. */
-    float *f_ptr;     /** Pointer to single-precision floating-point array. */
-    double d;         /** Double-precision floating-point value. */
-    double *d_ptr;    /** Pointer to double-precision floating-point array. */
-    char *s;          /** String value (character pointer). */
-    char **s_ptr;     /** Pointer to array of strings (character pointers). */
-    bool b;           /** Boolean value. */
-    bool *b_ptr;      /** Pointer to boolean array. */
-};
-
-/**
- * @brief Checks if the specified data type is valid.
- *
- * The dsc_type_is_valid function takes a DSCType value representing a data
- * type and returns a boolean value indicating whether the type is a valid
- * type defined in the DSCType enum.
+ * The dsc_type_invalid function takes a DSCType value representing a data type
+ * and returns a boolean value indicating whether the type is an invalid type,
+ * i.e., not defined in the DSCType enum.
  *
  * @param type The DSCType value representing the data type.
- * @return true if the type is a valid type, false otherwise.
+ * @return true if the type is invalid, false otherwise.
  */
-bool dsc_type_is_valid(DSCType type);
+bool dsc_type_invalid(DSCType type);
 
-/**
- * @brief Returns the size of the specified data type.
- *
- * The dsc_size_of function takes a DSCType value representing a data type and
- * returns the size of that type in bytes. This function is used when
- * initializing a new container to determine the size of the elements based on
- * the provided data type.
- *
- * @param type The DSCType value representing the data type.
- * @return The size of the specified data type in bytes, or 0 if the type is
- * unknown.
- */
-size_t dsc_size_of(DSCType type);
-
-#endif // __DSC_TYPE_H__
+#endif  // DSC_TYPE_H
