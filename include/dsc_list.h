@@ -27,11 +27,10 @@ typedef struct DSCList DSCList;
 /**
  * @brief Initialize a new list.
  *
- * @param new_list Pointer to the list to initialize.
  * @param type The data type stored in the list.
- * @return DSCError code indicating success or failure.
+ * @return A pointer to the new list, or NULL on failure.
  */
-DSCError dsc_list_init(DSCList *new_list, DSCType type);
+DSCList *dsc_list_init(DSCType type);
 
 /**
  * @brief Deinitialize a list, freeing all allocated memory.

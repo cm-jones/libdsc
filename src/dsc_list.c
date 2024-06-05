@@ -16,6 +16,7 @@
  */
 
 #include <stdlib.h>
+#include <stddef.h>
 #include <string.h>
 
 #include "../include/dsc_list.h"
@@ -23,80 +24,83 @@
 typedef struct DSCNode DSCNode;
 
 struct DSCNode {
-    DSCData  data; // The data stored in the node
-    DSCNode *prev; // The previous node in the list
-    DSCNode *next; // The next node in the list
+    DSCData data;   // The data stored in the node
+    DSCNode *prev;  // The previous node in the list
+    DSCNode *next;  // The next node in the list
 };
 
 struct DSCList {
-    DSCNode *head; // The first node in the list
-    DSCNode *tail; // The last node in the list
-    size_t   size; // The number of nodes currently in the list
-    DSCType  type; // The type of the data stored in the list
+    DSCNode *head;  // The first node in the list
+    DSCNode *tail;  // The last node in the list
+    size_t size;    // The number of nodes currently in the list
+    DSCType type;   // The type of the data stored in the list
 };
 
-static DSCNode *dsc_node_init(void *data, DSCType type) {
-    DSCNode *new_node = malloc(sizeof new_node);
+static DSCError dsc_node_init(DSCNode *new_node, void *value, DSCType type) {
+    if (new_node == NULL || value == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    if (dsc_type_invalid(type)) {
+        return DSC_ERROR_INVALID_TYPE;
+    }
+
+    new_node = malloc(sizeof(DSCNode));
+
     if (new_node == NULL) {
-        return NULL;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     switch (type) {
-        case DSC_TYPE_CHAR: {
-            new_node->data.c = *(char *) data;
+        case DSC_TYPE_BOOL:
+            new_node->data.b = *(bool *) value;
             break;
-        }
 
-        case DSC_TYPE_INT: {
-            new_node->data.i = *(int *) data;
+        case DSC_TYPE_CHAR:
+            new_node->data.c = *(char *) value;
             break;
-        }
 
-        case DSC_TYPE_FLOAT: {
-            new_node->data.f = *(float *) data;
+        case DSC_TYPE_INT:
+            new_node->data.i = *(int *) value;
             break;
-        }
-
-        case DSC_TYPE_DOUBLE: {
-            new_node->data.d = *(double *) data;
+        
+        case DSC_TYPE_FLOAT:
+            new_node->data.f = *(float *) value;
             break;
-        }
 
+        case DSC_TYPE_DOUBLE:
+            new_node->data.d = *(double *) value;
+            break;
+        
         case DSC_TYPE_STRING: {
-            size_t data_size = strlen((char *) data);
+            const char *str = *(char **) value;
+            size_t str_size = strlen(str) + 1;
 
-            // Allocate an extra byte of memory for the null terminator
-            new_node->data.s = malloc(data_size + 1);
+            new_node->data.s = malloc(str_size);
             if (new_node->data.s == NULL) {
                 free(new_node);
-                return NULL;
+                return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(new_node->data.s, (char *) data, data_size);
-            new_node->data.s[data_size] = '\0';
+            strncpy(new_node->data.s, value, str_size);
+            new_node->data.s[str_size] = '\0';
             break;
         }
-
-        case DSC_TYPE_BOOL: {
-            new_node->data.b = *(bool *) data;
-            break;
-        }
-
-        default: {
+        
+        default:
             free(new_node);
-            return NULL;
-        }
+            return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     new_node->prev = NULL;
     new_node->next = NULL;
 
-    return new_node;
+    return DSC_ERROR_OK;
 }
 
-static bool dsc_node_deinit(DSCNode *node, DSCType type) {
+static DSCError dsc_node_deinit(DSCNode *node, DSCType type) {
     if (node == NULL) {
-        return false;
+        return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     if (type == DSC_TYPE_STRING) {
@@ -110,25 +114,25 @@ static bool dsc_node_deinit(DSCNode *node, DSCType type) {
     free(node);
     node = NULL;
 
-    return true;
+    return DSC_ERROR_OK;
 }
 
-DSCError dsc_list_init(DSCList *new_list, DSCType type) {
-    if (!dsc_type_is_valid(type)) {
-        return DSC_ERROR_INVALID_TYPE;
+DSCList *dsc_list_init(DSCType type) {
+    if (dsc_type_invalid(type)) {
+        return NULL;
     }
 
-    new_list = malloc(sizeof new_list);
-    if (new_list == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY;
+    DSCList *list = malloc(sizeof(DSCList));
+    if (list == NULL) {
+        return NULL;
     }
 
-    new_list->head = NULL;
-    new_list->tail = NULL;
-    new_list->size = 0;
-    new_list->type = type;
+    list->head = NULL;
+    list->tail = NULL;
+    list->size = 0;
+    list->type = type;
 
-    return DSC_ERROR_OK;
+    return list;
 }
 
 DSCError dsc_list_deinit(DSCList *list) {
@@ -150,28 +154,28 @@ DSCError dsc_list_deinit(DSCList *list) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_list_size(const DSCList *list, size_t *size) {
+DSCError dsc_list_size(const DSCList *list, size_t *result) {
     if (list == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    *size = list->size;
+    *result = list->size;
 
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_list_is_empty(const DSCList *list, bool *is_empty) {
+DSCError dsc_list_empty(const DSCList *list, bool *result) {
     if (list == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    *is_empty = list->size == 0;
+    *result = list->size == 0;
 
     return DSC_ERROR_OK;
 }
 
 DSCError dsc_list_front(const DSCList *list, void *front) {
-    if (list == NULL) {
+    if (list == NULL || front == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -180,55 +184,52 @@ DSCError dsc_list_front(const DSCList *list, void *front) {
     }
 
     switch (list->type) {
-        case DSC_TYPE_CHAR: {
+        case DSC_TYPE_BOOL:
+            *(bool *) front = list->head->data.b;
+            break;
+
+        case DSC_TYPE_CHAR:
             *(char *) front = list->head->data.c;
             break;
-        }
 
-        case DSC_TYPE_INT: {
+        case DSC_TYPE_INT:
             *(int *) front = list->head->data.i;
             break;
-        }
 
-        case DSC_TYPE_FLOAT: {
+        case DSC_TYPE_FLOAT:
             *(float *) front = list->head->data.f;
             break;
-        }
 
-        case DSC_TYPE_DOUBLE: {
+        case DSC_TYPE_DOUBLE:
             *(double *) front = list->head->data.d;
             break;
-        }
 
         case DSC_TYPE_STRING: {
-            size_t string_size = strlen(list->head->data.s);
+            const char *s = list->head->data.s;
+            size_t size = strlen(s);
 
-            // Allocate an extra byte of memory for the null terminator
-            front = malloc(string_size + 1);
-            if (front == NULL) {
+            char *temp = malloc(size + 1);
+            if (temp == NULL) {
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(front, list->head->data.s, string_size);
-            memset(front + string_size, '\0', 1);
+            strncpy(temp, s, size);
+            temp[size] = '\0';
+
+            *(char **) front = temp;
+
             break;
         }
 
-        case DSC_TYPE_BOOL: {
-            *(bool *) front = list->head->data.b;
-            break;
-        }
-
-        default: {
+        default:
             return DSC_ERROR_INVALID_TYPE;
-        }
     }
 
     return DSC_ERROR_OK;
 }
 
 DSCError dsc_list_back(const DSCList *list, void *back) {
-    if (list == NULL) {
+    if (list == NULL || back == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -237,55 +238,52 @@ DSCError dsc_list_back(const DSCList *list, void *back) {
     }
 
     switch (list->type) {
-        case DSC_TYPE_CHAR: {
+        case DSC_TYPE_BOOL:
+            *(bool *) back = list->tail->data.b;
+            break;
+        
+        case DSC_TYPE_CHAR:
             *(char *) back = list->tail->data.c;
             break;
-        }
-
-        case DSC_TYPE_INT: {
+        
+        case DSC_TYPE_INT:
             *(int *) back = list->tail->data.i;
             break;
-        }
 
-        case DSC_TYPE_FLOAT: {
+        case DSC_TYPE_FLOAT:
             *(float *) back = list->tail->data.f;
             break;
-        }
-
-        case DSC_TYPE_DOUBLE: {
+        
+        case DSC_TYPE_DOUBLE:
             *(double *) back = list->tail->data.d;
             break;
-        }
-
+        
         case DSC_TYPE_STRING: {
-            size_t string_size = strlen(list->head->data.s);
+            const char *s = list->tail->data.s;
+            size_t size = strlen(s);
 
-            // Allocate an extra byte of memory for the null terminator
-            back = malloc(string_size + 1);
-            if (back == NULL) {
+            char *temp = malloc(size + 1);
+            if (temp == NULL) {
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(back, list->head->data.s, string_size);
-            memset(back + string_size, '\0', 1);
+            strncpy(temp, s, size);
+            temp[size] = '\0';
+
+            *(char **) back = temp;
+
             break;
         }
 
-        case DSC_TYPE_BOOL: {
-            *(bool *) back = list->tail->data.b;
-            break;
-        }
-
-        default: {
+        default:
             return DSC_ERROR_INVALID_TYPE;
-        }
     }
 
     return DSC_ERROR_OK;
 }
 
 DSCError dsc_list_at(const DSCList *list, size_t position, void *result) {
-    if (list == NULL) {
+    if (list == NULL || result == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -303,81 +301,76 @@ DSCError dsc_list_at(const DSCList *list, size_t position, void *result) {
     while (curr) {
         if (index == position) {
             switch (list->type) {
-                case DSC_TYPE_CHAR: {
+                case DSC_TYPE_BOOL:
+                    *(bool *) result = curr->data.b;
+                    break;
+
+                case DSC_TYPE_CHAR:
                     *(char *) result = curr->data.c;
                     break;
-                }
-
-                case DSC_TYPE_INT: {
+                
+                case DSC_TYPE_INT:
                     *(int *) result = curr->data.i;
                     break;
-                }
-
-                case DSC_TYPE_FLOAT: {
+                
+                case DSC_TYPE_FLOAT:
                     *(float *) result = curr->data.f;
                     break;
-                }
-
-                case DSC_TYPE_DOUBLE: {
+                
+                case DSC_TYPE_DOUBLE:
                     *(double *) result = curr->data.d;
                     break;
-                }
-
+                
                 case DSC_TYPE_STRING: {
-                    size_t string_size = strlen(list->head->data.s);
+                    const char *s = curr->data.s;
+                    size_t size = strlen(s);
 
-                    // Allocate an extra byte of memory for the null terminator
-                    result = malloc(string_size + 1);
-                    if (result == NULL) {
+                    char *temp = malloc(size + 1);
+                    if (temp == NULL) {
                         return DSC_ERROR_OUT_OF_MEMORY;
                     }
 
-                    strncpy(result, list->head->data.s, string_size);
-                    memset(result + string_size, '\0', 1);
+                    strncpy(temp, s, size);
+                    temp[size] = '\0';
+
+                    *(char **) result = temp;
+
                     break;
                 }
-
-                case DSC_TYPE_BOOL: {
-                    *(bool *) result = curr->data.b;
-                    break;
-                }
-
-                default: {
+                
+                default:
                     return DSC_ERROR_INVALID_TYPE;
-                }
             }
+
+            return DSC_ERROR_OK;
         }
 
         index++;
         curr = curr->next;
     }
 
-    // Position is >= list->size. Should never reach here due to earlier check.
+    // Position is >= list->size, should never reach here
     return DSC_ERROR_OUT_OF_RANGE;
 }
 
-DSCError dsc_list_push_front(DSCList *list, void *data) {
-    if (list == NULL || data == NULL) {
+DSCError dsc_list_push_front(DSCList *list, void *to_push) {
+    if (list == NULL || to_push == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    if (dsc_size_of(list->type) != sizeof(*data)) {
-        return DSC_ERROR_INVALID_TYPE;
-    }
-
-    DSCNode *new_head = dsc_node_init(data, list->type);
-    if (new_head == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY;
+    DSCNode *new_head = NULL;
+    DSCError errno = dsc_node_init(new_head, to_push, list->type);
+    if (errno != DSC_ERROR_OK) {
+        return errno;
     }
 
     if (list->size == 0) {
         list->head = new_head;
         list->tail = new_head;
         list->size++;
-
         return DSC_ERROR_OK;
     }
-    
+
     // Link the new head to the old head
     new_head->next = list->head;
     list->head->prev = new_head;
@@ -389,8 +382,8 @@ DSCError dsc_list_push_front(DSCList *list, void *data) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_list_pop_front(DSCList *list, void *front) {
-    if (list == NULL) {
+DSCError dsc_list_pop_front(DSCList *list, void *result) {
+    if (list == NULL || result == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
@@ -399,49 +392,45 @@ DSCError dsc_list_pop_front(DSCList *list, void *front) {
     }
 
     switch (list->type) {
-        case DSC_TYPE_CHAR: {
-            *(char *) front = list->head->data.c;
+        case DSC_TYPE_BOOL:
+            *(bool *) result = list->head->data.b;
             break;
-        }
-
-        case DSC_TYPE_INT: {
-            *(int *) front = list->head->data.i;
+        
+        case DSC_TYPE_CHAR:
+            *(char *) result = list->head->data.c;
             break;
-        }
-
-        case DSC_TYPE_FLOAT: {
-            *(float *) front = list->head->data.f;
+        
+        case DSC_TYPE_INT:
+            *(int *) result = list->head->data.i;
             break;
-        }
-
-        case DSC_TYPE_DOUBLE: {
-            *(double *) front = list->head->data.d;
+        
+        case DSC_TYPE_FLOAT:
+            *(float *) result = list->head->data.f;
             break;
-        }
 
+        case DSC_TYPE_DOUBLE:
+            *(double *) result = list->head->data.d;
+            break;
+        
         case DSC_TYPE_STRING: {
-            size_t string_size = strlen(list->head->data.s);
+            const char *s = list->head->data.s;
+            size_t size = strlen(s);
 
-            // Allocate an extra byte of memory for the null terminator
-            front = malloc(string_size + 1);
-            if (front == NULL) {
+            char *temp = malloc(size + 1);
+            if (temp == NULL) {
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(front, list->head->data.s, string_size);
-            memset(front + string_size, '\0', 1);
+            strncpy(temp, s, size);
+            temp[size] = '\0';
+
+            *(char **) result = temp;
+
             break;
         }
-
-        case DSC_TYPE_BOOL: {
-            *(bool *) front = list->head->data.b;
-            break;
-        }
-
-        default: {
-            // Unknown type. Should never reach here.
+        
+        default:
             return DSC_ERROR_INVALID_TYPE;
-        }
     }
 
     DSCNode *old_head = list->head;
@@ -459,27 +448,27 @@ DSCError dsc_list_pop_front(DSCList *list, void *front) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_list_push_back(DSCList *list, void *data) {
-    if (list == NULL || data == NULL) {
+DSCError dsc_list_push_back(DSCList *list, void *to_push) {
+    if (list == NULL || to_push == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    if (dsc_size_of(list->type) != sizeof(*data)) {
-        return DSC_ERROR_INVALID_TYPE;
+    DSCNode *new_tail = NULL;
+    DSCError errno = dsc_node_init(new_tail, to_push, list->type);
+    if (errno != DSC_ERROR_OK) {
+        return errno;
     }
 
-    DSCNode *new_tail = dsc_node_init(data, list->type);
-    if (new_tail == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY;
-    }
-
-    new_tail->prev = list->tail;
-
-    if (list->size <= 1) {
+    if (list->size == 0) {
         list->head = new_tail;
-    } else {
-        list->tail->next = new_tail;
+        list->tail = new_tail;
+        list->size++;
+
+        return DSC_ERROR_OK;
     }
+
+    list->tail->next = new_tail;
+    new_tail->prev = list->tail;
 
     list->tail = new_tail;
     list->size++;
@@ -496,55 +485,55 @@ DSCError dsc_list_pop_back(DSCList *list, void *result) {
         return DSC_ERROR_EMPTY_CONTAINER;
     }
 
-    DSCNode *old_tail = list->tail;
-    
     switch (list->type) {
-        case DSC_TYPE_CHAR: {
-            *(char *) result = old_tail->data.c;
+        case DSC_TYPE_BOOL:
+            *(bool *) result = list->tail->data.b;
             break;
-        }
 
-        case DSC_TYPE_INT: {
-            *(int *) result = old_tail->data.i;
+        case DSC_TYPE_CHAR:
+            *(char *) result = list->tail->data.c;
             break;
-        }
 
-        case DSC_TYPE_FLOAT: {
-            *(float *) result = old_tail->data.f;
+        case DSC_TYPE_INT:
+            *(int *) result = list->tail->data.i;
             break;
-        }
 
-        case DSC_TYPE_DOUBLE: {
-            *(double *) result = old_tail->data.d;
+        case DSC_TYPE_FLOAT:
+            *(float *) result = list->tail->data.f;
             break;
-        }
+
+        case DSC_TYPE_DOUBLE:
+            *(double *) result = list->tail->data.d;
+            break;
 
         case DSC_TYPE_STRING: {
-            size_t result_size = strlen(old_tail->data.s) + 1;
-            strncpy(result, old_tail->data.s, result_size - 1);
-            memset(result + result_size - 1, '\0', 1);
+            const char *s = list->tail->data.s;
+            size_t size = strlen(s);
+
+            char *temp = malloc(size + 1);
+            if (temp == NULL) {
+                return DSC_ERROR_OUT_OF_MEMORY;
+            }
+
+            strncpy(temp, s, size);
+            temp[size] = '\0';
+
+            *(char **) result = temp;
+
             break;
         }
 
-        case DSC_TYPE_BOOL: {
-            *(bool *) result = old_tail->data.b;
-            break;
-        }
-
-        default: {
+        default:
             return DSC_ERROR_INVALID_TYPE;
-        }
     }
+
+    DSCNode *old_tail = list->tail;
 
     list->tail = old_tail->prev;
-
-    if (list->size > 1) {
-        list->tail->next = NULL;
-    } else {
-        list->head = NULL;
-    }
+    list->tail->next = NULL;
 
     dsc_node_deinit(old_tail, list->type);
+
     list->size--;
 
     return DSC_ERROR_OK;
@@ -570,10 +559,11 @@ DSCError dsc_list_insert(DSCList *list, void *data, size_t position) {
     if (position == list->size) {
         return dsc_list_push_back(list, data);
     }
-    
-    DSCNode *new_node = dsc_node_init(data, list->type);
-    if (new_node == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY; 
+
+    DSCNode *new_node = NULL;
+    DSCError errno = dsc_node_init(new_node, data, list->type);
+    if (errno != DSC_ERROR_OK) {
+        return errno;
     }
 
     size_t index = 0;
@@ -601,11 +591,11 @@ DSCError dsc_list_insert(DSCList *list, void *data, size_t position) {
 }
 
 DSCError dsc_list_erase(DSCList *list, size_t position) {
-    if (!list) {
+    if (list == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    if (dsc_list_is_empty(list, NULL) == DSC_ERROR_OK) {
+    if (list->size == 0) {
         return DSC_ERROR_EMPTY_CONTAINER;
     }
 
