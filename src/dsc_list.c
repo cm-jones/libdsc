@@ -15,11 +15,11 @@
  * libdsc. If not, see <https://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <stddef.h>
-#include <string.h>
-
 #include "../include/dsc_list.h"
+
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct DSCNode DSCNode;
 
@@ -63,7 +63,7 @@ static DSCError dsc_node_init(DSCNode *new_node, void *value, DSCType type) {
         case DSC_TYPE_INT:
             new_node->data.i = *(int *) value;
             break;
-        
+
         case DSC_TYPE_FLOAT:
             new_node->data.f = *(float *) value;
             break;
@@ -71,7 +71,7 @@ static DSCError dsc_node_init(DSCNode *new_node, void *value, DSCType type) {
         case DSC_TYPE_DOUBLE:
             new_node->data.d = *(double *) value;
             break;
-        
+
         case DSC_TYPE_STRING: {
             const char *str = *(char **) value;
             size_t str_size = strlen(str) + 1;
@@ -86,7 +86,7 @@ static DSCError dsc_node_init(DSCNode *new_node, void *value, DSCType type) {
             new_node->data.s[str_size] = '\0';
             break;
         }
-        
+
         default:
             free(new_node);
             return DSC_ERROR_OUT_OF_MEMORY;
@@ -241,11 +241,11 @@ DSCError dsc_list_back(const DSCList *list, void *back) {
         case DSC_TYPE_BOOL:
             *(bool *) back = list->tail->data.b;
             break;
-        
+
         case DSC_TYPE_CHAR:
             *(char *) back = list->tail->data.c;
             break;
-        
+
         case DSC_TYPE_INT:
             *(int *) back = list->tail->data.i;
             break;
@@ -253,11 +253,11 @@ DSCError dsc_list_back(const DSCList *list, void *back) {
         case DSC_TYPE_FLOAT:
             *(float *) back = list->tail->data.f;
             break;
-        
+
         case DSC_TYPE_DOUBLE:
             *(double *) back = list->tail->data.d;
             break;
-        
+
         case DSC_TYPE_STRING: {
             const char *s = list->tail->data.s;
             size_t size = strlen(s);
@@ -308,19 +308,19 @@ DSCError dsc_list_at(const DSCList *list, size_t position, void *result) {
                 case DSC_TYPE_CHAR:
                     *(char *) result = curr->data.c;
                     break;
-                
+
                 case DSC_TYPE_INT:
                     *(int *) result = curr->data.i;
                     break;
-                
+
                 case DSC_TYPE_FLOAT:
                     *(float *) result = curr->data.f;
                     break;
-                
+
                 case DSC_TYPE_DOUBLE:
                     *(double *) result = curr->data.d;
                     break;
-                
+
                 case DSC_TYPE_STRING: {
                     const char *s = curr->data.s;
                     size_t size = strlen(s);
@@ -337,7 +337,7 @@ DSCError dsc_list_at(const DSCList *list, size_t position, void *result) {
 
                     break;
                 }
-                
+
                 default:
                     return DSC_ERROR_INVALID_TYPE;
             }
@@ -395,15 +395,15 @@ DSCError dsc_list_pop_front(DSCList *list, void *result) {
         case DSC_TYPE_BOOL:
             *(bool *) result = list->head->data.b;
             break;
-        
+
         case DSC_TYPE_CHAR:
             *(char *) result = list->head->data.c;
             break;
-        
+
         case DSC_TYPE_INT:
             *(int *) result = list->head->data.i;
             break;
-        
+
         case DSC_TYPE_FLOAT:
             *(float *) result = list->head->data.f;
             break;
@@ -411,7 +411,7 @@ DSCError dsc_list_pop_front(DSCList *list, void *result) {
         case DSC_TYPE_DOUBLE:
             *(double *) result = list->head->data.d;
             break;
-        
+
         case DSC_TYPE_STRING: {
             const char *s = list->head->data.s;
             size_t size = strlen(s);
@@ -428,7 +428,7 @@ DSCError dsc_list_pop_front(DSCList *list, void *result) {
 
             break;
         }
-        
+
         default:
             return DSC_ERROR_INVALID_TYPE;
     }

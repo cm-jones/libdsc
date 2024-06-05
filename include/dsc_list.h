@@ -19,8 +19,8 @@
 #define DSC_LIST_H
 
 #include "dsc_data.h"
-#include "dsc_type.h"
 #include "dsc_error.h"
+#include "dsc_type.h"
 
 typedef struct DSCList DSCList;
 
@@ -141,4 +141,4 @@ DSCError dsc_list_insert(DSCList *list, void *data, size_t index);
  */
 DSCError dsc_list_erase(DSCList *list, size_t index);
 
-#endif // DSC_LIST_H
+#endif  // DSC_LIST_H
