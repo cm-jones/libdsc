@@ -19,8 +19,8 @@
 #define DSC_STACK_H
 
 #include "dsc_data.h"
-#include "dsc_type.h"
 #include "dsc_error.h"
+#include "dsc_type.h"
 
 #define DSC_STACK_INITIAL_CAPACITY 16
 
@@ -36,11 +36,10 @@ struct DSCStack {
 /**
  * @brief Initialize a new stack.
  *
- * @param new_stack Pointer to the stack to initialize.
  * @param type The data type stored in the stack.
- * @return DSCError code indicating success or failure.
+ * @return A pointer to the new stack, or NULL on failure.
  */
-DSCError dsc_stack_init(DSCStack *new_stack, DSCType type);
+DSCStack *dsc_stack_init( DSCType type);
 
 /**
  * @brief Deinitialize a stack, freeing all allocated memory.
@@ -104,4 +103,4 @@ DSCError dsc_stack_push(DSCStack *stack, void *value);
  */
 DSCError dsc_stack_pop(DSCStack *stack, void *result);
 
-#endif // DSC_STACK_H
+#endif  // DSC_STACK_H

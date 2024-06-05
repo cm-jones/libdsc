@@ -35,25 +35,27 @@ static DSCError dsc_stack_resize(DSCStack *stack, size_t new_capacity) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_stack_init(DSCStack *new_stack, DSCType type) {
-    if (new_stack == NULL) {
-        return DSC_ERROR_INVALID_ARGUMENT;
-    }
-
+DSCStack *dsc_stack_init(DSCType type) {
     if (dsc_type_invalid(type)) {
-        return DSC_ERROR_INVALID_TYPE;
+        return NULL;
     }
 
-    new_stack = malloc(sizeof(DSCStack));
+    DSCStack *new_stack = malloc(sizeof(DSCStack));
     if (new_stack == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY;
+        return NULL;
     }
 
     new_stack->size = 0;
     new_stack->capacity = DSC_STACK_INITIAL_CAPACITY;
     new_stack->type = type;
 
-    return dsc_data_malloc(&new_stack->data, type, new_stack->capacity);
+    DSCError errno = dsc_data_malloc(&new_stack->data, type, new_stack->capacity);
+    if (errno != DSC_ERROR_OK) {
+        free(new_stack);
+        return NULL;
+    }
+
+    return new_stack;
 }
 
 DSCError dsc_stack_deinit(DSCStack *stack) {
