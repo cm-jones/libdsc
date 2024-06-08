@@ -14,10 +14,10 @@ Represents a stack. The internal implementation of the `DSCStack` struct is hidd
 
 ## Functions
 
-### `dsc_stack_create`
+### `dsc_stack_init`
 
 ```c
-DSCStack *dsc_stack_create();
+DSCError dsc_stack_init(DSCStack *new_stack, DSCType type);
 ```
 
 Creates a new empty stack.
@@ -27,16 +27,17 @@ Creates a new empty stack.
 **Example:**
 
 ```c
-DSCStack *stack = dsc_stack_create();
-if (stack == NULL) {
-    // Handle memory allocation failure
+DSCStack *stack;
+DSCError error = dsc_stack_init(stack, DSC_TYPE_INT);
+if (error != DSC_ERROR_OK) {
+    // Handle error
 }
 ```
 
-### `dsc_stack_free`
+### `dsc_stack_deinit`
 
 ```c
-void dsc_stack_free(DSCStack *stack);
+DSCError dsc_stack_deinit(DSCStack *stack);
 ```
 
 Destroys the stack and frees its memory.
@@ -47,7 +48,8 @@ Destroys the stack and frees its memory.
 **Example:**
 
 ```c
-DSCStack *stack = dsc_stack_create();
+DSCStack *stack;
+dsc_stack_init(stack, DSC_TYPE_INT);
 // Use the stack
 dsc_stack_free(stack);
 ```
