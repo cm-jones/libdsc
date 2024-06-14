@@ -23,8 +23,8 @@
 #ifndef DSC_DATA_H
 #define DSC_DATA_H
 
-#include "dsc_type.h"
 #include "dsc_error.h"
+#include "dsc_type.h"
 
 /**
  * @brief Union for storing generic data.
@@ -43,12 +43,77 @@ union DSCData {
     int i;         /** Integer value. */
     int *i_ptr;    /** Dynamically allocated integer array. */
     float f;       /** Single-precision floating-point value. */
-    float *f_ptr;  /** Dynamically allocated single-precision floating-point array. */
+    float *f_ptr;  /** Dynamically allocated single-precision floating-point
+                      array. */
     double d;      /** Double-precision floating-point value. */
-    double *d_ptr; /** Dynamically allocated double-precision floating-point array. */
+    double *d_ptr; /** Dynamically allocated double-precision floating-point
+                      array. */
     char *s;       /** String value (character pointer). */
-    char **s_ptr;  /** Dynamically allocated array of strings (character pointers). */
+    char **s_ptr;  /** Dynamically allocated array of strings (character
+                      pointers). */
 };
+
+/**
+ * @brief Allocate memory for a DSCData value of the specified type.
+ *
+ * This function allocates memory for a DSCData value of the specified `type`
+ * and `capacity`. The allocated memory is stored in the `data` parameter.
+ *
+ * @param data A pointer to the DSCData value to allocate memory for.
+ * @param type The type of the DSCData value to allocate memory for.
+ * @param capacity The number of elements to allocate memory for.
+ * @return A DSCError value indicating the result of the operation:
+ *         - DSC_ERROR_OK if the operation was successful.
+ *         - DSC_ERROR_OUT_OF_MEMORY if memory allocation failed.
+ */
+DSCError dsc_data_malloc(DSCData *data, DSCType type, size_t capacity);
+
+/**
+ * @brief Reallocate memory for a DSCData value of the specified type.
+ *
+ * This function reallocates memory for a DSCData value of the specified `type`
+ * and `capacity`. The memory to be reallocated is stored in the `data`
+ * parameter.
+ *
+ * @param data A pointer to the DSCData value to reallocate memory for.
+ * @param type The type of the DSCData value to reallocate memory for.
+ * @param capacity The new number of elements to reallocate memory for.
+ * @return A DSCError value indicating the result of the operation:
+ *         - DSC_ERROR_OK if the operation was successful.
+ *         - DSC_ERROR_INVALID_ARGUMENT if an invalid type is specified.
+ *         - DSC_ERROR_OUT_OF_MEMORY if memory reallocation failed.
+ */
+DSCError dsc_data_realloc(DSCData *data, DSCType type, size_t capacity);
+
+/**
+ * @brief Free memory allocated for a DSCData value of the specified type.
+ *
+ * This function frees the memory allocated for a DSCData value of the specified
+ * `type` and `size`. The memory to be freed is stored in the `data` parameter.
+ *
+ * @param data A pointer to the DSCData value to free memory for.
+ * @param type The type of the DSCData value to free memory for.
+ * @param size The number of elements to free memory for.
+ * @return A DSCError value indicating the result of the operation:
+ *         - DSC_ERROR_OK if the operation was successful.
+ *         - DSC_ERROR_INVALID_ARGUMENT if an invalid type is specified.
+ */
+DSCError dsc_data_free(DSCData *data, DSCType type, size_t size);
+
+/**
+ * @brief Copy data from a source buffer to a DSCData value.
+ *
+ * This function copies the data stored in the `src` buffer to the `dest`
+ * DSCData value. The data is copied based on the specified `type`.
+ *
+ * @param dest A pointer to the destination DSCData value to copy data to.
+ * @param src A pointer to the source buffer to copy data from.
+ * @param type The type of the data to copy.
+ * @return A DSCError value indicating the result of the operation:
+ *         - DSC_ERROR_OK if the operation was successful.
+ *         - DSC_ERROR_INVALID_ARGUMENT if an invalid type is specified.
+ */
+DSCError dsc_data_copy(DSCData *dest, void *src, DSCType type);
 
 /**
  * @brief Compare two DSCData values of the specified type.
@@ -68,4 +133,4 @@ union DSCData {
  */
 int dsc_compare(DSCData data1, void *data2, DSCType type);
 
-#endif // DSC_DATA_H
+#endif  // DSC_DATA_H
