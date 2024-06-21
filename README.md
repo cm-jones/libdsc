@@ -1,5 +1,8 @@
-![libdsc logo (light)](https://github.com/cm-jones/libdsc/assets/logo.png#gh-light-mode-only)
-![libdsc logo (dark)](https://github.com/cm-jones/libdsc/assets/logo.png#gh-dark-mode-only)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
+  <img alt="libdsc logo" src="https://github.com/cm-jones/libdsc/assets/logo.png" height="200">
+</picture>
 
 # libdsc: Data Structures for C
 
