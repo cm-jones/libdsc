@@ -1,7 +1,7 @@
 <div style=text-align: center;>
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
-  <img alt="libdsc logo" src="https://github.com/cm-jones/libdsc/assets/logo.png" height="200">
+  <img alt="libdsc logo" src="assets/logo.png" height="200">
 </div>
 
 # libdsc: Data Structures for C
