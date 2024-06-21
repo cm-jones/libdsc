@@ -1,3 +1,5 @@
+![libdsc logo](assets/logo.png?raw=true "Title")
+
 # libdsc: Data Structures for C
 
 [![build](https://github.com/cm-jones/dsc/actions/workflows/c.yml/badge.svg)](https://github.com/cm-jones/dsc/actions/workflows/c.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
