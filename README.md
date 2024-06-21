@@ -2,6 +2,7 @@
   <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
   <source media="(prefers-color-scheme: light)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
   <img alt="libdsc logo" src="assets/logo.png" height="200">
+  libdsc
 </div>
 
 # libdsc: Data Structures for C
