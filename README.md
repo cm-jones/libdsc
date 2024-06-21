@@ -1,6 +1,5 @@
-<div style="text-align: center;">
-<img src="assets/logo.png" width="200" height="200" />
-</div>
+![libdsc logo (light)](https://github.com/cm-jones/libdsc/assets/logo.png#gh-light-mode-only)
+![libdsc logo (dark)](https://github.com/cm-jones/libdsc/assets/logo.png#gh-dark-mode-only)
 
 # libdsc: Data Structures for C
 
