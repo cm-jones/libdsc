@@ -1,4 +1,4 @@
-![libdsc logo](assets/logo.png?raw=true "Title")
+<img src="assets/logo.png" width="200" height="200" />
 
 # libdsc: Data Structures for C
 
