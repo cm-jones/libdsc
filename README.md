@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="path/to/your/logo.png" alt="Logo" width="30" height="30" style="vertical-align: middle;">
+  <img src="assets/logo.png" alt="Logo" width="30" height="30" style="vertical-align: middle;">
   <span style="font-size: 24px; vertical-align: middle;">&nbsp;Your Project Name</span>
 </p>
 
