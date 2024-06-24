@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="logo" width="30" height="30" style="vertical-align: middle;">
+  <img src="assets/logo.png" alt="logo" width="300" height="300" style="vertical-align: middle;">
   <span style="font-size: 24px; vertical-align: middle;">&nbsp;libdsc</span>
 </p>
 
