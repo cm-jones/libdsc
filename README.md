@@ -1,8 +1,7 @@
-<div style={ text-align: center; display: inline-block}>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/cm-jones/libdsc/assets/logo.png">
-  <img alt="libdsc logo" src="assets/logo.png" height="200">
-</div>
+<p align="center">
+  <img src="path/to/your/logo.png" alt="Logo" width="30" height="30" style="vertical-align: middle;">
+  <span style="font-size: 24px; vertical-align: middle;">&nbsp;Your Project Name</span>
+</p>
 
 # libdsc: Data Structures for C
 
