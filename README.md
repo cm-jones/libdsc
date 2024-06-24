@@ -1,6 +1,6 @@
 <p align="center">
-  <img src="assets/logo.png" alt="Logo" width="30" height="30" style="vertical-align: middle;">
-  <span style="font-size: 24px; vertical-align: middle;">&nbsp;Your Project Name</span>
+  <img src="assets/logo.png" alt="logo" width="30" height="30" style="vertical-align: middle;">
+  <span style="font-size: 24px; vertical-align: middle;">&nbsp;libdsc</span>
 </p>
 
 # libdsc: Data Structures for C
