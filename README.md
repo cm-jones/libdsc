@@ -23,6 +23,32 @@ The APIs closely resemble those found for the corresponding containers in the C+
 
 The current version of libdsc is [0.1.0-alpha](https://github.com/cm-jones/libdsc/releases/tag/v0.1.0-alpha).
 
+## Build and Install
+
+To build libdsc yourself, follow these steps:
+
+1. Clone the repository:
+   ```
+   git clone https://github.com/cm-jones/libdsc.git
+   ```
+
+2. Change into the project directory:
+   ```
+   cd libdsc
+   ```
+
+3. Compile the library using the provided Makefile:
+   ```
+   make
+   ```
+   This will generate the static library (`libdsc.a`) and the shared library (`libdsc.so`) in the project's root directory.
+
+4. (Optional) Install the library and header files:
+   ```
+   sudo make install
+   ```
+   This will copy the library files to `/usr/local/lib` and the header file to `/usr/local/include`.
+
 ## Usage
 
 To use libdsc in your C project, follow these steps:
@@ -65,32 +91,6 @@ To use libdsc in your C project, follow these steps:
 
    dsc_set_deinit(set);
    ```
-
-## Build
-
-To build libdsc yourself, follow these steps:
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/cm-jones/libdsc.git
-   ```
-
-2. Change into the project directory:
-   ```
-   cd libdsc
-   ```
-
-3. Compile the library using the provided Makefile:
-   ```
-   make
-   ```
-   This will generate the static library (`libdsc.a`) and the shared library (`libdsc.so`) in the project's root directory.
-
-4. (Optional) Install the library and header files:
-   ```
-   sudo make install
-   ```
-   This will copy the library files to `/usr/local/lib` and the header file to `/usr/local/include`.
 
 ## Documentation
 
