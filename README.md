@@ -76,17 +76,12 @@ To use libdsc in your C project, follow these steps:
    }
 
    for (size_t i = 0; i < 100; ++i) {
-      if (!dsc_set_insert(set, i)) {
-         DSCError errno = dsc_error_get(set);
+      DSCError errno;
+      if ((errno = dsc_set_insert(set, i)) != DSC_ERROR_OK) {
          // Handle error code ...
       }
    }
    
-   dsc_set_insert(set, 0);    // Returns false
-   dsc_set_contains(set, 99); // Returns true
-   dsc_set_erase(set, 53);    // Returns true
-   int size = dsc_set_size(set); // Returns 99
-
    // Use other set functions as needed ...
 
    dsc_set_deinit(set);
