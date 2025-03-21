@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "../include/dsc_vector.h"
+#include "../include/dsc_utils.h"
 
 struct DSCVector {
     DSCData    data; // The data stored in the vector
@@ -13,7 +14,7 @@ struct DSCVector {
 };
 
 
-static DSCError dsc_vector_resize(DSCVector *vector, size_t new_capacity) {
+DSCError dsc_vector_resize(DSCVector *vector, size_t new_capacity) {
     switch (vector->type) {
         case DSC_TYPE_CHAR: {
             char *new_data = realloc(vector->data.c_ptr, new_capacity * sizeof(char));
@@ -80,12 +81,16 @@ static DSCError dsc_vector_resize(DSCVector *vector, size_t new_capacity) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_vector_init(DSCVector *new_vector, DSCType type) {
+DSCError dsc_vector_init(DSCVector **vector_ptr, DSCType type) {
+    if (vector_ptr == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+    
     if (!dsc_type_is_valid(type)) {
         return DSC_ERROR_INVALID_TYPE;
     }
 
-    new_vector = malloc(sizeof(DSCVector));
+    DSCVector *new_vector = malloc(sizeof(DSCVector));
     if (new_vector == NULL) {
         return DSC_ERROR_OUT_OF_MEMORY;
     }
@@ -159,8 +164,9 @@ DSCError dsc_vector_init(DSCVector *new_vector, DSCType type) {
             return DSC_ERROR_INVALID_TYPE;
         }
     }
-
-    return new_vector;
+    
+    *vector_ptr = new_vector;
+    return DSC_ERROR_OK;
 }
 
 
@@ -234,7 +240,7 @@ DSCError dsc_vector_capacity(const DSCVector *vector, size_t *result) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_vector_is_empty(const DSCVector *vector, bool *result) {
+DSCError dsc_vector_empty(const DSCVector *vector, bool *result) {
     if (vector == NULL || result == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -242,6 +248,19 @@ DSCError dsc_vector_is_empty(const DSCVector *vector, bool *result) {
     *result = vector->size == 0;
 
     return DSC_ERROR_OK;
+}
+
+DSCError dsc_vector_front(const DSCVector *vector, void *result) {
+    if (vector == NULL || result == NULL) {
+        return DSC_ERROR_INVALID_ARGUMENT;
+    }
+
+    if (vector->size == 0) {
+        return DSC_ERROR_EMPTY_CONTAINER;
+    }
+
+    // Front is just the element at index 0
+    return dsc_vector_at(vector, 0, result);
 }
 
 DSCError dsc_vector_at(const DSCVector *vector, size_t index, void *result) {
@@ -275,17 +294,17 @@ DSCError dsc_vector_at(const DSCVector *vector, size_t index, void *result) {
         }
 
         case DSC_TYPE_STRING: {
-            const char *s = vector->data.s_ptr[index];
-            size_t size = strlen(s) + 1;
+            char *str = vector->data.s_ptr[index];
+            size_t size = strlen(str) + 1;
 
-            result = malloc(size);
-            if (result == NULL) {
+            char **result_ptr = (char **)result;
+            *result_ptr = malloc(size);
+            if (*result_ptr == NULL) {
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(result, s, size);
-            memset(result + size - 1, '\0', 1);
-
+            strncpy(*result_ptr, str, size - 1);
+            (*result_ptr)[size - 1] = '\0';
             break;
         }
     }
@@ -318,17 +337,20 @@ DSCError dsc_vector_back(const DSCVector *vector, void *data) {
         case DSC_TYPE_DOUBLE:
             *(double *) data = vector->data.d_ptr[vector->size - 1];
             break;
-        case DSC_TYPE_STRING:
-            size_t string_size = strlen(vector->data.s_ptr[vector->size - 1]);
+        case DSC_TYPE_STRING: {
+            char *str = vector->data.s_ptr[vector->size - 1];
+            size_t string_size = strlen(str);
 
             // Allocate an extra byte of memory for the null terminator
-            data = malloc(string_size + 1);
-            if (data == NULL) {
+            char **result = (char **)data;
+            *result = malloc(string_size + 1);
+            if (*result == NULL) {
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(data, vector->data.s_ptr[vector->size - 1], string_size);
-            memset(data + string_size, '\0', 1);
+            strncpy(*result, str, string_size);
+            (*result)[string_size] = '\0';
+        }
             break;
         default:
             return DSC_ERROR_INVALID_TYPE;
@@ -345,8 +367,9 @@ DSCError dsc_vector_push_back(DSCVector *vector, void *data) {
     // Resize the vector if the size exceeds the capacity
     if (vector->size >= vector->capacity) {
         size_t new_capacity = vector->capacity * 2;
-        if (!dsc_vector_resize(vector, new_capacity)) {
-            return DSC_ERROR_OUT_OF_MEMORY;
+        DSCError resize_result = dsc_vector_resize(vector, new_capacity);
+        if (resize_result != DSC_ERROR_OK) {
+            return resize_result;
         }
     }
 
@@ -426,7 +449,7 @@ DSCError dsc_vector_pop_back(DSCVector *vector, void *data) {
             break;
         case DSC_TYPE_STRING:
             *(char **) data = vector->data.s_ptr[vector->size - 1];
-            vector->data.s[vector->size - 1] = NULL;
+            vector->data.s_ptr[vector->size - 1] = NULL;
             break;
         default:
             return DSC_ERROR_INVALID_TYPE;
@@ -450,8 +473,9 @@ DSCError dsc_vector_insert(DSCVector *vector, void *data, size_t index) {
     // Resize the vector if the size exceeds the capacity
     if (vector->size >= vector->capacity) {
         size_t new_capacity = vector->capacity * 2;
-        if (!dsc_vector_resize(vector, new_capacity)) {
-            return DSC_ERROR_OUT_OF_MEMORY;
+        DSCError resize_result = dsc_vector_resize(vector, new_capacity);
+        if (resize_result != DSC_ERROR_OK) {
+            return resize_result;
         }
     }
 
@@ -532,7 +556,7 @@ DSCError dsc_vector_erase(DSCVector *vector, size_t index) {
     }
 
     if (vector->type == DSC_TYPE_STRING) {
-        free(vector->data.s[index]);
+        free(vector->data.s_ptr[index]);
     }
 
     // Shift elements to the left to fill the gap

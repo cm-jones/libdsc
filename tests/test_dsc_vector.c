@@ -8,29 +8,30 @@
 #include "../include/dsc_vector.h"
 
 void test_dsc_vector_init_deinit(void) {
-    assert(dsc_vector_init(NULL, DSC_TYPE_BOOL) == DSC_ERROR_INVALID_ARGUMENT);
-    assert(dsc_vector_init(NULL, DSC_TYPE_CHAR) == DSC_ERROR_INVALID_ARGUMENT);
-    assert(dsc_vector_init(NULL, DSC_TYPE_INT) == DSC_ERROR_INVALID_ARGUMENT);
-    assert(dsc_vector_init(NULL, DSC_TYPE_FLOAT) == DSC_ERROR_INVALID_ARGUMENT);
-    assert(dsc_vector_init(NULL, DSC_TYPE_DOUBLE) == DSC_ERROR_INVALID_ARGUMENT);
-    assert(dsc_vector_init(NULL, DSC_TYPE_STRING) == DSC_ERROR_INVALID_ARGUMENT);
-
-    DSCVector *vector;
+    DSCVector **null_ptr = NULL;
+    assert(dsc_vector_init(null_ptr, DSC_TYPE_BOOL) == DSC_ERROR_INVALID_ARGUMENT);
+    
+    DSCVector *vector = NULL;
     assert(dsc_vector_init(&vector, DSC_TYPE_BOOL) == DSC_ERROR_OK);
     assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 
+    vector = NULL;
     assert(dsc_vector_init(&vector, DSC_TYPE_CHAR) == DSC_ERROR_OK);
     assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 
+    vector = NULL;
     assert(dsc_vector_init(&vector, DSC_TYPE_INT) == DSC_ERROR_OK);
     assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 
+    vector = NULL;
     assert(dsc_vector_init(&vector, DSC_TYPE_FLOAT) == DSC_ERROR_OK);
     assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 
+    vector = NULL;
     assert(dsc_vector_init(&vector, DSC_TYPE_DOUBLE) == DSC_ERROR_OK);
     assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 
+    vector = NULL;
     assert(dsc_vector_init(&vector, DSC_TYPE_STRING) == DSC_ERROR_OK);
     assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 }
@@ -187,19 +188,153 @@ void test_dsc_vector_front(void) {
 }
 
 void test_dsc_vector_back(void) {
+    DSCVector *vector;
+    assert(dsc_vector_init(&vector, DSC_TYPE_INT) == DSC_ERROR_OK);
     
+    int values[] = {10, 20, 30, 40, 50};
+    for (int i = 0; i < 5; i++) {
+        assert(dsc_vector_push_back(vector, &values[i]) == DSC_ERROR_OK);
+    }
+    
+    int back_value;
+    assert(dsc_vector_back(vector, &back_value) == DSC_ERROR_OK);
+    assert(back_value == 50);
+    
+    // Test after pushing another value
+    int new_value = 60;
+    assert(dsc_vector_push_back(vector, &new_value) == DSC_ERROR_OK);
+    assert(dsc_vector_back(vector, &back_value) == DSC_ERROR_OK);
+    assert(back_value == 60);
+    
+    // Test error on empty vector
+    assert(dsc_vector_clear(vector) == DSC_ERROR_OK);
+    assert(dsc_vector_back(vector, &back_value) == DSC_ERROR_EMPTY_CONTAINER);
+    
+    assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 }
 
 void test_dsc_vector_push_back(void) {
-
+    DSCVector *vector;
+    assert(dsc_vector_init(&vector, DSC_TYPE_INT) == DSC_ERROR_OK);
+    
+    int values[] = {10, 20, 30, 40, 50};
+    for (int i = 0; i < 5; i++) {
+        assert(dsc_vector_push_back(vector, &values[i]) == DSC_ERROR_OK);
+    }
+    
+    size_t size;
+    assert(dsc_vector_size(vector, &size) == DSC_ERROR_OK);
+    assert(size == 5);
+    
+    // Verify values
+    int value;
+    for (int i = 0; i < 5; i++) {
+        assert(dsc_vector_at(vector, i, &value) == DSC_ERROR_OK);
+        assert(value == values[i]);
+    }
+    
+    // Test pushing many values to force resize
+    for (int i = 0; i < 100; i++) {
+        assert(dsc_vector_push_back(vector, &i) == DSC_ERROR_OK);
+    }
+    
+    assert(dsc_vector_size(vector, &size) == DSC_ERROR_OK);
+    assert(size == 105);
+    
+    assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 }
 
 void test_dsc_vector_pop_back(void) {
-
+    DSCVector *vector;
+    assert(dsc_vector_init(&vector, DSC_TYPE_INT) == DSC_ERROR_OK);
+    
+    // Test error on empty vector
+    int popped;
+    assert(dsc_vector_pop_back(vector, &popped) == DSC_ERROR_EMPTY_CONTAINER);
+    
+    // Add some values
+    int values[] = {10, 20, 30, 40, 50};
+    for (int i = 0; i < 5; i++) {
+        assert(dsc_vector_push_back(vector, &values[i]) == DSC_ERROR_OK);
+    }
+    
+    // Pop values in reverse order
+    for (int i = 4; i >= 0; i--) {
+        assert(dsc_vector_pop_back(vector, &popped) == DSC_ERROR_OK);
+        assert(popped == values[i]);
+    }
+    
+    size_t size;
+    assert(dsc_vector_size(vector, &size) == DSC_ERROR_OK);
+    assert(size == 0);
+    
+    assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 }
 
 void test_dsc_vector_insert_erase(void) {
+    DSCVector *vector;
+    assert(dsc_vector_init(&vector, DSC_TYPE_INT) == DSC_ERROR_OK);
     
+    // Insert at empty vector (position 0)
+    int value = 100;
+    assert(dsc_vector_insert(vector, &value, 0) == DSC_ERROR_OK);
+    
+    // Insert at beginning
+    value = 50;
+    assert(dsc_vector_insert(vector, &value, 0) == DSC_ERROR_OK);
+    
+    // Insert at end
+    value = 150;
+    assert(dsc_vector_insert(vector, &value, 2) == DSC_ERROR_OK);
+    
+    // Insert in middle
+    value = 75;
+    assert(dsc_vector_insert(vector, &value, 1) == DSC_ERROR_OK);
+    
+    // Check expected sequence: 50, 75, 100, 150
+    int expected[] = {50, 75, 100, 150};
+    int retrieved;
+    for (int i = 0; i < 4; i++) {
+        assert(dsc_vector_at(vector, i, &retrieved) == DSC_ERROR_OK);
+        assert(retrieved == expected[i]);
+    }
+    
+    // Test erase from beginning
+    assert(dsc_vector_erase(vector, 0) == DSC_ERROR_OK);
+    
+    // Check expected sequence: 75, 100, 150
+    expected[0] = 75;
+    expected[1] = 100;
+    expected[2] = 150;
+    
+    for (int i = 0; i < 3; i++) {
+        assert(dsc_vector_at(vector, i, &retrieved) == DSC_ERROR_OK);
+        assert(retrieved == expected[i]);
+    }
+    
+    // Test erase from middle
+    assert(dsc_vector_erase(vector, 1) == DSC_ERROR_OK);
+    
+    // Check expected sequence: 75, 150
+    expected[1] = 150;
+    
+    for (int i = 0; i < 2; i++) {
+        assert(dsc_vector_at(vector, i, &retrieved) == DSC_ERROR_OK);
+        assert(retrieved == expected[i]);
+    }
+    
+    // Test erase from end
+    assert(dsc_vector_erase(vector, 1) == DSC_ERROR_OK);
+    
+    // Only 75 should remain
+    assert(dsc_vector_at(vector, 0, &retrieved) == DSC_ERROR_OK);
+    assert(retrieved == 75);
+    
+    size_t size;
+    assert(dsc_vector_size(vector, &size) == DSC_ERROR_OK);
+    assert(size == 1);
+    
+    assert(dsc_vector_deinit(vector) == DSC_ERROR_OK);
 }
 
 void test_dsc_vector_clear(void) {

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../include/dsc_map.h"
 #include "../include/dsc_utils.h"
@@ -24,7 +25,7 @@ struct DSCMap {
 /* Helper method to rehash all the entries in the DSCMap when the load factor exceeds the threshold */
 
 static bool dsc_map_rehash(DSCMap *map, size_t new_capacity) {
-   DSCMapEntry **new_buckets = calloc(new_capacity, sizeof(DSCMapEntry));
+   DSCMapEntry **new_buckets = calloc(new_capacity, sizeof(DSCMapEntry*));
    if (new_buckets == NULL) {
        return false;
    }
@@ -82,27 +83,21 @@ static bool dsc_map_rehash(DSCMap *map, size_t new_capacity) {
 }
 
 DSCError dsc_map_init(DSCMap *new_map, DSCType key_type, DSCType value_type) {
-    if (!dsc_type_is_valid(key_type) || !dsc_type_is_valid(value_type)) {
-        return DSC_ERROR_INVALID_TYPE;
+    if (new_map == NULL || !dsc_type_is_valid(key_type) || !dsc_type_is_valid(value_type)) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    new_map = malloc(sizeof new_map);
-    if (new_map == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY;
-    }
-
-    new_map->buckets = calloc(new_map->capacity, sizeof(DSCMapEntry *));
-    if (new_map->buckets == NULL) {
-        free(new_map);
-        return DSC_ERROR_OUT_OF_MEMORY;
-    }
-    
     new_map->size = 0;
     new_map->capacity = DSC_MAP_INITIAL_CAPACITY;
     new_map->key_type = key_type;
     new_map->value_type = value_type;
+
+    new_map->buckets = calloc(new_map->capacity, sizeof(DSCMapEntry *));
+    if (new_map->buckets == NULL) {
+        return DSC_ERROR_OUT_OF_MEMORY;
+    }
     
-    return new_map;
+    return DSC_ERROR_OK;
 }
 
 DSCError dsc_map_deinit(DSCMap *map) {
@@ -155,7 +150,7 @@ DSCError dsc_map_capacity(const DSCMap *map, size_t *capacity) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_map_is_empty(const DSCMap *map, bool *is_empty) {
+DSCError dsc_map_empty(const DSCMap *map, bool *is_empty) {
     if (map == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -297,7 +292,7 @@ DSCError dsc_map_insert(DSCMap *map, void *key, void *value) {
     }
     
     // Create a new entry
-    DSCMapEntry *new_entry = malloc(sizeof new_entry);
+    DSCMapEntry *new_entry = malloc(sizeof(DSCMapEntry));
     if (new_entry == NULL) {
         return DSC_ERROR_OUT_OF_MEMORY;
     }
@@ -334,7 +329,7 @@ DSCError dsc_map_insert(DSCMap *map, void *key, void *value) {
             }
 
             strncpy(new_entry->key.s, str, str_size - 1);
-            memset(new_entry->key.s + str_size, '\0', 1);
+            new_entry->key.s[str_size - 1] = '\0';
 
             break;
         }
@@ -376,7 +371,7 @@ DSCError dsc_map_insert(DSCMap *map, void *key, void *value) {
             }
 
             strncpy(new_entry->value.s, str, str_size);
-            memset(new_entry->value.s + str_size - 1, '\0', 1);
+            new_entry->value.s[str_size] = '\0';
 
             break;
         }

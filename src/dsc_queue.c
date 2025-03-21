@@ -15,6 +15,12 @@ struct DSCQueue {
     DSCType type;    // The type of the elements in the queue
 };
 
+// Helper function to copy strings safely
+static void dsc_str_cpy(char *dest, const char *src) {
+    size_t len = strlen(src);
+    memcpy(dest, src, len + 1);
+}
+
 static bool dsc_queue_resize(DSCQueue *queue, size_t new_capacity) {
     size_t old_capacity = queue->capacity;
 
@@ -77,26 +83,32 @@ static bool dsc_queue_resize(DSCQueue *queue, size_t new_capacity) {
         switch (queue->type) {
             case DSC_TYPE_CHAR: {
                 memmove(queue->data.c_ptr + new_capacity - count, queue->data.c_ptr + queue->front, count * sizeof(char));
+                break;
             }
 
             case DSC_TYPE_INT: {
                 memmove(queue->data.i_ptr + new_capacity - count, queue->data.i_ptr + queue->front, count * sizeof(int));
+                break;
             }
 
             case DSC_TYPE_FLOAT: {
                 memmove(queue->data.f_ptr + new_capacity - count, queue->data.f_ptr + queue->front, count * sizeof(float));
+                break;
             }
 
             case DSC_TYPE_DOUBLE: {
                 memmove(queue->data.d_ptr + new_capacity - count, queue->data.d_ptr + queue->front, count * sizeof(double));
+                break;
             }
 
             case DSC_TYPE_STRING: {
                 memmove(queue->data.s_ptr + new_capacity - count, queue->data.s_ptr + queue->front, count * sizeof(char *));
+                break;
             }
 
             case DSC_TYPE_BOOL: {
                 memmove(queue->data.b_ptr + new_capacity - count, queue->data.b_ptr + queue->front, count * sizeof(bool));
+                break;
             }
 
             default: {
@@ -113,13 +125,8 @@ static bool dsc_queue_resize(DSCQueue *queue, size_t new_capacity) {
 }
 
 DSCError dsc_queue_init(DSCQueue *new_queue, DSCType type) {
-    if (!dsc_type_is_valid(type)) {
-        return NULL;
-    }
-
-    new_queue = malloc(sizeof new_queue);
-    if (new_queue == NULL) {
-        return DSC_ERROR_OUT_OF_MEMORY;
+    if (new_queue == NULL || dsc_type_invalid(type)) {
+        return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     new_queue->front = 0;
@@ -132,70 +139,57 @@ DSCError dsc_queue_init(DSCQueue *new_queue, DSCType type) {
         case DSC_TYPE_CHAR: {
             new_queue->data.c_ptr = malloc(new_queue->capacity * sizeof(char));
             if (new_queue->data.c_ptr == NULL) {
-                free(new_queue);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-
             break;
         }
         
         case DSC_TYPE_INT: {
             new_queue->data.i_ptr = malloc(new_queue->capacity * sizeof(int));
             if (new_queue->data.i_ptr == NULL) {
-                free(new_queue);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-
             break;
         }
 
         case DSC_TYPE_FLOAT: {
             new_queue->data.f_ptr = malloc(new_queue->capacity * sizeof(float));
             if (new_queue->data.f_ptr == NULL) {
-                free(new_queue);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-
             break;
         }
 
         case DSC_TYPE_DOUBLE: {
             new_queue->data.d_ptr = malloc(new_queue->capacity * sizeof(double));
             if (new_queue->data.d_ptr == NULL) {
-                free(new_queue);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-
             break;
         }
 
         case DSC_TYPE_STRING: {
             new_queue->data.s_ptr = malloc(new_queue->capacity * sizeof(char *));
             if (new_queue->data.s_ptr == NULL) {
-                free(new_queue);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-
             break;
         }
 
         case DSC_TYPE_BOOL: {
             new_queue->data.b_ptr = malloc(new_queue->capacity * sizeof(bool));
             if (new_queue->data.b_ptr == NULL) {
-                free(new_queue);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
-    
             break;
         }
 
         default: {
-            free(new_queue);
-            return DSC_ERROR_OUT_OF_MEMORY;
+            return DSC_ERROR_INVALID_TYPE;
         }
     }
 
-    return new_queue;
+    return DSC_ERROR_OK;
 }
 
 DSCError dsc_queue_deinit(DSCQueue *queue) {
@@ -203,12 +197,7 @@ DSCError dsc_queue_deinit(DSCQueue *queue) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    // Free the elements in the queue
-    for (size_t i = queue->front; i != queue->rear; ) {
-        if (queue->type == DSC_TYPE_STRING) {
-            free(queue->data.s_ptr[i]);
-        }
-    }
+    // Initial loop was incomplete and unnecessary, string types are handled below
 
     switch (queue->type) {
         case DSC_TYPE_CHAR: {
@@ -275,7 +264,7 @@ DSCError dsc_queue_capacity(const DSCQueue *queue, size_t *capacity) {
     return DSC_ERROR_OK;
 }
 
-DSCError dsc_queue_is_empty(const DSCQueue *queue, bool *is_empty) {
+DSCError dsc_queue_empty(const DSCQueue *queue, bool *is_empty) {
     if (queue == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }

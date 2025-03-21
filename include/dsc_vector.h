@@ -28,11 +28,11 @@ typedef struct DSCVector DSCVector;
 /**
  * @brief Initialize a new vector with the given element type.
  *
- * @param vector The vector to initialize.
+ * @param vector_ptr The pointer to the vector pointer to set.
  * @param type The type of elements the vector will contain.
  * @return DSC_ERROR_OK on success, an error code otherwise.
  */
-DSCError dsc_vector_init(DSCVector *vector, DSCType type);
+DSCError dsc_vector_init(DSCVector **vector_ptr, DSCType type);
 
 /**
  * @brief Deinitialize a vector, freeing all allocated memory.

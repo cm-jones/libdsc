@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include "../include/dsc_list.h"
+#include "../include/dsc_utils.h"
 
 #include <stddef.h>
 #include <stdlib.h>
@@ -21,7 +22,7 @@ struct DSCList {
     DSCType type;   // The type of the data stored in the list
 };
 
-static DSCError dsc_node_init(DSCNode *new_node, void *value, DSCType type) {
+static DSCError dsc_node_init(DSCNode **new_node, void *value, DSCType type) {
     if (new_node == NULL || value == NULL) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -30,55 +31,55 @@ static DSCError dsc_node_init(DSCNode *new_node, void *value, DSCType type) {
         return DSC_ERROR_INVALID_TYPE;
     }
 
-    new_node = malloc(sizeof(DSCNode));
+    *new_node = malloc(sizeof(DSCNode));
 
-    if (new_node == NULL) {
+    if (*new_node == NULL) {
         return DSC_ERROR_OUT_OF_MEMORY;
     }
 
     switch (type) {
         case DSC_TYPE_BOOL:
-            new_node->data.b = *(bool *) value;
+            (*new_node)->data.b = *(bool *) value;
             break;
 
         case DSC_TYPE_CHAR:
-            new_node->data.c = *(char *) value;
+            (*new_node)->data.c = *(char *) value;
             break;
 
         case DSC_TYPE_INT:
-            new_node->data.i = *(int *) value;
+            (*new_node)->data.i = *(int *) value;
             break;
 
         case DSC_TYPE_FLOAT:
-            new_node->data.f = *(float *) value;
+            (*new_node)->data.f = *(float *) value;
             break;
 
         case DSC_TYPE_DOUBLE:
-            new_node->data.d = *(double *) value;
+            (*new_node)->data.d = *(double *) value;
             break;
 
         case DSC_TYPE_STRING: {
             const char *str = *(char **) value;
             size_t str_size = strlen(str) + 1;
 
-            new_node->data.s = malloc(str_size);
-            if (new_node->data.s == NULL) {
-                free(new_node);
+            (*new_node)->data.s = malloc(str_size);
+            if ((*new_node)->data.s == NULL) {
+                free(*new_node);
                 return DSC_ERROR_OUT_OF_MEMORY;
             }
 
-            strncpy(new_node->data.s, value, str_size);
-            new_node->data.s[str_size] = '\0';
+            strncpy((*new_node)->data.s, str, str_size);
+            (*new_node)->data.s[str_size - 1] = '\0';
             break;
         }
 
         default:
-            free(new_node);
+            free(*new_node);
             return DSC_ERROR_OUT_OF_MEMORY;
     }
 
-    new_node->prev = NULL;
-    new_node->next = NULL;
+    (*new_node)->prev = NULL;
+    (*new_node)->next = NULL;
 
     return DSC_ERROR_OK;
 }
@@ -344,7 +345,7 @@ DSCError dsc_list_push_front(DSCList *list, void *to_push) {
     }
 
     DSCNode *new_head = NULL;
-    DSCError errno = dsc_node_init(new_head, to_push, list->type);
+    DSCError errno = dsc_node_init(&new_head, to_push, list->type);
     if (errno != DSC_ERROR_OK) {
         return errno;
     }
@@ -439,7 +440,7 @@ DSCError dsc_list_push_back(DSCList *list, void *to_push) {
     }
 
     DSCNode *new_tail = NULL;
-    DSCError errno = dsc_node_init(new_tail, to_push, list->type);
+    DSCError errno = dsc_node_init(&new_tail, to_push, list->type);
     if (errno != DSC_ERROR_OK) {
         return errno;
     }
@@ -529,9 +530,7 @@ DSCError dsc_list_insert(DSCList *list, void *data, size_t position) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    if (dsc_size_of(list->type) != sizeof(*data)) {
-        return DSC_ERROR_INVALID_TYPE;
-    }
+    // Removed incorrect check: we can't check the size of data from a void pointer
 
     if (position > list->size) {
         return DSC_ERROR_OUT_OF_RANGE;
@@ -546,7 +545,7 @@ DSCError dsc_list_insert(DSCList *list, void *data, size_t position) {
     }
 
     DSCNode *new_node = NULL;
-    DSCError errno = dsc_node_init(new_node, data, list->type);
+    DSCError errno = dsc_node_init(&new_node, data, list->type);
     if (errno != DSC_ERROR_OK) {
         return errno;
     }

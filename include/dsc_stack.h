@@ -21,10 +21,11 @@ struct DSCStack {
 /**
  * @brief Initialize a new stack.
  *
+ * @param stack Pointer to store the newly created stack.
  * @param type The data type stored in the stack.
- * @return A pointer to the new stack, or NULL on failure.
+ * @return DSCError code indicating success or failure.
  */
-DSCStack *dsc_stack_init(DSCType type);
+DSCError dsc_stack_init(DSCStack **stack, DSCType type);
 
 /**
  * @brief Deinitialize a stack, freeing all allocated memory.

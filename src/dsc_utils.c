@@ -5,31 +5,30 @@
 
 #include "../include/dsc_utils.h"
 
-int dsc_compare(void *ptr1, void *ptr2, DSCType type) {
-    if (!dsc_type_is_valid(type)) {
-        return -1;
-    }
+bool dsc_type_is_valid(DSCType type) {
+    return !dsc_type_invalid(type);
+}
 
+size_t dsc_size_of(DSCType type) {
     switch (type) {
-        case DSC_TYPE_CHAR:
-            return (*(char *) ptr1 - *(char *) ptr2);
-        case DSC_TYPE_INT:
-            return (*(int *) ptr1 - *(int *) ptr2);
-        case DSC_TYPE_FLOAT:
-            return (*(float *) ptr1 > *(float *) ptr2) - (*(float *) ptr1 < *(float *) ptr2);
-        case DSC_TYPE_DOUBLE:
-            return (*(double *) ptr1 > *(double *) ptr2) - (*(double *) ptr1 < *(double *) ptr2);
         case DSC_TYPE_BOOL:
-            return (*(bool *) ptr1 - *(bool *) ptr2);
-        case DSC_TYPE_POINTER:
-            return ((uintptr_t) ptr1 - (uintptr_t) ptr2);
+            return sizeof(bool);
+        case DSC_TYPE_CHAR:
+            return sizeof(char);
+        case DSC_TYPE_INT:
+            return sizeof(int);
+        case DSC_TYPE_FLOAT:
+            return sizeof(float);
+        case DSC_TYPE_DOUBLE:
+            return sizeof(double);
         case DSC_TYPE_STRING:
-            return strcmp((const char *) ptr1, (const char *) ptr2);
+            return sizeof(char *);
         default:
-            // Unknown type
-            return -1;
+            return 0; // Invalid type
     }
 }
+
+// The dsc_compare function has been moved to dsc_data.c to avoid duplicate symbols
 
 uint32_t dsc_hash(void *key, DSCType key_type, size_t capacity) {
     uint32_t hash;
@@ -59,8 +58,8 @@ uint32_t dsc_hash(void *key, DSCType key_type, size_t capacity) {
         case DSC_TYPE_BOOL:
             hash = *(bool *) key;
             break;
-        case DSC_TYPE_POINTER:
-            hash = (uint32_t) (uintptr_t) key;
+        case DSC_TYPE_INT:
+            hash = *(int *) key;
             break;
         default:
             // Handle unknown types or return an error

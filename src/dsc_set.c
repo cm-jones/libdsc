@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 #include <stdlib.h>
+#include <string.h>
 
 #include "../include/dsc_set.h"
 #include "../include/dsc_utils.h"
@@ -59,7 +60,7 @@ static bool dsc_set_rehash(DSCSet *set, size_t new_capacity) {
                 }
 
                 case DSC_TYPE_BOOL: {
-                    index = dsc_hash(&entry->key.s, set->type, new_capacity);
+                    index = dsc_hash(&entry->key.b, set->type, new_capacity);
                     break;
                 }
             }
@@ -82,7 +83,7 @@ DSCError dsc_set_init(DSCSet *new_set, DSCType type) {
         return DSC_ERROR_INVALID_TYPE;
     }
 
-    new_set = malloc(sizeof new_set);
+    new_set = malloc(sizeof(DSCSet));
     if (new_set == NULL) {
         return DSC_ERROR_OUT_OF_MEMORY;
     }
@@ -262,7 +263,7 @@ DSCError dsc_set_insert(DSCSet *set, void *key) {
         }
     }
 
-    DSCSetEntry *new_entry = malloc(sizeof new_entry);
+    DSCSetEntry *new_entry = malloc(sizeof(DSCSetEntry));
     if (new_entry == NULL) {
         return DSC_ERROR_OUT_OF_MEMORY;
     }
@@ -289,7 +290,17 @@ DSCError dsc_set_insert(DSCSet *set, void *key) {
         }
 
         case DSC_TYPE_STRING: {
-            dsc_str_cpy(&new_entry->key.s, *(char **) key);
+            char *str = *(char **) key;
+            size_t str_size = strlen(str) + 1;
+
+            new_entry->key.s = malloc(str_size);
+            if (new_entry->key.s == NULL) {
+                free(new_entry);
+                return DSC_ERROR_OUT_OF_MEMORY;
+            }
+
+            strncpy(new_entry->key.s, str, str_size - 1);
+            new_entry->key.s[str_size - 1] = '\0';
             break;
         }
 
@@ -337,6 +348,7 @@ DSCError dsc_set_erase(DSCSet *set, void *key) {
 
                     return DSC_ERROR_OK;
                 }
+                break;
             }
 
             case DSC_TYPE_INT: {
@@ -352,6 +364,7 @@ DSCError dsc_set_erase(DSCSet *set, void *key) {
 
                     return DSC_ERROR_OK;
                 }
+                break;
             }
 
             case DSC_TYPE_FLOAT: {
@@ -367,6 +380,7 @@ DSCError dsc_set_erase(DSCSet *set, void *key) {
 
                     return DSC_ERROR_OK;
                 }
+                break;
             }
 
             case DSC_TYPE_DOUBLE: {
@@ -382,6 +396,7 @@ DSCError dsc_set_erase(DSCSet *set, void *key) {
 
                     return DSC_ERROR_OK;
                 }
+                break;
             }
 
             case DSC_TYPE_STRING: {
@@ -398,6 +413,7 @@ DSCError dsc_set_erase(DSCSet *set, void *key) {
 
                     return DSC_ERROR_OK;
                 }
+                break;
             }
 
             case DSC_TYPE_BOOL: {
@@ -413,6 +429,7 @@ DSCError dsc_set_erase(DSCSet *set, void *key) {
 
                     return DSC_ERROR_OK;
                 }
+                break;
             }
         }
 
