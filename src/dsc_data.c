@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "../include/dsc_data.h"
 
@@ -243,7 +244,13 @@ int dsc_compare(DSCData data1, void *data2, DSCType type) {
         case DSC_TYPE_STRING:
             return strcmp(data1.s, *(const char **) data2);
 
+        case DSC_TYPE_UNKNOWN:
+        case DSC_TYPE_COUNT:
         default:
             return INT32_MIN;
     }
+    
+    // This line is added to satisfy the compiler warning,
+    // but it should never be reached due to the default case above
+    return INT32_MIN;
 }
