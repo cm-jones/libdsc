@@ -26,6 +26,11 @@ DSCError dsc_set_init(DSCSet *new_set, DSCType type);
  * @brief Deinitialize a set, freeing all allocated memory.
  *
  * @param set Pointer to the set to deinitialize.
+ * @return DSCError code indicating success or failure.
+ */
+DSCError dsc_set_deinit(DSCSet *set);
+
+/**
  * @brief Get the current size of the set.
  *
  * @param set Pointer to the set.
@@ -88,5 +93,13 @@ DSCError dsc_set_insert(DSCSet *set, void *key);
  * @return DSCError code indicating success or failure.
  */
 DSCError dsc_set_erase(DSCSet *set, void *key);
+
+/**
+ * @brief Clear all entries from the set.
+ *
+ * @param set Pointer to the set.
+ * @return DSCError code indicating success or failure.
+ */
+DSCError dsc_set_clear(DSCSet *set);
 
 #endif // DSC_SET_H
