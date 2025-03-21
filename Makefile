@@ -1,6 +1,16 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -O3 -I. -I/opt/homebrew/Cellar/googletest/1.14.0/include
-LDFLAGS = -L. -ldsc -lm -L/opt/homebrew/Cellar/googletest/1.14.0/lib -lgtest
+CFLAGS = -Wall -Wextra -O3 -I.
+
+# Check if googletest is available
+GTEST_DIR = /opt/homebrew/Cellar/googletest/1.14.0
+ifneq ($(wildcard $(GTEST_DIR)),)
+    CFLAGS += -I$(GTEST_DIR)/include
+    GTEST_LDFLAGS = -L$(GTEST_DIR)/lib -lgtest
+else
+    GTEST_LDFLAGS =
+endif
+
+LDFLAGS = -L. -ldsc -lm
 
 LIBNAME = libdsc.a
 SONAME = libdsc.so
@@ -52,7 +62,7 @@ test: $(LIBNAME) $(TESTS)
 build-tests: $(TESTS)
 
 tests/test_dsc_list: tests/test_dsc_list.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTEST_LDFLAGS) $(RPATH)
 
 tests/test_dsc_vector: tests/test_dsc_vector.c $(LIBNAME)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
@@ -61,13 +71,13 @@ tests/test_dsc_stack: tests/test_dsc_stack.c $(LIBNAME)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
 
 tests/test_dsc_queue: tests/test_dsc_queue.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTEST_LDFLAGS) $(RPATH)
 
 tests/test_dsc_map: tests/test_dsc_map.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTEST_LDFLAGS) $(RPATH)
 
 tests/test_dsc_set: tests/test_dsc_set.c $(LIBNAME)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(RPATH)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(GTEST_LDFLAGS) $(RPATH)
 
 $(TESTS): $(LIBNAME)
 
