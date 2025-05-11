@@ -1,0 +1,85 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+#ifndef DSC_COMMON_H_
+#define DSC_COMMON_H_
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// Error codes
+typedef enum {
+    DSC_SUCCESS = 0,
+    DSC_ERROR_MEMORY,
+    DSC_ERROR_INVALID_ARGUMENT,
+    DSC_ERROR_EMPTY,
+    DSC_ERROR_NOT_FOUND,
+    DSC_ERROR_DUPLICATE,
+    DSC_ERROR_OVERFLOW,
+} dsc_error_t;
+
+// Memory allocation wrapper with error checking
+static inline void* dsc_malloc(size_t size) {
+    void* ptr = malloc(size);
+    if (!ptr) {
+        // Handle out of memory
+        return NULL;
+    }
+    return ptr;
+}
+
+// Memory reallocation wrapper with error checking
+static inline void* dsc_realloc(void* ptr, size_t size) {
+    void* new_ptr = realloc(ptr, size);
+    if (!new_ptr) {
+        // Handle out of memory
+        return NULL;
+    }
+    return new_ptr;
+}
+
+// Safe free wrapper
+static inline void dsc_free(void* ptr) {
+    if (ptr) {
+        free(ptr);
+    }
+}
+
+// Default hash function for integers
+static inline size_t dsc_hash_int(const void* key) {
+    return (size_t)*(const int*)key;
+}
+
+// Default hash function for strings
+static inline size_t dsc_hash_string(const void* key) {
+    const char* str = *(const char**)key;
+    size_t hash = 5381;
+    int c;
+
+    while ((c = (unsigned char) *str++)) {
+        hash = ((hash << 5) + hash) + c;
+    }
+
+    return hash;
+}
+
+// Default comparison function for integers
+static inline int dsc_compare_int(const void* a, const void* b) {
+    return *(const int*)a - *(const int*)b;
+}
+
+// Default comparison function for strings
+static inline int dsc_compare_string(const void* a, const void* b) {
+    return strcmp(*(const char**)a, *(const char**)b);
+}
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // DSC_COMMON_H_

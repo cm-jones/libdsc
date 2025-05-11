@@ -1,0 +1,14 @@
+name: 'Download Build Artifacts'
+description: 'Downloads build artifacts to specified path'
+inputs:
+  path:
+    description: 'Path to download artifacts to'
+    required: false
+    default: build
+runs:
+  using: composite
+  steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: build-artifacts
+        path: ${{ inputs.path }}

@@ -1,0 +1,28 @@
+name: 'Build Library'
+description: 'Builds the library in release mode'
+inputs:
+  artifact_name:
+    description: 'Name of the artifact to upload'
+    required: false
+    default: 'build-artifacts'
+outputs:
+  build_path:
+    description: 'Path to the build directory'
+    value: ${{ steps.build.outputs.build_path }}
+runs:
+  using: composite
+  steps:
+    - name: Build
+      id: build
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+        cmake -DCMAKE_BUILD_TYPE=Release ..
+        make -j$(nproc)
+        echo "build_path=$(pwd)" >> $GITHUB_OUTPUT
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: build/

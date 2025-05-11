@@ -1,0 +1,51 @@
+libdsc for Debian
+----------------
+
+This package provides a high-performance data structures library for C programs.
+
+Package Structure
+---------------
+The package is split into several components:
+- libdsc0: Runtime library
+- libdsc-dev: Development files and headers
+- libdsc-dbg: Debug symbols
+- libdsc-doc: Documentation and examples
+
+Build Configuration
+-----------------
+The package is built with hardening flags enabled and includes:
+- Position Independent Code (PIC)
+- Stack protector
+- Immediate binding
+- Full RELRO
+- Fortify source
+
+The build system uses CMake with the following key options:
+- RelWithDebInfo build type for optimal debugging experience
+- Shared library build enabled
+- RPATH disabled for compliance
+- Tests enabled but non-blocking
+
+Testing
+-------
+While tests are run during package building, failures won't block the build
+process. This is to handle potential platform-specific timing issues in the
+test suite. Test failures are logged and should be investigated.
+
+Debug Symbols
+------------
+Debug symbols are separated into the libdsc-dbg package. Install this
+package if you need to debug applications using libdsc or if you
+encounter crashes.
+
+Documentation
+------------
+Comprehensive documentation is available in the libdsc-doc package,
+including API reference, examples, and implementation details.
+
+Dependencies
+-----------
+The development package (libdsc-dev) pulls in all necessary build
+dependencies for developing applications with libdsc.
+
+ -- Cody M. Jones <codymjones@pm.me>  Sat, 10 May 2025 21:16:00 -0500
