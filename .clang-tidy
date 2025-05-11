@@ -1,0 +1,8 @@
+Checks: "-*,bugprone-*,performance-*,readability-identifier-naming"
+WarningsAsErrors: "*"
+HeaderFilterRegex: ".*"
+FormatStyle: file
+
+CheckOptions:
+  readability-identifier-naming.FunctionCase: lower_case
+  readability-identifier-naming.ClassCase: lower_case

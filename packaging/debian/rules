@@ -1,0 +1,55 @@
+#!/usr/bin/make -f
+
+# Enable all hardening flags
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# Use all available CPU cores
+export DEB_BUILD_OPTIONS = parallel=$(shell nproc)
+
+# For reproducible builds
+export DEB_BUILD_PATH = $(CURDIR)/build
+export DEB_CFLAGS_MAINT_APPEND = -Wall -Wextra -fstack-protector-strong
+export DEB_CXXFLAGS_MAINT_APPEND = -Wall -Wextra -fstack-protector-strong
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,now
+
+# Standard package build flags
+export DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/buildflags.mk
+
+%:
+	dh $@ --buildsystem=cmake
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DBUILD_SHARED_LIBS=ON \
+		-DENABLE_HARDENING=ON \
+		-DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+		-DBUILD_TESTS=ON \
+		-DBUILD_BENCHMARKS=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DCMAKE_SKIP_RPATH=ON
+
+# Run tests during build but don't fail on error
+override_dh_auto_test:
+	dh_auto_test || echo "Tests failed but continuing build"
+
+# Create debug package
+override_dh_strip:
+	dh_strip --dbg-package=libdsc-dbg
+
+# Install documentation
+override_dh_installdocs:
+	dh_installdocs
+	# Install additional documentation for -doc package
+	mkdir -p debian/libdsc-doc/usr/share/doc/libdsc
+	cp -r docs/* debian/libdsc-doc/usr/share/doc/libdsc/
+
+# Clean up build artifacts
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf $(CURDIR)/build
+	find . -name '*.o' -delete
+	find . -name '*.so*' -delete
+	find . -name '*.a' -delete

@@ -1,0 +1,8 @@
+name: 'Run Benchmarks'
+description: 'Runs all benchmark executables'
+runs:
+  using: composite
+  steps:
+    - name: Run Benchmarks
+      shell: bash
+      run: cd build && ./benchmark_*

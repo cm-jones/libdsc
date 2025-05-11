@@ -1,0 +1,121 @@
+name: 'Package libdsc'
+description: 'Build Debian, RPM, and Arch Linux packages'
+inputs:
+  distribution:
+    description: 'Distribution to build package for (debian, rpm, or arch)'
+    required: true
+  version:
+    description: 'Version tag (e.g., v0.1.0-alpha)'
+    required: true
+outputs:
+  package-path:
+    description: 'Path to the built package'
+    value: ${{ steps.get-path.outputs.path }}
+runs:
+  using: composite
+  steps:
+    - name: Process version string
+      id: version
+      shell: bash
+      run: |
+        # Remove 'v' prefix from tag
+        VERSION="${{ inputs.version }}"
+        VERSION=${VERSION#v}
+        
+        # Split version and prerelease
+        BASE_VERSION=${VERSION%%-*}
+        PRERELEASE=${VERSION#*-}
+        if [ "$PRERELEASE" = "$BASE_VERSION" ]; then
+          PRERELEASE=""
+        fi
+        
+        # Format for Debian: 0.1.0~alpha1
+        if [ -n "$PRERELEASE" ]; then
+          DEB_VERSION="${BASE_VERSION}~${PRERELEASE}1"
+        else
+          DEB_VERSION="$BASE_VERSION"
+        fi
+        
+        # Format for Arch: 0.1.0_alpha
+        if [ -n "$PRERELEASE" ]; then
+          ARCH_VERSION="${BASE_VERSION}_${PRERELEASE}"
+        else
+          ARCH_VERSION="$BASE_VERSION"
+        fi
+        
+        # Format for RPM: 0.1.0~alpha
+        if [ -n "$PRERELEASE" ]; then
+          RPM_VERSION="${BASE_VERSION}~${PRERELEASE}"
+        else
+          RPM_VERSION="$BASE_VERSION"
+        fi
+        
+        echo "::set-output name=deb_version::$DEB_VERSION"
+        echo "::set-output name=arch_version::$ARCH_VERSION"
+        echo "::set-output name=rpm_version::$RPM_VERSION"
+
+    - if: inputs.distribution == 'debian'
+      name: Update Debian changelog
+      shell: bash
+      run: |
+        dch --newversion "${{ steps.version.outputs.deb_version }}" \
+            --package libdsc \
+            --force-distribution \
+            --distribution unstable \
+            "Release ${{ inputs.version }}"
+
+    - if: inputs.distribution == 'debian'
+      name: Setup Debian packaging tools
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y devscripts debhelper pkg-config
+
+    - if: inputs.distribution == 'debian'
+      name: Build Debian package
+      shell: bash
+      run: |
+        cd ${{ github.workspace }}
+        ./scripts/build-debian.sh
+
+    - if: inputs.distribution == 'rpm'
+      name: Setup RPM packaging environment
+      shell: bash
+      run: |
+        # Create a container for building RPM
+        docker run --rm -v ${{ github.workspace }}:/work \
+          -w /work fedora:latest \
+          bash -c "dnf install -y rpm-build rpmdevtools cmake gcc make && \
+                  useradd -m builder && \
+                  chown -R builder:builder . && \
+                  su builder -c './scripts/build-rpm.sh'"
+
+    - if: inputs.distribution == 'arch'
+      name: Update PKGBUILD version
+      shell: bash
+      run: |
+        cd packaging/arch
+        sed -i "s/pkgver=.*/pkgver=${{ steps.version.outputs.arch_version }}/" PKGBUILD
+        makepkg --printsrcinfo > .SRCINFO
+
+    - if: inputs.distribution == 'arch'
+      name: Setup Arch packaging environment
+      shell: bash
+      run: |
+        docker run --rm -v ${{ github.workspace }}:/work \
+          -w /work archlinux:base-devel \
+          bash -c "pacman -Sy --noconfirm base-devel cmake && \
+                  useradd -m builder && \
+                  chown -R builder:builder . && \
+                  su builder -c './scripts/build-arch.sh'"
+
+    - id: get-path
+      shell: bash
+      run: |
+        if [ "${{ inputs.distribution }}" = "debian" ]; then
+          echo "::set-output name=path::packaging/debian/libdsc_${{ steps.version.outputs.deb_version }}_amd64.deb"
+        elif [ "${{ inputs.distribution }}" = "rpm" ]; then
+          echo "::set-output name=path::packaging/rpm/libdsc-${{ steps.version.outputs.rpm_version }}-1.*.rpm"
+        else
+          echo "::set-output name=path::packaging/arch/libdsc-${{ steps.version.outputs.arch_version }}-1-x86_64.pkg.tar.zst"
+        fi

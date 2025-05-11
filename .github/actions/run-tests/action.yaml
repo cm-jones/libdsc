@@ -1,0 +1,22 @@
+name: 'Run Tests'
+description: 'Runs tests and reports results'
+outputs:
+  passed:
+    description: 'Whether tests passed'
+    value: ${{ steps.check.outputs.passed }}
+runs:
+  using: composite
+  steps:
+    - name: Run Tests
+      id: run
+      shell: bash
+      run: cd build && ctest --output-on-failure
+    
+    - name: Check Results
+      id: check
+      shell: bash
+      run: |
+        echo "passed=${{ steps.run.outcome == 'success' }}" >> $GITHUB_OUTPUT
+        if [[ "${{ steps.run.outcome }}" != "success" ]]; then
+          exit 1
+        fi

@@ -1,14 +1,123 @@
-*.a
+# Build directories
+build/
+_build/
+cmake-build-*/
+
+# IDE directories
+.idea/
+.vscode/
+.vs/
+*.swp
+*.swo
+
+# Prerequisites
+*.d
+
+# Object files
 *.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
 *.so
-*.json
-*.tar.gz
-*.zip
-*.deb
-libdsc-*
-tests/test_dsc_list
-tests/test_dsc_map
-tests/test_dsc_queue
-tests/test_dsc_set
-tests/test_dsc_stack
-tests/test_dsc_vector
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# Test coverage
+coverage/
+*.gcno
+*.gcda
+*.gcov
+
+# Dependencies
+deps/
+
+# Debian packaging artifacts
+packaging/debian/files
+packaging/debian/.debhelper/
+packaging/debian/debhelper-build-stamp
+packaging/debian/*.log
+packaging/debian/*.substvars
+packaging/debian/tmp/
+packaging/debian/libdsc0/
+packaging/debian/libdsc-dev/
+packaging/debian/*-stamp
+
+# RPM packaging artifacts
+packaging/rpm/*.rpm
+packaging/rpm/BUILD/
+packaging/rpm/BUILDROOT/
+packaging/rpm/RPMS/
+packaging/rpm/SOURCES/
+packaging/rpm/SPECS/
+packaging/rpm/SRPMS/
+~/rpmbuild/
+
+# Arch packaging artifacts
+packaging/arch/pkg/
+packaging/arch/src/
+packaging/arch/*.tar.gz
+packaging/arch/*.tar.xz
+packaging/arch/*.tar.zst
