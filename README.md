@@ -4,7 +4,8 @@
 
 # libdsc
 
-[![CI](https://github.com/cm-jones/libdsc/actions/workflows/ci.yaml/badge.svg)](https://github.com/cm-jones/libdsc/actions/workflows/ci.yml)
+[![CI](https://github.com/cm-jones/libdsc/actions/workflows/ci.yaml/badge.svg)](https://github.com/cm-jones/libdsc/actions/workflows/ci.yaml)
+[![Benchmarks](https://github.com/cm-jones/libdsc/actions/workflows/benchmark.yaml/badge.svg)](https://github.com/cm-jones/libdsc/actions/workflows/benchmark.yaml)
 [![Codecov](https://codecov.io/gh/cm-jones/libdsc/branch/main/graph/badge.svg)](https://codecov.io/gh/cm-jones/libdsc)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
@@ -113,7 +114,16 @@ ctest --output-on-failure
 
 ## Benchmarking
 
-Google Benchmark is used for benchmarking libdsc containers against the equivalent containers in the C++ Standard Library. The benchmarks are built by default.
+Google Benchmark is used for benchmarking libdsc containers against the equivalent containers in the C++ Standard Library. Benchmarks are run weekly and can be found in the [Actions tab](https://github.com/cm-jones/libdsc/actions/workflows/benchmark.yaml) under the Benchmarks workflow. You can also run benchmarks locally:
+
+```bash
+mkdir -p build
+cd build
+cmake .. -DBUILD_BENCHMARKS=ON
+make
+cd benchmarks
+./benchmark_*
+```
 
 ## Contributing
 

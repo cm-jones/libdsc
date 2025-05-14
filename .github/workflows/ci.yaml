@@ -17,4 +17,3 @@ jobs:
         with:
           build_type: Debug
       - uses: ./.github/actions/coverage
-      - uses: ./.github/actions/run-benchmarks
