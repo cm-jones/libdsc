@@ -39,10 +39,9 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_BENCHMARKS=OFF -DB
 make
 ```
 
-Then, install the library system-wide:
+Then, to install the library system-wide:
 
 ```bash
-cd build
 sudo make install
 ```
 

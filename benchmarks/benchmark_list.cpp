@@ -207,16 +207,17 @@ BENCHMARK(BM_StdListEmpty)->Range(1 << 10, 1 << 20);
 static void BM_ListInsert(benchmark::State &state) {
     dsc_list_t *list = list_create(sizeof(int));
     int value = 42;
-    list_push_back(list, &value);
-    list_node_t *pos = list_begin(list);
-
+    
     for (auto _ : state) {
-        benchmark::DoNotOptimize(list_insert(list, pos, &value));
         state.PauseTiming();
-        list_erase(list, list_begin(list)->next);  // Remove the inserted node
+        list_clear(list);  // Clear any previous nodes
+        list_push_back(list, &value);  // Add initial node
+        list_node_t *pos = list_begin(list);  // Get fresh position
         state.ResumeTiming();
+        
+        benchmark::DoNotOptimize(list_insert(list, pos, &value));
     }
-
+    
     list_destroy(list);
 }
 BENCHMARK(BM_ListInsert)->Range(1 << 10, 1 << 20);
