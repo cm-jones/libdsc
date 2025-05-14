@@ -86,7 +86,6 @@ CTestTestfile.cmake
 _deps
 
 # Test coverage
-coverage/
 *.gcno
 *.gcda
 *.gcov
