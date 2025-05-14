@@ -24,8 +24,8 @@ typedef enum {
 } dsc_error_t;
 
 // Memory allocation wrapper with error checking
-static inline void* dsc_malloc(size_t size) {
-    void* ptr = malloc(size);
+static inline void *dsc_malloc(size_t size) {
+    void *ptr = malloc(size);
     if (!ptr) {
         // Handle out of memory
         return NULL;
@@ -34,8 +34,8 @@ static inline void* dsc_malloc(size_t size) {
 }
 
 // Memory reallocation wrapper with error checking
-static inline void* dsc_realloc(void* ptr, size_t size) {
-    void* new_ptr = realloc(ptr, size);
+static inline void *dsc_realloc(void *ptr, size_t size) {
+    void *new_ptr = realloc(ptr, size);
     if (!new_ptr) {
         // Handle out of memory
         return NULL;
@@ -44,24 +44,24 @@ static inline void* dsc_realloc(void* ptr, size_t size) {
 }
 
 // Safe free wrapper
-static inline void dsc_free(void* ptr) {
+static inline void dsc_free(void *ptr) {
     if (ptr) {
         free(ptr);
     }
 }
 
 // Default hash function for integers
-static inline size_t dsc_hash_int(const void* key) {
-    return (size_t)*(const int*)key;
+static inline size_t dsc_hash_int(void const *key) {
+    return (size_t)*(int const *)key;
 }
 
 // Default hash function for strings
-static inline size_t dsc_hash_string(const void* key) {
-    const char* str = *(const char**)key;
+static inline size_t dsc_hash_string(void const *key) {
+    char const *str = *(char const **)key;
     size_t hash = 5381;
     int c;
 
-    while ((c = (unsigned char) *str++)) {
+    while ((c = (unsigned char)*str++)) {
         hash = ((hash << 5) + hash) + c;
     }
 
@@ -69,13 +69,13 @@ static inline size_t dsc_hash_string(const void* key) {
 }
 
 // Default comparison function for integers
-static inline int dsc_compare_int(const void* a, const void* b) {
-    return *(const int*)a - *(const int*)b;
+static inline int dsc_compare_int(void const *a, void const *b) {
+    return *(int const *)a - *(int const *)b;
 }
 
 // Default comparison function for strings
-static inline int dsc_compare_string(const void* a, const void* b) {
-    return strcmp(*(const char**)a, *(const char**)b);
+static inline int dsc_compare_string(void const *a, void const *b) {
+    return strcmp(*(char const **)a, *(char const **)b);
 }
 
 #ifdef __cplusplus

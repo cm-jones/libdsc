@@ -8,14 +8,14 @@
 #define INITIAL_CAPACITY 16
 #define LOAD_FACTOR 0.75f
 
-static size_t find_slot(const dsc_unordered_set_t* set, const void* element,
+static size_t find_slot(dsc_unordered_set_t const *set, void const *element,
                         size_t hash) {
     size_t mask = set->capacity - 1;
     size_t idx = hash & mask;
 
     while (set->hashes[idx] != 0) {
         if (set->hashes[idx] == hash &&
-            set->compare_fn((char*)set->elements + idx * set->element_size,
+            set->compare_fn((char *)set->elements + idx * set->element_size,
                             element) == 0) {
             return idx;
         }
@@ -24,10 +24,10 @@ static size_t find_slot(const dsc_unordered_set_t* set, const void* element,
     return idx;
 }
 
-static dsc_error_t rehash(dsc_unordered_set_t* set) {
+static dsc_error_t rehash(dsc_unordered_set_t *set) {
     size_t old_capacity = set->capacity;
-    void* old_elements = set->elements;
-    size_t* old_hashes = set->hashes;
+    void *old_elements = set->elements;
+    size_t *old_hashes = set->hashes;
 
     set->capacity *= 2;
     set->elements = calloc(set->capacity, set->element_size);
@@ -45,11 +45,11 @@ static dsc_error_t rehash(dsc_unordered_set_t* set) {
     for (size_t i = 0; i < old_capacity; ++i) {
         if (old_hashes[i] != 0) {
             size_t new_idx =
-                find_slot(set, (char*)old_elements + i * set->element_size,
+                find_slot(set, (char *)old_elements + i * set->element_size,
                           old_hashes[i]);
 
-            memcpy((char*)set->elements + new_idx * set->element_size,
-                   (char*)old_elements + i * set->element_size,
+            memcpy((char *)set->elements + new_idx * set->element_size,
+                   (char *)old_elements + i * set->element_size,
                    set->element_size);
             set->hashes[new_idx] = old_hashes[i];
         }
@@ -60,11 +60,11 @@ static dsc_error_t rehash(dsc_unordered_set_t* set) {
     return DSC_SUCCESS;
 }
 
-dsc_unordered_set_t* unordered_set_create(size_t element_size,
-                                      size_t (*hash_fn)(const void*),
-                                      int (*compare_fn)(const void*,
-                                                        const void*)) {
-    dsc_unordered_set_t* set = malloc(sizeof(dsc_unordered_set_t));
+dsc_unordered_set_t *unordered_set_create(size_t element_size,
+                                          size_t (*hash_fn)(void const *),
+                                          int (*compare_fn)(void const *,
+                                                            void const *)) {
+    dsc_unordered_set_t *set = malloc(sizeof(dsc_unordered_set_t));
     if (!set) return NULL;
 
     set->capacity = INITIAL_CAPACITY;
@@ -86,22 +86,23 @@ dsc_unordered_set_t* unordered_set_create(size_t element_size,
     return set;
 }
 
-void unordered_set_destroy(dsc_unordered_set_t* set) {
+void unordered_set_destroy(dsc_unordered_set_t *set) {
     if (!set) return;
     free(set->elements);
     free(set->hashes);
     free(set);
 }
 
-size_t unordered_set_size(const dsc_unordered_set_t* set) {
+size_t unordered_set_size(dsc_unordered_set_t const *set) {
     return set ? set->size : 0;
 }
 
-bool unordered_set_empty(const dsc_unordered_set_t* set) {
+bool unordered_set_empty(dsc_unordered_set_t const *set) {
     return !set || set->size == 0;
 }
 
-dsc_error_t unordered_set_insert(dsc_unordered_set_t* set, const void* element) {
+dsc_error_t unordered_set_insert(dsc_unordered_set_t *set,
+                                 void const *element) {
     if (!set || !element) return DSC_ERROR_INVALID_ARGUMENT;
 
     if ((float)set->size / set->capacity >= LOAD_FACTOR) {
@@ -113,17 +114,17 @@ dsc_error_t unordered_set_insert(dsc_unordered_set_t* set, const void* element) 
     size_t idx = find_slot(set, element, hash);
 
     if (set->hashes[idx] == 0) {
-        set->size++;
+        ++(set->size);
     }
 
-    memcpy((char*)set->elements + idx * set->element_size, element,
+    memcpy((char *)set->elements + idx * set->element_size, element,
            set->element_size);
     set->hashes[idx] = hash;
 
     return DSC_SUCCESS;
 }
 
-void* unordered_set_find(dsc_unordered_set_t* set, const void* element) {
+void *unordered_set_find(dsc_unordered_set_t *set, void const *element) {
     if (!set || !element) return NULL;
 
     size_t hash = set->hash_fn(element);
@@ -131,10 +132,10 @@ void* unordered_set_find(dsc_unordered_set_t* set, const void* element) {
 
     if (set->hashes[idx] == 0) return NULL;
 
-    return (char*)set->elements + idx * set->element_size;
+    return (char *)set->elements + idx * set->element_size;
 }
 
-dsc_error_t unordered_set_erase(dsc_unordered_set_t* set, const void* element) {
+dsc_error_t unordered_set_erase(dsc_unordered_set_t *set, void const *element) {
     if (!set || !element) return DSC_ERROR_INVALID_ARGUMENT;
 
     size_t hash = set->hash_fn(element);
@@ -151,12 +152,13 @@ dsc_error_t unordered_set_erase(dsc_unordered_set_t* set, const void* element) {
 
     while (set->hashes[next] != 0) {
         size_t existing_hash = set->hashes[next];
-        size_t new_idx = find_slot(
-            set, (char*)set->elements + next * set->element_size, existing_hash);
+        size_t new_idx =
+            find_slot(set, (char *)set->elements + next * set->element_size,
+                      existing_hash);
 
         if (new_idx != next) {
-            memcpy((char*)set->elements + new_idx * set->element_size,
-                   (char*)set->elements + next * set->element_size,
+            memcpy((char *)set->elements + new_idx * set->element_size,
+                   (char *)set->elements + next * set->element_size,
                    set->element_size);
             set->hashes[new_idx] = existing_hash;
             set->hashes[next] = 0;
@@ -168,14 +170,14 @@ dsc_error_t unordered_set_erase(dsc_unordered_set_t* set, const void* element) {
     return DSC_SUCCESS;
 }
 
-void unordered_set_clear(dsc_unordered_set_t* set) {
+void unordered_set_clear(dsc_unordered_set_t *set) {
     if (!set) return;
 
     memset(set->hashes, 0, set->capacity * sizeof(size_t));
     set->size = 0;
 }
 
-dsc_error_t unordered_set_reserve(dsc_unordered_set_t* set, size_t n) {
+dsc_error_t unordered_set_reserve(dsc_unordered_set_t *set, size_t n) {
     if (!set) return DSC_ERROR_INVALID_ARGUMENT;
 
     if (n <= set->capacity) return DSC_SUCCESS;
@@ -183,8 +185,8 @@ dsc_error_t unordered_set_reserve(dsc_unordered_set_t* set, size_t n) {
     size_t old_capacity = set->capacity;
     set->capacity = n;
 
-    void* new_elements = calloc(set->capacity, set->element_size);
-    size_t* new_hashes = calloc(set->capacity, sizeof(size_t));
+    void *new_elements = calloc(set->capacity, set->element_size);
+    size_t *new_hashes = calloc(set->capacity, sizeof(size_t));
 
     if (!new_elements || !new_hashes) {
         free(new_elements);
@@ -196,11 +198,11 @@ dsc_error_t unordered_set_reserve(dsc_unordered_set_t* set, size_t n) {
     for (size_t i = 0; i < old_capacity; ++i) {
         if (set->hashes[i] != 0) {
             size_t new_idx =
-                find_slot(set, (char*)set->elements + i * set->element_size,
+                find_slot(set, (char *)set->elements + i * set->element_size,
                           set->hashes[i]);
 
-            memcpy((char*)new_elements + new_idx * set->element_size,
-                   (char*)set->elements + i * set->element_size,
+            memcpy((char *)new_elements + new_idx * set->element_size,
+                   (char *)set->elements + i * set->element_size,
                    set->element_size);
             new_hashes[new_idx] = set->hashes[i];
         }

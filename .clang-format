@@ -2,3 +2,5 @@ BasedOnStyle: Google
 IndentWidth: 4
 ColumnLimit: 80
 PointerAlignment: Right
+DerivePointerAlignment: false
+QualifierAlignment: Right

@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-static forward_list_node_t* create_node(const void* element,
+static forward_list_node_t *create_node(void const *element,
                                         size_t element_size) {
-    forward_list_node_t* node = malloc(sizeof(forward_list_node_t));
+    forward_list_node_t *node = malloc(sizeof(forward_list_node_t));
     if (!node) {
         return NULL;
     }
@@ -23,12 +23,12 @@ static forward_list_node_t* create_node(const void* element,
     return node;
 }
 
-dsc_forward_list_t* forward_list_create(size_t element_size) {
+dsc_forward_list_t *forward_list_create(size_t element_size) {
     if (element_size == 0) {
         return NULL;
     }
 
-    dsc_forward_list_t* list = malloc(sizeof(dsc_forward_list_t));
+    dsc_forward_list_t *list = malloc(sizeof(dsc_forward_list_t));
     if (!list) {
         return NULL;
     }
@@ -40,7 +40,7 @@ dsc_forward_list_t* forward_list_create(size_t element_size) {
     return list;
 }
 
-void forward_list_destroy(dsc_forward_list_t* list) {
+void forward_list_destroy(dsc_forward_list_t *list) {
     if (!list) {
         return;
     }
@@ -49,33 +49,33 @@ void forward_list_destroy(dsc_forward_list_t* list) {
     free(list);
 }
 
-size_t forward_list_size(const dsc_forward_list_t* list) {
+size_t forward_list_size(dsc_forward_list_t const *list) {
     return list ? list->size : 0;
 }
 
-bool forward_list_empty(const dsc_forward_list_t* list) {
+bool forward_list_empty(dsc_forward_list_t const *list) {
     return !list || list->size == 0;
 }
 
-dsc_error_t forward_list_push_front(dsc_forward_list_t* list,
-                                     const void* element) {
+dsc_error_t forward_list_push_front(dsc_forward_list_t *list,
+                                    void const *element) {
     if (!list || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    forward_list_node_t* node = create_node(element, list->element_size);
+    forward_list_node_t *node = create_node(element, list->element_size);
     if (!node) {
         return DSC_ERROR_MEMORY;
     }
 
     node->next = list->head;
     list->head = node;
-    list->size++;
+    ++(list->size);
 
     return DSC_SUCCESS;
 }
 
-dsc_error_t forward_list_pop_front(dsc_forward_list_t* list) {
+dsc_error_t forward_list_pop_front(dsc_forward_list_t *list) {
     if (!list) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -84,7 +84,7 @@ dsc_error_t forward_list_pop_front(dsc_forward_list_t* list) {
         return DSC_ERROR_EMPTY;
     }
 
-    forward_list_node_t* old_head = list->head;
+    forward_list_node_t *old_head = list->head;
     list->head = old_head->next;
     free(old_head->data);
     free(old_head);
@@ -93,7 +93,7 @@ dsc_error_t forward_list_pop_front(dsc_forward_list_t* list) {
     return DSC_SUCCESS;
 }
 
-void* forward_list_front(const dsc_forward_list_t* list) {
+void *forward_list_front(dsc_forward_list_t const *list) {
     if (!list || list->size == 0) {
         return NULL;
     }
@@ -101,9 +101,9 @@ void* forward_list_front(const dsc_forward_list_t* list) {
     return list->head->data;
 }
 
-dsc_error_t forward_list_insert_after(dsc_forward_list_t* list,
-                                       forward_list_node_t* pos,
-                                       const void* element) {
+dsc_error_t forward_list_insert_after(dsc_forward_list_t *list,
+                                      forward_list_node_t *pos,
+                                      void const *element) {
     if (!list || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -112,7 +112,7 @@ dsc_error_t forward_list_insert_after(dsc_forward_list_t* list,
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    forward_list_node_t* node = create_node(element, list->element_size);
+    forward_list_node_t *node = create_node(element, list->element_size);
     if (!node) {
         return DSC_ERROR_MEMORY;
     }
@@ -124,13 +124,13 @@ dsc_error_t forward_list_insert_after(dsc_forward_list_t* list,
         node->next = pos->next;
         pos->next = node;
     }
-    list->size++;
+    ++(list->size);
 
     return DSC_SUCCESS;
 }
 
-dsc_error_t forward_list_erase_after(dsc_forward_list_t* list,
-                                      forward_list_node_t* pos) {
+dsc_error_t forward_list_erase_after(dsc_forward_list_t *list,
+                                     forward_list_node_t *pos) {
     if (!list) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -143,7 +143,7 @@ dsc_error_t forward_list_erase_after(dsc_forward_list_t* list,
         return DSC_ERROR_EMPTY;
     }
 
-    forward_list_node_t* to_delete;
+    forward_list_node_t *to_delete;
     if (!pos) {
         to_delete = list->head;
         list->head = to_delete->next;
@@ -162,14 +162,14 @@ dsc_error_t forward_list_erase_after(dsc_forward_list_t* list,
     return DSC_SUCCESS;
 }
 
-void forward_list_clear(dsc_forward_list_t* list) {
+void forward_list_clear(dsc_forward_list_t *list) {
     if (!list) {
         return;
     }
 
-    forward_list_node_t* current = list->head;
+    forward_list_node_t *current = list->head;
     while (current) {
-        forward_list_node_t* next = current->next;
+        forward_list_node_t *next = current->next;
         free(current->data);
         free(current);
         current = next;
@@ -179,11 +179,11 @@ void forward_list_clear(dsc_forward_list_t* list) {
     list->size = 0;
 }
 
-forward_list_node_t* forward_list_begin(const dsc_forward_list_t* list) {
+forward_list_node_t *forward_list_begin(dsc_forward_list_t const *list) {
     return list ? list->head : NULL;
 }
 
-forward_list_node_t* forward_list_end(const dsc_forward_list_t* list) {
+forward_list_node_t *forward_list_end(dsc_forward_list_t const *list) {
     (void)list;
     return NULL;
 }

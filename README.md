@@ -97,7 +97,7 @@ int main() {
     dsc_vector_t* vec = vector_create(sizeof(int));
 
     // Push some values
-    for (int i = 0; i < 5; ++i) {
+    for (size_t i = 0; i < 5; ++i) {
         vector_push_back(vec, &i);
     }
 
@@ -124,7 +124,7 @@ int main() {
     dsc_list_t* list = list_create(sizeof(int));
 
     // Push some values
-    for (int i = 0; i < 5; ++i) {
+    for (size_t i = 0; i < 5; ++i) {
         list_push_back(list, &i);
     }
 

@@ -65,7 +65,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         -Wnested-externs
         -Wmissing-include-dirs
     )
-
 endif()
 
 # Include directories
