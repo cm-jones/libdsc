@@ -30,8 +30,8 @@ log() {
 }
 
 # Check if we're in the correct directory
-if [ ! -d "packaging/arch" ]; then
-    log "ERROR" "packaging/arch directory not found"
+if [ ! -f "PKGBUILD" ]; then
+    log "ERROR" "PKGBUILD not found"
     log "ERROR" "This script must be run from the project root directory"
     exit 1
 fi
@@ -56,7 +56,7 @@ done
 
 # Clean any previous builds
 log "INFO" "Cleaning previous build artifacts..."
-rm -rf packaging/arch/pkg packaging/arch/src packaging/arch/*.tar.* packaging/arch/*.pkg.tar.zst
+rm -rf pkg src ./*glob*.tar../*glob* ./*glob*.pkg.tar.zst
 
 # Create necessary documentation
 if [ -x "$(command -v doxygen)" ]; then
@@ -65,9 +65,6 @@ if [ -x "$(command -v doxygen)" ]; then
 else
     log "WARN" "Doxygen not found. Documentation package will be empty."
 fi
-
-# Navigate to the arch packaging directory
-cd packaging/arch
 
 # Update .SRCINFO
 log "INFO" "Updating .SRCINFO..."
@@ -88,7 +85,7 @@ else
     log "WARN" "Namcap not found. Skipping package verification."
 fi
 
-log "INFO" "Build complete! Packages are in packaging/arch/"
+log "INFO" "Build complete! Packages are in current directory"
 log "INFO" "To install the packages:"
 log "INFO" "sudo pacman -U libdsc-*.pkg.tar.zst libdsc-docs-*.pkg.tar.zst libdsc-debug-*.pkg.tar.zst"
 

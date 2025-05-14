@@ -86,7 +86,6 @@ CTestTestfile.cmake
 _deps
 
 # Test coverage
-coverage/
 *.gcno
 *.gcda
 *.gcov
@@ -121,3 +120,5 @@ packaging/arch/src/
 packaging/arch/*.tar.gz
 packaging/arch/*.tar.xz
 packaging/arch/*.tar.zst
+
+.cache

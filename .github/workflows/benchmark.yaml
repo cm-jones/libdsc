@@ -1,0 +1,30 @@
+name: Benchmarks
+on:
+  schedule:
+    # Run weekly on Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+  # Allow manual trigger
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: ./.github/actions/setup
+      
+      - uses: ./.github/actions/build
+        with:
+          build_type: Release  # Use Release mode for benchmarks
+          
+      - uses: ./.github/actions/run-benchmarks
+      
+      # Store benchmark results
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: build/benchmarks
+          retention-days: 90  # Keep results for trend analysis

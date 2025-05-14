@@ -1,0 +1,34 @@
+name: "Coverage"
+description: "Generates and uploads code coverage report"
+inputs:
+  artifact_name:
+    description: "Name of the artifact to upload"
+    required: false
+    default: "coverage-report"
+runs:
+  using: composite
+  steps:
+    - name: Install Dependencies
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y lcov
+        
+    - name: Run Tests
+      shell: bash
+      run: |
+        cd build
+        ctest --output-on-failure
+        
+    - name: Generate Coverage Report
+      shell: bash
+      run: |
+        cd build
+        lcov --capture --directory . --output-file coverage.info --rc lcov_branch_coverage=1 --rc geninfo_function_coverage=1 --rc geninfo_unexecuted_blocks=1 --ignore-errors mismatch
+        lcov --remove coverage.info '/usr/*' --output-file coverage.info
+        genhtml coverage.info --output-directory coverage_report
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact_name }}
+        path: build/coverage_report

@@ -1,16 +1,20 @@
 FROM ubuntu:latest
 
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get install -y \
     build-essential \
-    cmake \
-    devscripts \
-    debhelper \
-    gcc \
-    git \
     clang \
     clang-format \
     clang-tidy \
+    cmake \
+    devscripts \
+    debhelper \
+    doxygen \
+    gcc \
+    gdb \
+    git \
     lintian \
+    linux-tools \
+    lldb \
     pkg-config \
     && rm -rf /var/lib/apt/lists/*
 

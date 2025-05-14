@@ -1,5 +1,5 @@
-name: 'Setup Build Environment'
-description: 'Sets up the build environment'
+name: "Setup"
+description: "Sets up the build environment"
 runs:
   using: composite
   steps:

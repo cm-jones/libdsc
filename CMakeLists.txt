@@ -13,6 +13,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build" FORCE)
 endif()
 
+# Options
+option(ENABLE_COVERAGE "Enable coverage reporting" OFF)
+
 # Debug and Release build flags
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     # Debug build flags
@@ -22,6 +25,13 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     # Release build flags
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
+
+    # Enable coverage in Debug mode
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(ENABLE_COVERAGE ON)
+        add_compile_options(--coverage)
+        add_link_options(--coverage)
+    endif()
 endif()
 
 # Enable sanitizers in Debug mode
@@ -36,6 +46,11 @@ endif()
 option(BUILD_TESTS "Build tests" ON)
 option(BUILD_BENCHMARKS "Build benchmarks" ON)
 option(BUILD_EXAMPLES "Build examples" ON)
+
+# Set default build type if not specified
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build" FORCE)
+endif()
 
 # Library target
 add_library(dsc
@@ -65,7 +80,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
         -Wnested-externs
         -Wmissing-include-dirs
     )
-
 endif()
 
 # Include directories

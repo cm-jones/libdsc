@@ -5,4 +5,9 @@ runs:
   steps:
     - name: Run Benchmarks
       shell: bash
-      run: cd build && ./benchmark_*
+      run: |
+        cd build/benchmarks && for benchmark in benchmark_*; do
+          if [ -x "$benchmark" ]; then
+            ./$benchmark
+          fi
+        done

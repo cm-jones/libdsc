@@ -1,15 +1,15 @@
-name: 'Package libdsc'
-description: 'Build Debian, RPM, and Arch Linux packages'
+name: "Package libdsc"
+description: "Build Debian, RPM, and Arch Linux packages"
 inputs:
   distribution:
-    description: 'Distribution to build package for (debian, rpm, or arch)'
+    description: "Distribution to build package for (debian, rpm, or arch)"
     required: true
   version:
-    description: 'Version tag (e.g., v0.1.0-alpha)'
+    description: "Version tag (e.g., v0.1.0-alpha)"
     required: true
 outputs:
   package-path:
-    description: 'Path to the built package'
+    description: "Path to the built package"
     value: ${{ steps.get-path.outputs.path }}
 runs:
   using: composite
@@ -21,35 +21,35 @@ runs:
         # Remove 'v' prefix from tag
         VERSION="${{ inputs.version }}"
         VERSION=${VERSION#v}
-        
+
         # Split version and prerelease
         BASE_VERSION=${VERSION%%-*}
         PRERELEASE=${VERSION#*-}
         if [ "$PRERELEASE" = "$BASE_VERSION" ]; then
           PRERELEASE=""
         fi
-        
+
         # Format for Debian: 0.1.0~alpha1
         if [ -n "$PRERELEASE" ]; then
           DEB_VERSION="${BASE_VERSION}~${PRERELEASE}1"
         else
           DEB_VERSION="$BASE_VERSION"
         fi
-        
+
         # Format for Arch: 0.1.0_alpha
         if [ -n "$PRERELEASE" ]; then
           ARCH_VERSION="${BASE_VERSION}_${PRERELEASE}"
         else
           ARCH_VERSION="$BASE_VERSION"
         fi
-        
+
         # Format for RPM: 0.1.0~alpha
         if [ -n "$PRERELEASE" ]; then
           RPM_VERSION="${BASE_VERSION}~${PRERELEASE}"
         else
           RPM_VERSION="$BASE_VERSION"
         fi
-        
+
         echo "::set-output name=deb_version::$DEB_VERSION"
         echo "::set-output name=arch_version::$ARCH_VERSION"
         echo "::set-output name=rpm_version::$RPM_VERSION"
