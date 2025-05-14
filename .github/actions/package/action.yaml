@@ -68,8 +68,8 @@ runs:
       name: Setup Debian packaging tools
       shell: bash
       run: |
-        sudo apt update
-        sudo apt install -y devscripts debhelper pkg-config
+        sudo apt-get update
+        sudo apt-get install -y devscripts debhelper pkg-config
 
     - if: inputs.distribution == 'debian'
       name: Build Debian package

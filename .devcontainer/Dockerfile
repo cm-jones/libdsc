@@ -27,8 +27,8 @@ RUN userdel -f $(getent passwd 1000 | cut -d: -f1) 2>/dev/null || true \
     && groupdel $(getent group 1000 | cut -d: -f1) 2>/dev/null || true \
     && groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-    && apt update \
-    && apt install -y sudo \
+    && apt-get update \
+    && apt-get install -y sudo \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
