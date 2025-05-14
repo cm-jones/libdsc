@@ -15,4 +15,5 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: ./.github/actions/build
       - uses: ./.github/actions/run-tests
+      - uses: ./.github/actions/coverage
       - uses: ./.github/actions/run-benchmarks
