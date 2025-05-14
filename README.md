@@ -9,7 +9,7 @@
 [![Codecov](https://codecov.io/gh/cm-jones/libdsc/branch/main/graph/badge.svg)](https://codecov.io/gh/cm-jones/libdsc)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-libdsc is an open-source C library featuring generic implementations of some C++ Standard Library containers. 
+libdsc is an open-source C library that features generic implementations of several C++ Standard Library containers.
 
 ## Features
 
