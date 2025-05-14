@@ -32,3 +32,10 @@ runs:
       with:
         name: ${{ inputs.artifact_name }}
         path: build/coverage_report
+
+    - name: Upload to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: build/coverage.info
+        fail_ci_if_error: true

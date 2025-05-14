@@ -6,7 +6,10 @@ on:
   pull_request:
     branches:
       - main
-permissions: {}
+permissions:
+  contents: read  # Required for actions/checkout
+  id-token: write  # Required for codecov token authentication
+  actions: read  # Required for artifact upload
 jobs:
   ci:
     runs-on: ubuntu-latest

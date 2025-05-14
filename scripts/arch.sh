@@ -56,7 +56,7 @@ done
 
 # Clean any previous builds
 log "INFO" "Cleaning previous build artifacts..."
-rm -rf pkg src *.tar.* *.pkg.tar.zst
+rm -rf pkg src ./*glob*.tar../*glob* ./*glob*.pkg.tar.zst
 
 # Create necessary documentation
 if [ -x "$(command -v doxygen)" ]; then
