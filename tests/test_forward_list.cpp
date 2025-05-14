@@ -13,10 +13,13 @@ class ForwardListTest : public ::testing::Test {
     dsc_forward_list_t *list;
 };
 
-TEST_F(ForwardListTest, Create) {
-    EXPECT_NE(list, nullptr);
-    EXPECT_EQ(forward_list_size(list), 0);
-    EXPECT_TRUE(forward_list_empty(list));
+TEST_F(ForwardListTest, Create) 
+{
+    {
+        EXPECT_NE(list, nullptr);
+        EXPECT_EQ(forward_list_size(list), 0);
+        EXPECT_TRUE(forward_list_empty(list));
+    }
 }
 
 TEST_F(ForwardListTest, PushFrontAndPopFront) {
