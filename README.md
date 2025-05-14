@@ -5,7 +5,7 @@
 # libdsc
 
 [![CI](https://github.com/cm-jones/libdsc/actions/workflows/ci.yaml/badge.svg)](https://github.com/cm-jones/libdsc/actions/workflows/ci.yaml)
-[![Benchmarks](https://github.com/cm-jones/libdsc/actions/workflows/benchmark.yaml/badge.svg)](https://github.com/cm-jones/libdsc/actions/workflows/benchmark.yaml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/cb3382e664b54cb7b1f023424fcc774c)](https://app.codacy.com/gh/cm-jones/libdsc/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Codecov](https://codecov.io/gh/cm-jones/libdsc/branch/main/graph/badge.svg)](https://codecov.io/gh/cm-jones/libdsc)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
