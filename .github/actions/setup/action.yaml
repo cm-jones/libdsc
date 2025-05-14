@@ -1,4 +1,4 @@
-name: "Setup Build Environment"
+name: "Setup"
 description: "Sets up the build environment"
 runs:
   using: composite

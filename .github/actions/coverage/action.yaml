@@ -1,4 +1,4 @@
-name: "Generate Coverage Report"
+name: "Coverage"
 description: "Generates and uploads code coverage report"
 inputs:
   artifact_name:
@@ -13,21 +13,13 @@ runs:
       run: |
         sudo apt-get update
         sudo apt-get install -y lcov
-
-    - name: Build with Coverage
-      shell: bash
-      run: |
-        mkdir -p build
-        cd build
-        cmake -DCMAKE_BUILD_TYPE=Debug -DENABLE_COVERAGE=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
-        make -j$(nproc)
         
     - name: Run Tests
       shell: bash
       run: |
         cd build
         ctest --output-on-failure
-
+        
     - name: Generate Coverage Report
       shell: bash
       run: |

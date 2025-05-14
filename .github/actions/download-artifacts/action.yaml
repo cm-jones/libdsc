@@ -1,4 +1,4 @@
-name: "Download Build Artifacts"
+name: "Download Artifacts"
 description: "Downloads build artifacts to specified path"
 inputs:
   path:

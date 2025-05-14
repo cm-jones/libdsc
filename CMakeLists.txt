@@ -26,8 +26,9 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS_RELEASE} -O3")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 
-    # Coverage flags
-    if(ENABLE_COVERAGE)
+    # Enable coverage in Debug mode
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(ENABLE_COVERAGE ON)
         add_compile_options(--coverage)
         add_link_options(--coverage)
     endif()
