@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt update && apt install -y \
+RUN apt-get update && apt-get install -y \
     build-essential \
     clang \
     clang-format \
