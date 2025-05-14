@@ -13,11 +13,13 @@ cd libdsc
 ## Building and Testing
 
 ### Basic Build
+
 ```bash
 ./scripts/build.sh
 ```
 
 ### Run Tests
+
 ```bash
 ./scripts/build.sh
 cd build
@@ -25,11 +27,13 @@ ctest --output-on-failure
 ```
 
 ### Run Linter
+
 ```bash
 ./scripts/lint.sh
 ```
 
 ### Format Code
+
 ```bash
 ./scripts/format.sh
 ```
@@ -37,6 +41,7 @@ ctest --output-on-failure
 ## Package Management
 
 ### Official Releases
+
 The recommended way to create releases is through GitHub:
 
 1. Tag your version:
@@ -55,9 +60,11 @@ git push origin v0.1.0-alpha
 This ensures consistent, reproducible builds in a clean environment.
 
 ### Local Package Testing
+
 For development and testing, you can build packages locally in the dev container:
 
 #### Debian Package
+
 ```bash
 ./scripts/build-debian.sh
 ```
@@ -66,6 +73,7 @@ Outputs:
 - libdsc-dev_*.deb (development)
 
 #### RPM Package
+
 ```bash
 ./scripts/build-rpm.sh
 ```
@@ -78,6 +86,7 @@ Requirements:
 - rpm-build and rpmdevtools packages
 
 #### Arch Package
+
 ```bash
 ./scripts/build-arch.sh
 ```
@@ -104,6 +113,7 @@ Note: Local package builds are useful for testing but should not be distributed.
    - Single package with both runtime and development files
 
 ### Version Numbering
+
 - Release tags: v0.1.0-alpha
 - Debian format: 0.1.0~alpha1
 - RPM format: 0.1.0~alpha
