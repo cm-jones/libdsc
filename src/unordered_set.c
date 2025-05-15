@@ -57,7 +57,7 @@ static dsc_error rehash(dsc_unordered_set *set) {
 
     free(old_elements);
     free(old_hashes);
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_unordered_set *unordered_set_create(size_t element_size,
@@ -107,7 +107,7 @@ dsc_error unordered_set_insert(dsc_unordered_set *set,
 
     if ((float)set->size / set->capacity >= LOAD_FACTOR) {
         dsc_error err = rehash(set);
-        if (err != DSC_SUCCESS) return err;
+        if (err != DSC_ERROR_OK) return err;
     }
 
     size_t hash = set->hash_fn(element);
@@ -121,7 +121,7 @@ dsc_error unordered_set_insert(dsc_unordered_set *set,
            set->element_size);
     set->hashes[idx] = hash;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *unordered_set_find(dsc_unordered_set *set, void const *element) {
@@ -167,7 +167,7 @@ dsc_error unordered_set_erase(dsc_unordered_set *set, void const *element) {
         next = (next + 1) & mask;
     }
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void unordered_set_clear(dsc_unordered_set *set) {
@@ -180,7 +180,7 @@ void unordered_set_clear(dsc_unordered_set *set) {
 dsc_error unordered_set_reserve(dsc_unordered_set *set, size_t n) {
     if (!set) return DSC_ERROR_INVALID_ARGUMENT;
 
-    if (n <= set->capacity) return DSC_SUCCESS;
+    if (n <= set->capacity) return DSC_ERROR_OK;
 
     size_t old_capacity = set->capacity;
     set->capacity = n;
@@ -214,5 +214,5 @@ dsc_error unordered_set_reserve(dsc_unordered_set *set, size_t n) {
     set->elements = new_elements;
     set->hashes = new_hashes;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }

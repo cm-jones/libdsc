@@ -33,7 +33,7 @@ int main() {
     char const *elements[] = {"apple", "banana", "orange", "grape", "kiwi"};
 
     for (size_t i = 0; i < 5; ++i) {
-        if (unordered_set_insert(set, &elements[i]) != DSC_SUCCESS) {
+        if (unordered_set_insert(set, &elements[i]) != DSC_ERROR_OK) {
             printf("Failed to insert %s\n", elements[i]);
             continue;
         }
@@ -59,12 +59,12 @@ int main() {
            found ? "Found (unexpected)" : "Not found (expected)");
 
     // Try to insert a duplicate
-    if (unordered_set_insert(set, &elements[0]) == DSC_SUCCESS) {
+    if (unordered_set_insert(set, &elements[0]) == DSC_ERROR_OK) {
         printf("\nInserted duplicate %s\n", elements[0]);
     }
 
     // Erase an element
-    if (unordered_set_erase(set, &elements[2]) == DSC_SUCCESS) {
+    if (unordered_set_erase(set, &elements[2]) == DSC_ERROR_OK) {
         printf("\nErased %s\n", elements[2]);
         found = (char const **)unordered_set_find(set, &elements[2]);
         printf("Looking for erased element: %s\n",

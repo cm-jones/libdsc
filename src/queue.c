@@ -36,7 +36,7 @@ static dsc_error grow(dsc_queue *queue) {
     queue->front = 0;
     queue->back = queue->size;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_queue *queue_create(size_t element_size) {
@@ -75,7 +75,7 @@ dsc_error queue_push(dsc_queue *queue, void const *element) {
 
     if (queue->size == queue->capacity) {
         dsc_error err = grow(queue);
-        if (err != DSC_SUCCESS) return err;
+        if (err != DSC_ERROR_OK) return err;
     }
 
     memcpy((char *)queue->elements + queue->back * queue->element_size, element,
@@ -84,7 +84,7 @@ dsc_error queue_push(dsc_queue *queue, void const *element) {
     queue->back = (queue->back + 1) % queue->capacity;
     ++(queue->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error queue_pop(dsc_queue *queue) {
@@ -94,7 +94,7 @@ dsc_error queue_pop(dsc_queue *queue) {
     queue->front = (queue->front + 1) % queue->capacity;
     queue->size--;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *queue_front(dsc_queue const *queue) {
@@ -117,7 +117,7 @@ void queue_clear(dsc_queue *queue) {
 
 dsc_error queue_reserve(dsc_queue *queue, size_t n) {
     if (!queue) return DSC_ERROR_INVALID_ARGUMENT;
-    if (n <= queue->capacity) return DSC_SUCCESS;
+    if (n <= queue->capacity) return DSC_ERROR_OK;
 
     void *new_elements = malloc(n * queue->element_size);
     if (!new_elements) return DSC_ERROR_MEMORY;
@@ -145,5 +145,5 @@ dsc_error queue_reserve(dsc_queue *queue, size_t n) {
     queue->front = 0;
     queue->back = queue->size;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }

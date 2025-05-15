@@ -13,7 +13,7 @@ int main() {
     // Push some values
     int values[] = {1, 2, 3, 4, 5};
     for (size_t i = 0; i < 5; ++i) {
-        if (stack_push(stack, &values[i]) != DSC_SUCCESS) {
+        if (stack_push(stack, &values[i]) != DSC_ERROR_OK) {
             printf("Failed to push %d\n", values[i]);
             continue;
         }
@@ -48,14 +48,14 @@ int main() {
     // Push more values
     printf("\nPushing more values:\n");
     for (int i = 6; i <= 10; ++i) {
-        if (stack_push(stack, &i) == DSC_SUCCESS) {
+        if (stack_push(stack, &i) == DSC_ERROR_OK) {
             printf("Pushed %d\n", i);
         }
     }
 
     // Reserve space
     printf("\nReserving space for 100 elements: ");
-    if (stack_reserve(stack, 100) == DSC_SUCCESS) {
+    if (stack_reserve(stack, 100) == DSC_ERROR_OK) {
         printf("Success\n");
     }
 

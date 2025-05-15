@@ -4,7 +4,7 @@
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/libdsc.git
+git clone https://github.com/cm-jones/libdsc.git
 cd libdsc
 ```
 
@@ -46,8 +46,8 @@ The recommended way to create releases is through GitHub:
 
 1. Tag your version:
 ```bash
-git tag v0.1.0-alpha
-git push origin v0.1.0-alpha
+git tag v0.1.0
+git push origin v0.1.0
 ```
 
 2. GitHub Actions will automatically:
@@ -114,10 +114,10 @@ Note: Local package builds are useful for testing but should not be distributed.
 
 ### Version Numbering
 
-- Release tags: v0.1.0-alpha
-- Debian format: 0.1.0~alpha1
-- RPM format: 0.1.0~alpha
-- Arch format: 0.1.0_alpha
+- Release tags: v0.1.0
+- Debian format: 0.1.0
+- RPM format: 0.1.0
+- Arch format: 0.1.0
 
 ## Adding New Features
 

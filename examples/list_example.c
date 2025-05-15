@@ -12,7 +12,7 @@ int main() {
     // Push some values at the front
     printf("Pushing values at front:\n");
     for (int i = 1; i <= 3; ++i) {
-        if (list_push_front(list, &i) != DSC_SUCCESS) {
+        if (list_push_front(list, &i) != DSC_ERROR_OK) {
             printf("Failed to push %d at front\n", i);
             continue;
         }
@@ -22,7 +22,7 @@ int main() {
     // Push some values at the back
     printf("\nPushing values at back:\n");
     for (int i = 4; i <= 6; ++i) {
-        if (list_push_back(list, &i) != DSC_SUCCESS) {
+        if (list_push_back(list, &i) != DSC_ERROR_OK) {
             printf("Failed to push %d at back\n", i);
             continue;
         }
@@ -55,7 +55,7 @@ int main() {
     current = list_begin(list);
     current = current->next;  // Move to second node
     int value = 42;
-    if (list_insert(list, current, &value) == DSC_SUCCESS) {
+    if (list_insert(list, current, &value) == DSC_ERROR_OK) {
         printf("Inserted %d\n", value);
     }
 
@@ -72,7 +72,7 @@ int main() {
     printf("\nRemoving inserted node:\n");
     current = list_begin(list);
     current = current->next;  // Move to inserted node
-    if (list_erase(list, current) == DSC_SUCCESS) {
+    if (list_erase(list, current) == DSC_ERROR_OK) {
         printf("Node removed\n");
     }
 

@@ -12,7 +12,7 @@ int main() {
     // Push some values at the front
     int values[] = {1, 2, 3, 4, 5};
     for (size_t i = 0; i < 5; ++i) {
-        if (forward_list_push_front(list, &values[i]) != DSC_SUCCESS) {
+        if (forward_list_push_front(list, &values[i]) != DSC_ERROR_OK) {
             printf("Failed to push %d\n", values[i]);
             continue;
         }
@@ -35,7 +35,7 @@ int main() {
     // Insert a value after the first node
     int value = 42;
     forward_list_node_t *pos = forward_list_begin(list);
-    if (forward_list_insert_after(list, pos, &value) == DSC_SUCCESS) {
+    if (forward_list_insert_after(list, pos, &value) == DSC_ERROR_OK) {
         printf("\nInserted %d after first node\n", value);
     }
 
@@ -50,7 +50,7 @@ int main() {
 
     // Remove the second node (the one we just inserted)
     pos = forward_list_begin(list);
-    if (forward_list_erase_after(list, pos) == DSC_SUCCESS) {
+    if (forward_list_erase_after(list, pos) == DSC_ERROR_OK) {
         printf("\nErased node after first node\n");
     }
 
@@ -82,7 +82,7 @@ int main() {
     // Push more values
     printf("\nPushing more values:\n");
     for (int i = 6; i <= 10; ++i) {
-        if (forward_list_push_front(list, &i) == DSC_SUCCESS) {
+        if (forward_list_push_front(list, &i) == DSC_ERROR_OK) {
             printf("Pushed %d\n", i);
         }
     }

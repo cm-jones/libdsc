@@ -54,7 +54,7 @@ dsc_error vector_reserve(dsc_vector *vec, size_t n) {
     }
 
     if (n <= vec->capacity) {
-        return DSC_SUCCESS;
+        return DSC_ERROR_OK;
     }
 
     void *new_data = dsc_realloc(vec->data, n * vec->element_size);
@@ -64,7 +64,7 @@ dsc_error vector_reserve(dsc_vector *vec, size_t n) {
 
     vec->data = new_data;
     vec->capacity = n;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error vector_resize(dsc_vector *vec, size_t n) {
@@ -74,13 +74,13 @@ dsc_error vector_resize(dsc_vector *vec, size_t n) {
 
     if (n > vec->capacity) {
         dsc_error err = vector_reserve(vec, n);
-        if (err != DSC_SUCCESS) {
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
 
     vec->size = n;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error vector_push_back(dsc_vector *vec, void const *element) {
@@ -91,7 +91,7 @@ dsc_error vector_push_back(dsc_vector *vec, void const *element) {
     if (vec->size >= vec->capacity) {
         size_t new_capacity = vec->capacity * 2;
         dsc_error err = vector_reserve(vec, new_capacity);
-        if (err != DSC_SUCCESS) {
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
@@ -100,7 +100,7 @@ dsc_error vector_push_back(dsc_vector *vec, void const *element) {
     memcpy(dest, element, vec->element_size);
     ++(vec->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error vector_pop_back(dsc_vector *vec) {
@@ -113,7 +113,7 @@ dsc_error vector_pop_back(dsc_vector *vec) {
     }
 
     vec->size--;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *vector_at(dsc_vector *vec, size_t index) {
@@ -146,7 +146,7 @@ dsc_error vector_insert(dsc_vector *vec, size_t index,
     if (vec->size >= vec->capacity) {
         size_t new_capacity = vec->capacity * 2;
         dsc_error err = vector_reserve(vec, new_capacity);
-        if (err != DSC_SUCCESS) {
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
@@ -164,7 +164,7 @@ dsc_error vector_insert(dsc_vector *vec, size_t index,
     memcpy(dest, element, vec->element_size);
     ++(vec->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error vector_erase(dsc_vector *vec, size_t index) {
@@ -184,7 +184,7 @@ dsc_error vector_erase(dsc_vector *vec, size_t index) {
     }
 
     vec->size--;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void vector_clear(dsc_vector *vec) {
@@ -199,7 +199,7 @@ dsc_error vector_shrink_to_fit(dsc_vector *vec) {
     }
 
     if (vec->size == vec->capacity) {
-        return DSC_SUCCESS;
+        return DSC_ERROR_OK;
     }
 
     void *new_data = dsc_realloc(vec->data, vec->size * vec->element_size);
@@ -209,5 +209,5 @@ dsc_error vector_shrink_to_fit(dsc_vector *vec) {
 
     vec->data = new_data;
     vec->capacity = vec->size;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }

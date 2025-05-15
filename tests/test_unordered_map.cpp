@@ -46,7 +46,7 @@ TEST_F(UnorderedMapTest, InsertAndFind) {
     char const *key = "test";
     int value = 42;
 
-    EXPECT_EQ(unordered_map_insert(map, &key, &value), DSC_SUCCESS);
+    EXPECT_EQ(unordered_map_insert(map, &key, &value), DSC_ERROR_OK);
     EXPECT_EQ(unordered_map_size(map), 1);
 
     int *found = static_cast<int *>(unordered_map_find(map, &key));
@@ -59,8 +59,8 @@ TEST_F(UnorderedMapTest, InsertDuplicate) {
     int value1 = 42;
     int value2 = 43;
 
-    EXPECT_EQ(unordered_map_insert(map, &key, &value1), DSC_SUCCESS);
-    EXPECT_EQ(unordered_map_insert(map, &key, &value2), DSC_SUCCESS);
+    EXPECT_EQ(unordered_map_insert(map, &key, &value1), DSC_ERROR_OK);
+    EXPECT_EQ(unordered_map_insert(map, &key, &value2), DSC_ERROR_OK);
     EXPECT_EQ(unordered_map_size(map), 1);
 
     int *found = static_cast<int *>(unordered_map_find(map, &key));
@@ -72,8 +72,8 @@ TEST_F(UnorderedMapTest, Erase) {
     char const *key = "test";
     int value = 42;
 
-    EXPECT_EQ(unordered_map_insert(map, &key, &value), DSC_SUCCESS);
-    EXPECT_EQ(unordered_map_erase(map, &key), DSC_SUCCESS);
+    EXPECT_EQ(unordered_map_insert(map, &key, &value), DSC_ERROR_OK);
+    EXPECT_EQ(unordered_map_erase(map, &key), DSC_ERROR_OK);
     EXPECT_EQ(unordered_map_size(map), 0);
     EXPECT_EQ(unordered_map_find(map, &key), nullptr);
 }
@@ -89,8 +89,8 @@ TEST_F(UnorderedMapTest, Clear) {
     int value1 = 42;
     int value2 = 43;
 
-    EXPECT_EQ(unordered_map_insert(map, &key1, &value1), DSC_SUCCESS);
-    EXPECT_EQ(unordered_map_insert(map, &key2, &value2), DSC_SUCCESS);
+    EXPECT_EQ(unordered_map_insert(map, &key1, &value1), DSC_ERROR_OK);
+    EXPECT_EQ(unordered_map_insert(map, &key2, &value2), DSC_ERROR_OK);
 
     unordered_map_clear(map);
     EXPECT_EQ(unordered_map_size(map), 0);
@@ -99,11 +99,11 @@ TEST_F(UnorderedMapTest, Clear) {
 }
 
 TEST_F(UnorderedMapTest, Reserve) {
-    EXPECT_EQ(unordered_map_reserve(map, 100), DSC_SUCCESS);
+    EXPECT_EQ(unordered_map_reserve(map, 100), DSC_ERROR_OK);
 
     char const *key = "test";
     int value = 42;
-    EXPECT_EQ(unordered_map_insert(map, &key, &value), DSC_SUCCESS);
+    EXPECT_EQ(unordered_map_insert(map, &key, &value), DSC_ERROR_OK);
 
     int *found = static_cast<int *>(unordered_map_find(map, &key));
     ASSERT_NE(found, nullptr);

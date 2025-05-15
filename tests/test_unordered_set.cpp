@@ -44,7 +44,7 @@ TEST_F(UnorderedSetTest, Create) {
 TEST_F(UnorderedSetTest, InsertAndFind) {
     char const *element = "test";
 
-    EXPECT_EQ(unordered_set_insert(set, &element), DSC_SUCCESS);
+    EXPECT_EQ(unordered_set_insert(set, &element), DSC_ERROR_OK);
     EXPECT_EQ(unordered_set_size(set), 1);
 
     char const **found =
@@ -56,8 +56,8 @@ TEST_F(UnorderedSetTest, InsertAndFind) {
 TEST_F(UnorderedSetTest, InsertDuplicate) {
     char const *element = "test";
 
-    EXPECT_EQ(unordered_set_insert(set, &element), DSC_SUCCESS);
-    EXPECT_EQ(unordered_set_insert(set, &element), DSC_SUCCESS);
+    EXPECT_EQ(unordered_set_insert(set, &element), DSC_ERROR_OK);
+    EXPECT_EQ(unordered_set_insert(set, &element), DSC_ERROR_OK);
     EXPECT_EQ(unordered_set_size(set), 1);
 
     char const **found =
@@ -69,8 +69,8 @@ TEST_F(UnorderedSetTest, InsertDuplicate) {
 TEST_F(UnorderedSetTest, Erase) {
     char const *element = "test";
 
-    EXPECT_EQ(unordered_set_insert(set, &element), DSC_SUCCESS);
-    EXPECT_EQ(unordered_set_erase(set, &element), DSC_SUCCESS);
+    EXPECT_EQ(unordered_set_insert(set, &element), DSC_ERROR_OK);
+    EXPECT_EQ(unordered_set_erase(set, &element), DSC_ERROR_OK);
     EXPECT_EQ(unordered_set_size(set), 0);
     EXPECT_EQ(unordered_set_find(set, &element), nullptr);
 }
@@ -84,8 +84,8 @@ TEST_F(UnorderedSetTest, Clear) {
     char const *element1 = "test1";
     char const *element2 = "test2";
 
-    EXPECT_EQ(unordered_set_insert(set, &element1), DSC_SUCCESS);
-    EXPECT_EQ(unordered_set_insert(set, &element2), DSC_SUCCESS);
+    EXPECT_EQ(unordered_set_insert(set, &element1), DSC_ERROR_OK);
+    EXPECT_EQ(unordered_set_insert(set, &element2), DSC_ERROR_OK);
 
     unordered_set_clear(set);
     EXPECT_EQ(unordered_set_size(set), 0);
@@ -94,10 +94,10 @@ TEST_F(UnorderedSetTest, Clear) {
 }
 
 TEST_F(UnorderedSetTest, Reserve) {
-    EXPECT_EQ(unordered_set_reserve(set, 100), DSC_SUCCESS);
+    EXPECT_EQ(unordered_set_reserve(set, 100), DSC_ERROR_OK);
 
     char const *element = "test";
-    EXPECT_EQ(unordered_set_insert(set, &element), DSC_SUCCESS);
+    EXPECT_EQ(unordered_set_insert(set, &element), DSC_ERROR_OK);
 
     char const **found =
         static_cast<char const **>(unordered_set_find(set, &element));

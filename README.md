@@ -1,5 +1,5 @@
-<p align="center">
-  <img src="assets/logo.png" alt="logo" width="200" height="200" style="vertical-align: middle;">
+<p align="center" style="margin: 0; padding: 0;">
+  <img src="assets/logo.png" alt="libdsc logo" width="200" height="200" style="vertical-align: middle;">
 </p>
 
 # libdsc
@@ -53,6 +53,20 @@ This will install:
 - Header files to `/usr/local/include/libdsc`
 - CMake configuration files to `/usr/local/lib/cmake/libdsc`
 
+## Installing from package
+
+On Debian-based Linux distributions:
+
+```bash
+sudo dpkg -i libdsc-<current_version>.deb
+```
+
+On RPM-based Linux distributions:
+
+```bash
+
+```
+
 ## Usage
 
 ```c
@@ -63,7 +77,7 @@ This will install:
 
 #include <stdio.h>
 
-int main() {
+int main(int argc, char *argv[]) {
     // Create a vector of integers
     dsc_vector *vec = vector_create(sizeof(int));
 

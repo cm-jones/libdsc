@@ -21,7 +21,7 @@ TEST_F(VectorTest, Create) {
 
 TEST_F(VectorTest, PushBack) {
     int value = 42;
-    EXPECT_EQ(vector_push_back(vec, &value), DSC_SUCCESS);
+    EXPECT_EQ(vector_push_back(vec, &value), DSC_ERROR_OK);
     EXPECT_EQ(vector_size(vec), 1);
     EXPECT_FALSE(vector_empty(vec));
 
@@ -33,7 +33,7 @@ TEST_F(VectorTest, PushBack) {
 TEST_F(VectorTest, PopBack) {
     int value = 42;
     vector_push_back(vec, &value);
-    EXPECT_EQ(vector_pop_back(vec), DSC_SUCCESS);
+    EXPECT_EQ(vector_pop_back(vec), DSC_ERROR_OK);
     EXPECT_EQ(vector_size(vec), 0);
     EXPECT_TRUE(vector_empty(vec));
 }
@@ -43,7 +43,7 @@ TEST_F(VectorTest, Insert) {
     vector_push_back(vec, &values[0]);
     vector_push_back(vec, &values[2]);
 
-    EXPECT_EQ(vector_insert(vec, 1, &values[1]), DSC_SUCCESS);
+    EXPECT_EQ(vector_insert(vec, 1, &values[1]), DSC_ERROR_OK);
     EXPECT_EQ(vector_size(vec), 3);
 
     int *stored = static_cast<int *>(vector_at(vec, 1));
@@ -57,7 +57,7 @@ TEST_F(VectorTest, Erase) {
     vector_push_back(vec, &values[1]);
     vector_push_back(vec, &values[2]);
 
-    EXPECT_EQ(vector_erase(vec, 1), DSC_SUCCESS);
+    EXPECT_EQ(vector_erase(vec, 1), DSC_ERROR_OK);
     EXPECT_EQ(vector_size(vec), 2);
 
     int *first = static_cast<int *>(vector_at(vec, 0));
@@ -68,7 +68,7 @@ TEST_F(VectorTest, Erase) {
 
 TEST_F(VectorTest, Resize) {
     int value = 42;
-    EXPECT_EQ(vector_resize(vec, 5), DSC_SUCCESS);
+    EXPECT_EQ(vector_resize(vec, 5), DSC_ERROR_OK);
     EXPECT_EQ(vector_size(vec), 5);
 
     for (size_t i = 0; i < 5; ++i) {
@@ -79,7 +79,7 @@ TEST_F(VectorTest, Resize) {
 }
 
 TEST_F(VectorTest, Reserve) {
-    EXPECT_EQ(vector_reserve(vec, 100), DSC_SUCCESS);
+    EXPECT_EQ(vector_reserve(vec, 100), DSC_ERROR_OK);
     EXPECT_EQ(vector_capacity(vec), 100);
     EXPECT_EQ(vector_size(vec), 0);
 }
@@ -89,7 +89,7 @@ TEST_F(VectorTest, ShrinkToFit) {
     vector_reserve(vec, 100);
     vector_push_back(vec, &value);
 
-    EXPECT_EQ(vector_shrink_to_fit(vec), DSC_SUCCESS);
+    EXPECT_EQ(vector_shrink_to_fit(vec), DSC_ERROR_OK);
     EXPECT_EQ(vector_capacity(vec), 1);
     EXPECT_EQ(vector_size(vec), 1);
 }

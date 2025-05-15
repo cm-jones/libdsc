@@ -16,7 +16,7 @@ static dsc_error grow_stack(dsc_stack *stack) {
 
     stack->data = new_data;
     stack->capacity = new_capacity;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_stack *stack_create(size_t element_size) {
@@ -64,7 +64,7 @@ dsc_error stack_push(dsc_stack *stack, void const *element) {
 
     if (stack->size == stack->capacity) {
         dsc_error err = grow_stack(stack);
-        if (err != DSC_SUCCESS) {
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
@@ -73,7 +73,7 @@ dsc_error stack_push(dsc_stack *stack, void const *element) {
            stack->element_size);
     stack->size++;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error stack_pop(dsc_stack *stack) {
@@ -86,7 +86,7 @@ dsc_error stack_pop(dsc_stack *stack) {
     }
 
     stack->size--;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *dsc_stackop(dsc_stack const *stack) {
@@ -109,7 +109,7 @@ dsc_error stack_reserve(dsc_stack *stack, size_t capacity) {
     }
 
     if (capacity <= stack->capacity) {
-        return DSC_SUCCESS;
+        return DSC_ERROR_OK;
     }
 
     void *new_data = realloc(stack->data, capacity * stack->element_size);
@@ -119,5 +119,5 @@ dsc_error stack_reserve(dsc_stack *stack, size_t capacity) {
 
     stack->data = new_data;
     stack->capacity = capacity;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }

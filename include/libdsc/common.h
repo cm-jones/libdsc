@@ -17,7 +17,7 @@ extern "C" {
  * @brief Error codes for libdsc
  */
 typedef enum {
-    DSC_SUCCESS = 0,
+    DSC_ERROR_OK = 0,
     DSC_ERROR_MEMORY,
     DSC_ERROR_INVALID_ARGUMENT,
     DSC_ERROR_EMPTY,

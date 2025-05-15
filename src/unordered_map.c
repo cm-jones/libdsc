@@ -62,7 +62,7 @@ static dsc_error rehash(dsc_unordered_map *map) {
     free(old_keys);
     free(old_values);
     free(old_hashes);
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_unordered_map *unordered_map_create(size_t key_size, size_t value_size,
@@ -116,7 +116,7 @@ dsc_error unordered_map_insert(dsc_unordered_map *map, void const *key,
 
     if ((float)map->size / map->capacity >= LOAD_FACTOR) {
         dsc_error err = rehash(map);
-        if (err != DSC_SUCCESS) return err;
+        if (err != DSC_ERROR_OK) return err;
     }
 
     size_t hash = map->hash_fn(key);
@@ -130,7 +130,7 @@ dsc_error unordered_map_insert(dsc_unordered_map *map, void const *key,
     memcpy((char *)map->values + idx * map->value_size, value, map->value_size);
     map->hashes[idx] = hash;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *unordered_map_find(dsc_unordered_map *map, void const *key) {
@@ -177,7 +177,7 @@ dsc_error unordered_map_erase(dsc_unordered_map *map, void const *key) {
         next = (next + 1) & mask;
     }
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void unordered_map_clear(dsc_unordered_map *map) {
@@ -190,7 +190,7 @@ void unordered_map_clear(dsc_unordered_map *map) {
 dsc_error unordered_map_reserve(dsc_unordered_map *map, size_t n) {
     if (!map) return DSC_ERROR_INVALID_ARGUMENT;
 
-    if (n <= map->capacity) return DSC_SUCCESS;
+    if (n <= map->capacity) return DSC_ERROR_OK;
 
     size_t old_capacity = map->capacity;
     map->capacity = n;
@@ -228,5 +228,5 @@ dsc_error unordered_map_reserve(dsc_unordered_map *map, size_t n) {
     map->values = new_values;
     map->hashes = new_hashes;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }

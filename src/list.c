@@ -74,7 +74,7 @@ dsc_error list_push_front(dsc_list *list, void const *element) {
     }
     ++(list->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error list_push_back(dsc_list *list, void const *element) {
@@ -97,7 +97,7 @@ dsc_error list_push_back(dsc_list *list, void const *element) {
     }
     ++(list->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error list_pop_front(dsc_list *list) {
@@ -122,7 +122,7 @@ dsc_error list_pop_front(dsc_list *list) {
     free(old_head);
     list->size--;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error list_pop_back(dsc_list *list) {
@@ -147,7 +147,7 @@ dsc_error list_pop_back(dsc_list *list) {
     free(old_tail);
     list->size--;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *list_front(dsc_list const *list) {
@@ -192,7 +192,7 @@ dsc_error list_insert(dsc_list *list, list_node_t *pos,
     pos->prev = node;
 
     ++(list->size);
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error list_erase(dsc_list *list, list_node_t *pos) {
@@ -215,7 +215,7 @@ dsc_error list_erase(dsc_list *list, list_node_t *pos) {
     free(pos);
     list->size--;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void list_clear(dsc_list *list) {

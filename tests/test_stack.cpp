@@ -21,7 +21,7 @@ TEST_F(StackTest, Create) {
 
 TEST_F(StackTest, PushAndPop) {
     int value = 42;
-    EXPECT_EQ(stack_push(stack, &value), DSC_SUCCESS);
+    EXPECT_EQ(stack_push(stack, &value), DSC_ERROR_OK);
     EXPECT_EQ(stack_size(stack), 1);
     EXPECT_FALSE(stack_empty(stack));
 
@@ -29,7 +29,7 @@ TEST_F(StackTest, PushAndPop) {
     EXPECT_NE(top, nullptr);
     EXPECT_EQ(*top, 42);
 
-    EXPECT_EQ(stack_pop(stack), DSC_SUCCESS);
+    EXPECT_EQ(stack_pop(stack), DSC_ERROR_OK);
     EXPECT_EQ(stack_size(stack), 0);
     EXPECT_TRUE(stack_empty(stack));
 }
@@ -37,7 +37,7 @@ TEST_F(StackTest, PushAndPop) {
 TEST_F(StackTest, PushMultiple) {
     int values[] = {1, 2, 3, 4, 5};
     for (int value : values) {
-        EXPECT_EQ(stack_push(stack, &value), DSC_SUCCESS);
+        EXPECT_EQ(stack_push(stack, &value), DSC_ERROR_OK);
     }
 
     EXPECT_EQ(stack_size(stack), 5);
@@ -46,7 +46,7 @@ TEST_F(StackTest, PushMultiple) {
         int *top = static_cast<int *>(dsc_stackop(stack));
         EXPECT_NE(top, nullptr);
         EXPECT_EQ(*top, values[i]);
-        EXPECT_EQ(stack_pop(stack), DSC_SUCCESS);
+        EXPECT_EQ(stack_pop(stack), DSC_ERROR_OK);
     }
 
     EXPECT_TRUE(stack_empty(stack));
@@ -69,12 +69,12 @@ TEST_F(StackTest, Clear) {
 }
 
 TEST_F(StackTest, Reserve) {
-    EXPECT_EQ(stack_reserve(stack, 100), DSC_SUCCESS);
+    EXPECT_EQ(stack_reserve(stack, 100), DSC_ERROR_OK);
 
     int values[100];
     for (size_t i = 0; i < 100; ++i) {
         values[i] = i;
-        EXPECT_EQ(stack_push(stack, &values[i]), DSC_SUCCESS);
+        EXPECT_EQ(stack_push(stack, &values[i]), DSC_ERROR_OK);
     }
 
     EXPECT_EQ(stack_size(stack), 100);
@@ -83,7 +83,7 @@ TEST_F(StackTest, Reserve) {
         int *top = static_cast<int *>(dsc_stackop(stack));
         EXPECT_NE(top, nullptr);
         EXPECT_EQ(*top, values[i]);
-        EXPECT_EQ(stack_pop(stack), DSC_SUCCESS);
+        EXPECT_EQ(stack_pop(stack), DSC_ERROR_OK);
     }
 }
 

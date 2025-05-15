@@ -72,7 +72,7 @@ dsc_error forward_list_push_front(dsc_forward_list *list,
     list->head = node;
     ++(list->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error forward_list_pop_front(dsc_forward_list *list) {
@@ -90,7 +90,7 @@ dsc_error forward_list_pop_front(dsc_forward_list *list) {
     free(old_head);
     list->size--;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void *forward_list_front(dsc_forward_list const *list) {
@@ -126,7 +126,7 @@ dsc_error forward_list_insert_after(dsc_forward_list *list,
     }
     ++(list->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 dsc_error forward_list_erase_after(dsc_forward_list *list,
@@ -159,7 +159,7 @@ dsc_error forward_list_erase_after(dsc_forward_list *list,
     free(to_delete);
     list->size--;
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
 void forward_list_clear(dsc_forward_list *list) {

@@ -27,14 +27,14 @@ TEST_F(QueueTest, Create) {
 
 TEST_F(QueueTest, PushAndPop) {
     int value = 42;
-    EXPECT_EQ(queue_push(queue, &value), DSC_SUCCESS);
+    EXPECT_EQ(queue_push(queue, &value), DSC_ERROR_OK);
     EXPECT_EQ(queue_size(queue), 1);
 
     int *front = static_cast<int *>(queue_front(queue));
     ASSERT_NE(front, nullptr);
     EXPECT_EQ(*front, value);
 
-    EXPECT_EQ(queue_pop(queue), DSC_SUCCESS);
+    EXPECT_EQ(queue_pop(queue), DSC_ERROR_OK);
     EXPECT_EQ(queue_size(queue), 0);
     EXPECT_TRUE(queue_empty(queue));
 }
@@ -42,7 +42,7 @@ TEST_F(QueueTest, PushAndPop) {
 TEST_F(QueueTest, PushMultiple) {
     int values[] = {1, 2, 3, 4, 5};
     for (int value : values) {
-        EXPECT_EQ(queue_push(queue, &value), DSC_SUCCESS);
+        EXPECT_EQ(queue_push(queue, &value), DSC_ERROR_OK);
     }
     EXPECT_EQ(queue_size(queue), 5);
 
@@ -50,7 +50,7 @@ TEST_F(QueueTest, PushMultiple) {
         int *front = static_cast<int *>(queue_front(queue));
         ASSERT_NE(front, nullptr);
         EXPECT_EQ(*front, value);
-        EXPECT_EQ(queue_pop(queue), DSC_SUCCESS);
+        EXPECT_EQ(queue_pop(queue), DSC_ERROR_OK);
     }
     EXPECT_TRUE(queue_empty(queue));
 }
@@ -60,7 +60,7 @@ TEST_F(QueueTest, PopEmpty) { EXPECT_EQ(queue_pop(queue), DSC_ERROR_EMPTY); }
 TEST_F(QueueTest, FrontBack) {
     int values[] = {1, 2, 3};
     for (int value : values) {
-        EXPECT_EQ(queue_push(queue, &value), DSC_SUCCESS);
+        EXPECT_EQ(queue_push(queue, &value), DSC_ERROR_OK);
     }
 
     int *front = static_cast<int *>(queue_front(queue));
@@ -75,7 +75,7 @@ TEST_F(QueueTest, FrontBack) {
 TEST_F(QueueTest, Clear) {
     int values[] = {1, 2, 3, 4, 5};
     for (int value : values) {
-        EXPECT_EQ(queue_push(queue, &value), DSC_SUCCESS);
+        EXPECT_EQ(queue_push(queue, &value), DSC_ERROR_OK);
     }
 
     queue_clear(queue);
@@ -84,10 +84,10 @@ TEST_F(QueueTest, Clear) {
 }
 
 TEST_F(QueueTest, Reserve) {
-    EXPECT_EQ(queue_reserve(queue, 100), DSC_SUCCESS);
+    EXPECT_EQ(queue_reserve(queue, 100), DSC_ERROR_OK);
 
     int value = 42;
-    EXPECT_EQ(queue_push(queue, &value), DSC_SUCCESS);
+    EXPECT_EQ(queue_push(queue, &value), DSC_ERROR_OK);
 
     int *front = static_cast<int *>(queue_front(queue));
     ASSERT_NE(front, nullptr);
