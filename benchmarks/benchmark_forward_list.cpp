@@ -6,7 +6,7 @@
 
 // Benchmark push_front
 static void BM_ForwardListPushFront(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -30,7 +30,7 @@ BENCHMARK(BM_StdForwardListPushFront)->Range(1, 1 << 20);
 
 // Benchmark push_front and pop_front
 static void BM_ForwardListPushPopFront(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -55,7 +55,7 @@ BENCHMARK(BM_StdForwardListPushPopFront)->Range(1, 1 << 20);
 
 // Benchmark front access
 static void BM_ForwardListFront(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     int value = 42;
     forward_list_push_front(list, &value);
 
@@ -80,7 +80,7 @@ BENCHMARK(BM_StdForwardListFront)->Range(1 << 10, 1 << 20);
 
 // Benchmark insert_after
 static void BM_ForwardListInsertAfter(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     int value = 42;
     forward_list_push_front(list, &value);
     forward_list_node_t *pos = forward_list_begin(list);
@@ -108,7 +108,7 @@ BENCHMARK(BM_StdForwardListInsertAfter)->Range(1, 1 << 20);
 
 // Benchmark size operation
 static void BM_ForwardListSize(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         forward_list_push_front(list, &value);
@@ -138,7 +138,7 @@ BENCHMARK(BM_StdForwardListSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_ForwardListEmpty(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(forward_list_empty(list));
@@ -160,7 +160,7 @@ BENCHMARK(BM_StdForwardListEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark erase_after operation
 static void BM_ForwardListEraseAfter(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     int value = 42;
     forward_list_push_front(list, &value);
     forward_list_node_t *pos = forward_list_begin(list);
@@ -195,7 +195,7 @@ BENCHMARK(BM_StdForwardListEraseAfter)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation
 static void BM_ForwardListClear(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     int value = 42;
 
     for (auto _ : state) {
@@ -232,7 +232,7 @@ BENCHMARK(BM_StdForwardListClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark iterator operations (begin/end traversal)
 static void BM_ForwardListTraversal(benchmark::State &state) {
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         forward_list_push_front(list, &value);

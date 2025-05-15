@@ -10,7 +10,7 @@ class ListTest : public ::testing::Test {
 
     void TearDown() override { list_destroy(list); }
 
-    dsc_list_t *list;
+    dsc_list *list;
 };
 
 TEST_F(ListTest, Create) {
@@ -21,7 +21,7 @@ TEST_F(ListTest, Create) {
 
 TEST_F(ListTest, PushFrontAndPopFront) {
     int value = 42;
-    EXPECT_EQ(list_push_front(list, &value), DSC_SUCCESS);
+    EXPECT_EQ(list_push_front(list, &value), DSC_ERROR_OK);
     EXPECT_EQ(list_size(list), 1);
     EXPECT_FALSE(list_empty(list));
 
@@ -29,14 +29,14 @@ TEST_F(ListTest, PushFrontAndPopFront) {
     EXPECT_NE(front, nullptr);
     EXPECT_EQ(*front, 42);
 
-    EXPECT_EQ(list_pop_front(list), DSC_SUCCESS);
+    EXPECT_EQ(list_pop_front(list), DSC_ERROR_OK);
     EXPECT_EQ(list_size(list), 0);
     EXPECT_TRUE(list_empty(list));
 }
 
 TEST_F(ListTest, PushBackAndPopBack) {
     int value = 42;
-    EXPECT_EQ(list_push_back(list, &value), DSC_SUCCESS);
+    EXPECT_EQ(list_push_back(list, &value), DSC_ERROR_OK);
     EXPECT_EQ(list_size(list), 1);
     EXPECT_FALSE(list_empty(list));
 
@@ -44,7 +44,7 @@ TEST_F(ListTest, PushBackAndPopBack) {
     EXPECT_NE(back, nullptr);
     EXPECT_EQ(*back, 42);
 
-    EXPECT_EQ(list_pop_back(list), DSC_SUCCESS);
+    EXPECT_EQ(list_pop_back(list), DSC_ERROR_OK);
     EXPECT_EQ(list_size(list), 0);
     EXPECT_TRUE(list_empty(list));
 }
@@ -52,7 +52,7 @@ TEST_F(ListTest, PushBackAndPopBack) {
 TEST_F(ListTest, PushMultiple) {
     int values[] = {1, 2, 3, 4, 5};
     for (int value : values) {
-        EXPECT_EQ(list_push_back(list, &value), DSC_SUCCESS);
+        EXPECT_EQ(list_push_back(list, &value), DSC_ERROR_OK);
     }
 
     EXPECT_EQ(list_size(list), 5);
@@ -91,13 +91,13 @@ TEST_F(ListTest, BackEmpty) { EXPECT_EQ(list_back(list), nullptr); }
 TEST_F(ListTest, Insert) {
     int values[] = {1, 2, 3};
     for (int value : values) {
-        EXPECT_EQ(list_push_back(list, &value), DSC_SUCCESS);
+        EXPECT_EQ(list_push_back(list, &value), DSC_ERROR_OK);
     }
 
     // List is now: 1 -> 2 -> 3
     list_node_t *pos = list_begin(list);
     int value = 42;
-    EXPECT_EQ(list_insert(list, pos, &value), DSC_SUCCESS);
+    EXPECT_EQ(list_insert(list, pos, &value), DSC_ERROR_OK);
     // List should be: 42 -> 1 -> 2 -> 3
 
     pos = list_begin(list);
@@ -113,13 +113,13 @@ TEST_F(ListTest, Insert) {
 TEST_F(ListTest, Erase) {
     int values[] = {1, 2, 3, 4};
     for (int value : values) {
-        EXPECT_EQ(list_push_back(list, &value), DSC_SUCCESS);
+        EXPECT_EQ(list_push_back(list, &value), DSC_ERROR_OK);
     }
 
     // List is now: 1 -> 2 -> 3 -> 4
     list_node_t *pos = list_begin(list);
     pos = pos->next;  // Move to 2
-    EXPECT_EQ(list_erase(list, pos), DSC_SUCCESS);
+    EXPECT_EQ(list_erase(list, pos), DSC_ERROR_OK);
     // List should be: 1 -> 3 -> 4
 
     pos = list_begin(list);

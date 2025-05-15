@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# Exit on error
-set -e
+# Exit on error, undefined variable, or pipe failure
+set -euo pipefail
 
 # Create build directory if it doesn't exist
 mkdir -p build

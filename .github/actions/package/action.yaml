@@ -2,7 +2,7 @@ name: "Package libdsc"
 description: "Build Debian, RPM, and Arch Linux packages"
 inputs:
   distribution:
-    description: "Distribution to build package for (debian, rpm, or arch)"
+    description: "Distribution to build package for (Debian, rpm, or Arch)"
     required: true
   version:
     description: "Version tag (e.g., v0.1.0-alpha)"
@@ -76,7 +76,7 @@ runs:
       shell: bash
       run: |
         cd ${{ github.workspace }}
-        ./scripts/build-debian.sh
+        ./scripts/debian.sh
 
     - if: inputs.distribution == 'rpm'
       name: Setup RPM packaging environment
@@ -88,7 +88,7 @@ runs:
           bash -c "dnf install -y rpm-build rpmdevtools cmake gcc make && \
                   useradd -m builder && \
                   chown -R builder:builder . && \
-                  su builder -c './scripts/build-rpm.sh'"
+                  su builder -c './scripts/rpm.sh'"
 
     - if: inputs.distribution == 'arch'
       name: Update PKGBUILD version

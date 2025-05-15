@@ -4,16 +4,16 @@
 
 int main() {
     // Create a stack of integers
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     if (!stack) {
         printf("Failed to create stack\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Push some values
     int values[] = {1, 2, 3, 4, 5};
     for (size_t i = 0; i < 5; ++i) {
-        if (stack_push(stack, &values[i]) != DSC_SUCCESS) {
+        if (stack_push(stack, &values[i]) != DSC_ERROR_OK) {
             printf("Failed to push %d\n", values[i]);
             continue;
         }
@@ -24,7 +24,7 @@ int main() {
     printf("\nStack size: %zu\n", stack_size(stack));
 
     // Print top element
-    int *top = (int *)dsc_stack_top(stack);
+    int *top = (int *)dsc_stackop(stack);
     if (top) {
         printf("Top element: %d\n", *top);
     }
@@ -32,7 +32,7 @@ int main() {
     // Pop and print all values
     printf("\nPopping values:\n");
     while (!stack_empty(stack)) {
-        top = (int *)dsc_stack_top(stack);
+        top = (int *)dsc_stackop(stack);
         if (top) {
             printf("Popping %d\n", *top);
         }
@@ -48,14 +48,14 @@ int main() {
     // Push more values
     printf("\nPushing more values:\n");
     for (int i = 6; i <= 10; ++i) {
-        if (stack_push(stack, &i) == DSC_SUCCESS) {
+        if (stack_push(stack, &i) == DSC_ERROR_OK) {
             printf("Pushed %d\n", i);
         }
     }
 
     // Reserve space
     printf("\nReserving space for 100 elements: ");
-    if (stack_reserve(stack, 100) == DSC_SUCCESS) {
+    if (stack_reserve(stack, 100) == DSC_ERROR_OK) {
         printf("Success\n");
     }
 
@@ -66,5 +66,5 @@ int main() {
 
     // Clean up
     stack_destroy(stack);
-    return 0;
+    return EXIT_SUCCESS;
 }

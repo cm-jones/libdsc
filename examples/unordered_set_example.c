@@ -22,18 +22,18 @@ static int string_compare(void const *a, void const *b) {
 
 int main() {
     // Create a set of strings
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     if (!set) {
         printf("Failed to create set\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Insert some elements
     char const *elements[] = {"apple", "banana", "orange", "grape", "kiwi"};
 
     for (size_t i = 0; i < 5; ++i) {
-        if (unordered_set_insert(set, &elements[i]) != DSC_SUCCESS) {
+        if (unordered_set_insert(set, &elements[i]) != DSC_ERROR_OK) {
             printf("Failed to insert %s\n", elements[i]);
             continue;
         }
@@ -59,12 +59,12 @@ int main() {
            found ? "Found (unexpected)" : "Not found (expected)");
 
     // Try to insert a duplicate
-    if (unordered_set_insert(set, &elements[0]) == DSC_SUCCESS) {
+    if (unordered_set_insert(set, &elements[0]) == DSC_ERROR_OK) {
         printf("\nInserted duplicate %s\n", elements[0]);
     }
 
     // Erase an element
-    if (unordered_set_erase(set, &elements[2]) == DSC_SUCCESS) {
+    if (unordered_set_erase(set, &elements[2]) == DSC_ERROR_OK) {
         printf("\nErased %s\n", elements[2]);
         found = (char const **)unordered_set_find(set, &elements[2]);
         printf("Looking for erased element: %s\n",
@@ -76,5 +76,5 @@ int main() {
 
     // Clean up
     unordered_set_destroy(set);
-    return 0;
+    return EXIT_SUCCESS;
 }

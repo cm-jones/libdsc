@@ -22,11 +22,11 @@ static int string_compare(void const *a, void const *b) {
 
 int main() {
     // Create a map with string keys and integer values
-    dsc_unordered_map_t *map = unordered_map_create(
+    dsc_unordered_map *map = unordered_map_create(
         sizeof(char *), sizeof(int), string_hash, string_compare);
     if (!map) {
         printf("Failed to create map\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Insert some key-value pairs
@@ -34,7 +34,7 @@ int main() {
     int values[] = {1, 2, 3, 4, 5};
 
     for (size_t i = 0; i < 5; ++i) {
-        if (unordered_map_insert(map, &keys[i], &values[i]) != DSC_SUCCESS) {
+        if (unordered_map_insert(map, &keys[i], &values[i]) != DSC_ERROR_OK) {
             printf("Failed to insert %s\n", keys[i]);
             continue;
         }
@@ -60,13 +60,13 @@ int main() {
 
     // Update a value
     int new_value = 42;
-    if (unordered_map_insert(map, &keys[0], &new_value) == DSC_SUCCESS) {
+    if (unordered_map_insert(map, &keys[0], &new_value) == DSC_ERROR_OK) {
         value = (int *)unordered_map_find(map, &keys[0]);
         printf("\nUpdated %s: %d\n", keys[0], *value);
     }
 
     // Erase a key
-    if (unordered_map_erase(map, &keys[2]) == DSC_SUCCESS) {
+    if (unordered_map_erase(map, &keys[2]) == DSC_ERROR_OK) {
         printf("\nErased %s\n", keys[2]);
         value = (int *)unordered_map_find(map, &keys[2]);
         printf("Looking for erased key: %s\n",
@@ -78,5 +78,5 @@ int main() {
 
     // Clean up
     unordered_map_destroy(map);
-    return 0;
+    return EXIT_SUCCESS;
 }

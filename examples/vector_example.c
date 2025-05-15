@@ -1,7 +1,7 @@
 #include <libdsc/vector.h>
 #include <stdio.h>
 
-void print_vector(dsc_vector_t *vec) {
+void print_vector(dsc_vector *vec) {
     printf("Vector contents: ");
     for (size_t i = 0; i < vector_size(vec); ++i) {
         int *value = vector_at(vec, i);
@@ -12,10 +12,10 @@ void print_vector(dsc_vector_t *vec) {
 
 int main(void) {
     // Create a vector of integers
-    dsc_vector_t *vec = vector_create(sizeof(int));
+    dsc_vector *vec = vector_create(sizeof(int));
     if (!vec) {
         printf("Failed to create vector\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Add some elements
@@ -54,5 +54,5 @@ int main(void) {
 
     // Clean up
     vector_destroy(vec);
-    return 0;
+    return EXIT_SUCCESS;
 }

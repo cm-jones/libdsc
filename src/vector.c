@@ -6,12 +6,12 @@
 
 #define VECTOR_INITIAL_CAPACITY 16
 
-dsc_vector_t *vector_create(size_t element_size) {
+dsc_vector *vector_create(size_t element_size) {
     if (element_size == 0) {
         return NULL;
     }
 
-    dsc_vector_t *vec = dsc_malloc(sizeof(dsc_vector_t));
+    dsc_vector *vec = dsc_malloc(sizeof(dsc_vector));
     if (!vec) {
         return NULL;
     }
@@ -29,7 +29,7 @@ dsc_vector_t *vector_create(size_t element_size) {
     return vec;
 }
 
-void vector_destroy(dsc_vector_t *vec) {
+void vector_destroy(dsc_vector *vec) {
     if (!vec) {
         return;
     }
@@ -38,23 +38,23 @@ void vector_destroy(dsc_vector_t *vec) {
     dsc_free(vec);
 }
 
-size_t vector_size(dsc_vector_t const *vec) { return vec ? vec->size : 0; }
+size_t vector_size(dsc_vector const *vec) { return vec ? vec->size : 0; }
 
-bool vector_empty(dsc_vector_t const *vec) {
+bool vector_empty(dsc_vector const *vec) {
     return vec ? vec->size == 0 : true;
 }
 
-size_t vector_capacity(dsc_vector_t const *vec) {
+size_t vector_capacity(dsc_vector const *vec) {
     return vec ? vec->capacity : 0;
 }
 
-dsc_error_t vector_reserve(dsc_vector_t *vec, size_t n) {
+dsc_error vector_reserve(dsc_vector *vec, size_t n) {
     if (!vec) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (n <= vec->capacity) {
-        return DSC_SUCCESS;
+        return DSC_ERROR_OK;
     }
 
     void *new_data = dsc_realloc(vec->data, n * vec->element_size);
@@ -64,34 +64,34 @@ dsc_error_t vector_reserve(dsc_vector_t *vec, size_t n) {
 
     vec->data = new_data;
     vec->capacity = n;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
-dsc_error_t vector_resize(dsc_vector_t *vec, size_t n) {
+dsc_error vector_resize(dsc_vector *vec, size_t n) {
     if (!vec) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (n > vec->capacity) {
-        dsc_error_t err = vector_reserve(vec, n);
-        if (err != DSC_SUCCESS) {
+        dsc_error err = vector_reserve(vec, n);
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
 
     vec->size = n;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
-dsc_error_t vector_push_back(dsc_vector_t *vec, void const *element) {
+dsc_error vector_push_back(dsc_vector *vec, void const *element) {
     if (!vec || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (vec->size >= vec->capacity) {
         size_t new_capacity = vec->capacity * 2;
-        dsc_error_t err = vector_reserve(vec, new_capacity);
-        if (err != DSC_SUCCESS) {
+        dsc_error err = vector_reserve(vec, new_capacity);
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
@@ -100,10 +100,10 @@ dsc_error_t vector_push_back(dsc_vector_t *vec, void const *element) {
     memcpy(dest, element, vec->element_size);
     ++(vec->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
-dsc_error_t vector_pop_back(dsc_vector_t *vec) {
+dsc_error vector_pop_back(dsc_vector *vec) {
     if (!vec) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -113,10 +113,10 @@ dsc_error_t vector_pop_back(dsc_vector_t *vec) {
     }
 
     vec->size--;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
-void *vector_at(dsc_vector_t *vec, size_t index) {
+void *vector_at(dsc_vector *vec, size_t index) {
     if (!vec || index >= vec->size) {
         return NULL;
     }
@@ -124,16 +124,16 @@ void *vector_at(dsc_vector_t *vec, size_t index) {
     return (char *)vec->data + (index * vec->element_size);
 }
 
-void *vector_front(dsc_vector_t *vec) { return vector_at(vec, 0); }
+void *vector_front(dsc_vector *vec) { return vector_at(vec, 0); }
 
-void *vector_back(dsc_vector_t *vec) {
+void *vector_back(dsc_vector *vec) {
     if (!vec || vec->size == 0) {
         return NULL;
     }
     return vector_at(vec, vec->size - 1);
 }
 
-dsc_error_t vector_insert(dsc_vector_t *vec, size_t index,
+dsc_error vector_insert(dsc_vector *vec, size_t index,
                           void const *element) {
     if (!vec || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
@@ -145,8 +145,8 @@ dsc_error_t vector_insert(dsc_vector_t *vec, size_t index,
 
     if (vec->size >= vec->capacity) {
         size_t new_capacity = vec->capacity * 2;
-        dsc_error_t err = vector_reserve(vec, new_capacity);
-        if (err != DSC_SUCCESS) {
+        dsc_error err = vector_reserve(vec, new_capacity);
+        if (err != DSC_ERROR_OK) {
             return err;
         }
     }
@@ -164,10 +164,10 @@ dsc_error_t vector_insert(dsc_vector_t *vec, size_t index,
     memcpy(dest, element, vec->element_size);
     ++(vec->size);
 
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
-dsc_error_t vector_erase(dsc_vector_t *vec, size_t index) {
+dsc_error vector_erase(dsc_vector *vec, size_t index) {
     if (!vec) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -184,22 +184,22 @@ dsc_error_t vector_erase(dsc_vector_t *vec, size_t index) {
     }
 
     vec->size--;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }
 
-void vector_clear(dsc_vector_t *vec) {
+void vector_clear(dsc_vector *vec) {
     if (vec) {
         vec->size = 0;
     }
 }
 
-dsc_error_t vector_shrink_to_fit(dsc_vector_t *vec) {
+dsc_error vector_shrink_to_fit(dsc_vector *vec) {
     if (!vec) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (vec->size == vec->capacity) {
-        return DSC_SUCCESS;
+        return DSC_ERROR_OK;
     }
 
     void *new_data = dsc_realloc(vec->data, vec->size * vec->element_size);
@@ -209,5 +209,5 @@ dsc_error_t vector_shrink_to_fit(dsc_vector_t *vec) {
 
     vec->data = new_data;
     vec->capacity = vec->size;
-    return DSC_SUCCESS;
+    return DSC_ERROR_OK;
 }

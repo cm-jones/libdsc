@@ -3,16 +3,16 @@
 
 int main() {
     // Create a queue of integers
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     if (!queue) {
         printf("Failed to create queue\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Push some values
     int values[] = {1, 2, 3, 4, 5};
     for (size_t i = 0; i < 5; ++i) {
-        if (queue_push(queue, &values[i]) != DSC_SUCCESS) {
+        if (queue_push(queue, &values[i]) != DSC_ERROR_OK) {
             printf("Failed to push %d\n", values[i]);
             continue;
         }
@@ -48,14 +48,14 @@ int main() {
     // Push more values
     printf("\nPushing more values:\n");
     for (int i = 6; i <= 10; ++i) {
-        if (queue_push(queue, &i) == DSC_SUCCESS) {
+        if (queue_push(queue, &i) == DSC_ERROR_OK) {
             printf("Pushed %d\n", i);
         }
     }
 
     // Reserve space
     printf("\nReserving space for 100 elements: ");
-    if (queue_reserve(queue, 100) == DSC_SUCCESS) {
+    if (queue_reserve(queue, 100) == DSC_ERROR_OK) {
         printf("Success\n");
     }
 
@@ -66,5 +66,5 @@ int main() {
 
     // Clean up
     queue_destroy(queue);
-    return 0;
+    return EXIT_SUCCESS;
 }

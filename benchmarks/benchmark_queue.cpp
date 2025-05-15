@@ -7,7 +7,7 @@
 
 // Benchmark size operation
 static void BM_QueueSize(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         queue_push(queue, &value);
@@ -36,7 +36,7 @@ BENCHMARK(BM_StdQueueSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_QueueEmpty(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(queue_empty(queue));
@@ -58,7 +58,7 @@ BENCHMARK(BM_StdQueueEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark back access
 static void BM_QueueBack(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     int value = 42;
     queue_push(queue, &value);
 
@@ -83,7 +83,7 @@ BENCHMARK(BM_StdQueueBack)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation
 static void BM_QueueClear(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     int value = 42;
 
     for (auto _ : state) {
@@ -122,7 +122,7 @@ BENCHMARK(BM_StdQueueClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark reserve operation
 static void BM_QueueReserve(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(queue_reserve(queue, state.range(0)));
@@ -134,11 +134,11 @@ BENCHMARK(BM_QueueReserve)->Range(1 << 10, 1 << 20);
 
 // Benchmark push
 static void BM_QueuePush(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
-        dsc_error_t result = queue_push(queue, &value);
+        dsc_error result = queue_push(queue, &value);
         benchmark::DoNotOptimize(result);
     }
 
@@ -159,12 +159,12 @@ BENCHMARK(BM_StdQueuePush)->Range(1, 1 << 20);
 
 // Benchmark push and pop
 static void BM_QueuePushPop(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
-        dsc_error_t push_result = queue_push(queue, &value);
-        dsc_error_t pop_result = queue_pop(queue);
+        dsc_error push_result = queue_push(queue, &value);
+        dsc_error pop_result = queue_pop(queue);
         benchmark::DoNotOptimize(push_result);
         benchmark::DoNotOptimize(pop_result);
     }
@@ -186,7 +186,7 @@ BENCHMARK(BM_StdQueuePushPop)->Range(1, 1 << 20);
 
 // Benchmark front access
 static void BM_QueueFront(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     int value = 42;
     queue_push(queue, &value);
 
@@ -212,7 +212,7 @@ BENCHMARK(BM_StdQueueFront)->Range(1 << 10, 1 << 20);
 
 // Benchmark push with pre-reserved capacity
 static void BM_QueuePushReserved(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     queue_reserve(queue, state.range(0));
     int value = 42;
 
@@ -248,7 +248,7 @@ BENCHMARK(BM_StdQueuePushReserved)->Range(1 << 10, 1 << 20);
 
 // Benchmark alternating push/pop pattern
 static void BM_QueueAlternating(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     queue_reserve(queue, state.range(0) / 2);  // Reserve half capacity
     int value = 42;
     bool push = true;
@@ -290,7 +290,7 @@ BENCHMARK(BM_StdQueueAlternating)->Range(1 << 10, 1 << 20);
 
 // Benchmark circular buffer behavior
 static void BM_QueueCircularBuffer(benchmark::State &state) {
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     queue_reserve(queue, state.range(0));
     int value = 42;
 

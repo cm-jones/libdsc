@@ -10,7 +10,7 @@ class ForwardListTest : public ::testing::Test {
 
     void TearDown() override { forward_list_destroy(list); }
 
-    dsc_forward_list_t *list;
+    dsc_forward_list *list;
 };
 
 TEST_F(ForwardListTest, Create) 
@@ -24,7 +24,7 @@ TEST_F(ForwardListTest, Create)
 
 TEST_F(ForwardListTest, PushFrontAndPopFront) {
     int value = 42;
-    EXPECT_EQ(forward_list_push_front(list, &value), DSC_SUCCESS);
+    EXPECT_EQ(forward_list_push_front(list, &value), DSC_ERROR_OK);
     EXPECT_EQ(forward_list_size(list), 1);
     EXPECT_FALSE(forward_list_empty(list));
 
@@ -32,7 +32,7 @@ TEST_F(ForwardListTest, PushFrontAndPopFront) {
     EXPECT_NE(front, nullptr);
     EXPECT_EQ(*front, 42);
 
-    EXPECT_EQ(forward_list_pop_front(list), DSC_SUCCESS);
+    EXPECT_EQ(forward_list_pop_front(list), DSC_ERROR_OK);
     EXPECT_EQ(forward_list_size(list), 0);
     EXPECT_TRUE(forward_list_empty(list));
 }
@@ -40,7 +40,7 @@ TEST_F(ForwardListTest, PushFrontAndPopFront) {
 TEST_F(ForwardListTest, PushMultiple) {
     int values[] = {1, 2, 3, 4, 5};
     for (int value : values) {
-        EXPECT_EQ(forward_list_push_front(list, &value), DSC_SUCCESS);
+        EXPECT_EQ(forward_list_push_front(list, &value), DSC_ERROR_OK);
     }
 
     EXPECT_EQ(forward_list_size(list), 5);
@@ -66,13 +66,13 @@ TEST_F(ForwardListTest, FrontEmpty) {
 TEST_F(ForwardListTest, InsertAfter) {
     int values[] = {1, 2, 3};
     for (int value : values) {
-        EXPECT_EQ(forward_list_push_front(list, &value), DSC_SUCCESS);
+        EXPECT_EQ(forward_list_push_front(list, &value), DSC_ERROR_OK);
     }
 
     // List is now: 3 -> 2 -> 1
     forward_list_node_t *pos = forward_list_begin(list);
     int value = 42;
-    EXPECT_EQ(forward_list_insert_after(list, pos, &value), DSC_SUCCESS);
+    EXPECT_EQ(forward_list_insert_after(list, pos, &value), DSC_ERROR_OK);
     // List should be: 3 -> 42 -> 2 -> 1
 
     pos = forward_list_begin(list);
@@ -88,12 +88,12 @@ TEST_F(ForwardListTest, InsertAfter) {
 TEST_F(ForwardListTest, EraseAfter) {
     int values[] = {1, 2, 3, 4};
     for (int value : values) {
-        EXPECT_EQ(forward_list_push_front(list, &value), DSC_SUCCESS);
+        EXPECT_EQ(forward_list_push_front(list, &value), DSC_ERROR_OK);
     }
 
     // List is now: 4 -> 3 -> 2 -> 1
     forward_list_node_t *pos = forward_list_begin(list);
-    EXPECT_EQ(forward_list_erase_after(list, pos), DSC_SUCCESS);
+    EXPECT_EQ(forward_list_erase_after(list, pos), DSC_ERROR_OK);
     // List should be: 4 -> 2 -> 1
 
     pos = forward_list_begin(list);
