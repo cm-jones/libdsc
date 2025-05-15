@@ -12,7 +12,10 @@
 extern "C" {
 #endif
 
-// Error codes
+/**
+ * @enum dsc_error
+ * @brief Error codes for libdsc
+ */
 typedef enum {
     DSC_SUCCESS = 0,
     DSC_ERROR_MEMORY,
