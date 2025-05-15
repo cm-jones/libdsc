@@ -33,7 +33,7 @@ class UnorderedSetTest : public ::testing::Test {
         }
     }
 
-    dsc_unordered_set_t *set;
+    dsc_unordered_set *set;
 };
 
 TEST_F(UnorderedSetTest, Create) {

@@ -6,7 +6,7 @@
 
 // Benchmark size operation
 static void BM_StackSize(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         stack_push(stack, &value);
@@ -35,7 +35,7 @@ BENCHMARK(BM_StdStackSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_StackEmpty(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(stack_empty(stack));
@@ -57,7 +57,7 @@ BENCHMARK(BM_StdStackEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation
 static void BM_StackClear(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     int value = 42;
 
     for (auto _ : state) {
@@ -96,7 +96,7 @@ BENCHMARK(BM_StdStackClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark reserve operation
 static void BM_StackReserve(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(stack_reserve(stack, state.range(0)));
@@ -108,7 +108,7 @@ BENCHMARK(BM_StackReserve)->Range(1 << 10, 1 << 20);
 
 // Benchmark push
 static void BM_StackPush(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -132,7 +132,7 @@ BENCHMARK(BM_StdStackPush)->Range(1, 1 << 20);
 
 // Benchmark push and pop
 static void BM_StackPushPop(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -157,12 +157,12 @@ BENCHMARK(BM_StdStackPushPop)->Range(1, 1 << 20);
 
 // Benchmark top access
 static void BM_StackTop(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     int value = 42;
     stack_push(stack, &value);
 
     for (auto _ : state) {
-        benchmark::DoNotOptimize(dsc_stack_top(stack));
+        benchmark::DoNotOptimize(dsc_stackop(stack));
     }
 
     stack_destroy(stack);
@@ -182,7 +182,7 @@ BENCHMARK(BM_StdStackTop)->Range(1 << 10, 1 << 20);
 
 // Benchmark push with pre-reserved capacity
 static void BM_StackPushReserved(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     stack_reserve(stack, state.range(0));
     int value = 42;
 
@@ -220,7 +220,7 @@ BENCHMARK(BM_StdStackPushReserved)->Range(1 << 10, 1 << 20);
 
 // Benchmark alternating push/pop pattern
 static void BM_StackAlternating(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     stack_reserve(stack, state.range(0) / 2);  // Reserve half capacity
     int value = 42;
     bool push = true;
@@ -262,7 +262,7 @@ BENCHMARK(BM_StdStackAlternating)->Range(1 << 10, 1 << 20);
 
 // Benchmark reserve with different growth patterns
 static void BM_StackReserveGrowth(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
 
     for (auto _ : state) {
         stack_reserve(stack, state.range(0));
@@ -278,7 +278,7 @@ BENCHMARK(BM_StackReserveGrowth)->RangeMultiplier(2)->Range(1 << 10, 1 << 20);
 
 // Benchmark push performance at different stack sizes
 static void BM_StackPushSized(benchmark::State &state) {
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     int value = 42;
 
     // Pre-fill stack to desired size

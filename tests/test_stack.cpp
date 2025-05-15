@@ -10,7 +10,7 @@ class StackTest : public ::testing::Test {
 
     void TearDown() override { stack_destroy(stack); }
 
-    dsc_stack_t *stack;
+    dsc_stack *stack;
 };
 
 TEST_F(StackTest, Create) {
@@ -25,7 +25,7 @@ TEST_F(StackTest, PushAndPop) {
     EXPECT_EQ(stack_size(stack), 1);
     EXPECT_FALSE(stack_empty(stack));
 
-    int *top = static_cast<int *>(dsc_stack_top(stack));
+    int *top = static_cast<int *>(dsc_stackop(stack));
     EXPECT_NE(top, nullptr);
     EXPECT_EQ(*top, 42);
 
@@ -43,7 +43,7 @@ TEST_F(StackTest, PushMultiple) {
     EXPECT_EQ(stack_size(stack), 5);
 
     for (int i = 4; i >= 0; i--) {
-        int *top = static_cast<int *>(dsc_stack_top(stack));
+        int *top = static_cast<int *>(dsc_stackop(stack));
         EXPECT_NE(top, nullptr);
         EXPECT_EQ(*top, values[i]);
         EXPECT_EQ(stack_pop(stack), DSC_SUCCESS);
@@ -54,7 +54,7 @@ TEST_F(StackTest, PushMultiple) {
 
 TEST_F(StackTest, PopEmpty) { EXPECT_EQ(stack_pop(stack), DSC_ERROR_EMPTY); }
 
-TEST_F(StackTest, TopEmpty) { EXPECT_EQ(dsc_stack_top(stack), nullptr); }
+TEST_F(StackTest, TopEmpty) { EXPECT_EQ(dsc_stackop(stack), nullptr); }
 
 TEST_F(StackTest, Clear) {
     int values[] = {1, 2, 3, 4, 5};
@@ -80,7 +80,7 @@ TEST_F(StackTest, Reserve) {
     EXPECT_EQ(stack_size(stack), 100);
 
     for (int i = 99; i >= 0; i--) {
-        int *top = static_cast<int *>(dsc_stack_top(stack));
+        int *top = static_cast<int *>(dsc_stackop(stack));
         EXPECT_NE(top, nullptr);
         EXPECT_EQ(*top, values[i]);
         EXPECT_EQ(stack_pop(stack), DSC_SUCCESS);

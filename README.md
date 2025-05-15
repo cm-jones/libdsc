@@ -9,24 +9,26 @@
 [![Codecov](https://codecov.io/gh/cm-jones/libdsc/branch/main/graph/badge.svg)](https://codecov.io/gh/cm-jones/libdsc)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-libdsc is an open-source C library that features generic implementations of several C++ Standard Library containers.
+`libdsc` is an open-source C library featuring generic and memory-safe implementations of various containers provided by the C++ Standard Library.
 
 ## Features
 
-- **Vector**: Dynamically-sized array
-- **Forward List**: Singly-linked list
-- **List**: Doubly-linked list
-- **Stack**: LIFO container
-- **Queue**: FIFO container
-- **Unordered Map**: Hash table for key-value pairs
-- **Unordered Set**: Hash table for unique elements
+`libdsc` implements the following containers:
 
-All of these implementations are:
+- `vector`: dynamically-sized array
+- `forward_list`: singly-linked list
+- `list`: doubly-linked list
+- `stack`: LIFO container
+- `queue`: FIFO container
+- `unordered_map`: hash table for key-value pairs
+- `unordered_set`: hash table for unique elements
+
+All containers are:
 
 - Generic (can store any data type)
 - Memory safe (with proper error handling)
 - Thoroughly tested
-- Performance benchmarked against C++ counterparts
+- Benchmarked against C++ Standard Library counterparts
 
 ## Installing from source
 
@@ -57,11 +59,13 @@ This will install:
 #include <libdsc/vector.h>
 #include <libdsc/list.h>
 
+// Include other containers as needed ...
+
 #include <stdio.h>
 
 int main() {
     // Create a vector of integers
-    dsc_vector_t *vec = vector_create(sizeof(int));
+    dsc_vector *vec = vector_create(sizeof(int));
 
     // Push some values
     for (size_t i = 0; i < 5; ++i) {
@@ -78,7 +82,7 @@ int main() {
     vector_destroy(vec);
 
     // Create a list of integers
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
 
     // Push some values
     for (size_t i = 0; i < 5; ++i) {
@@ -96,7 +100,7 @@ int main() {
     // Clean up
     list_destroy(list);
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 ```
 
@@ -104,7 +108,7 @@ More examples can be found in the `examples` directory.
 
 ## Testing
 
-libdsc uses Google Test for unit testing. To run the tests:
+Google Test is used for unit testing. To run the tests, after building the project:
 
 ```bash
 cd build
@@ -113,7 +117,7 @@ ctest --output-on-failure
 
 ## Benchmarking
 
-Google Benchmark is used for benchmarking libdsc containers against the equivalent containers in the C++ Standard Library. Benchmarks are run weekly and can be found in the [Actions tab](https://github.com/cm-jones/libdsc/actions/workflows/benchmark.yaml) under the Benchmarks workflow. You can also run benchmarks locally:
+Google Benchmark is used to measure the performance of libdsc's containers against their equivalents in the C++ Standard Library. Benchmarks are run weekly automatically via GitHub Actions.  You can also run the benchmarks locally:
 
 ```bash
 mkdir -p build
@@ -126,8 +130,8 @@ cd benchmarks
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) carefully before you attempt to make contributions to this project.
 
 ## License
 
-This project is licensed under the GPLv3. See [LICENSE](LICENSE) for details.
+`libdsc` is licensed under the GPLv3. See [LICENSE](LICENSE) for details.

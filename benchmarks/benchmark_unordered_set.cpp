@@ -40,7 +40,7 @@ static std::string random_string(size_t length) {
 
 // Benchmark insertion
 static void BM_UnorderedSetInsert(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
 
     for (auto _ : state) {
@@ -65,7 +65,7 @@ BENCHMARK(BM_StdUnorderedSetInsert)->Range(1, 1 << 20);
 
 // Benchmark find
 static void BM_UnorderedSetFind(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
 
     // Pre-populate set
@@ -114,7 +114,7 @@ BENCHMARK(BM_StdUnorderedSetFind)->Range(1 << 10, 1 << 20);
 
 // Benchmark size operation
 static void BM_UnorderedSetSize(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
 
     // Pre-populate set
@@ -148,7 +148,7 @@ BENCHMARK(BM_StdUnorderedSetSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_UnorderedSetEmpty(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
 
     for (auto _ : state) {
@@ -171,7 +171,7 @@ BENCHMARK(BM_StdUnorderedSetEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation
 static void BM_UnorderedSetClear(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
 
     for (auto _ : state) {
@@ -209,7 +209,7 @@ BENCHMARK(BM_StdUnorderedSetClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark reserve operation
 static void BM_UnorderedSetReserve(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
 
     for (auto _ : state) {
@@ -233,7 +233,7 @@ BENCHMARK(BM_StdUnorderedSetReserve)->Range(1 << 10, 1 << 20);
 
 // Benchmark erase operation
 static void BM_UnorderedSetErase(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     std::vector<std::string> elements;
 
@@ -290,7 +290,7 @@ BENCHMARK(BM_StdUnorderedSetErase)->Range(1 << 10, 1 << 20);
 
 // Benchmark insert with pre-reserved capacity
 static void BM_UnorderedSetInsertReserved(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     unordered_set_reserve(set, state.range(0));
 
@@ -328,7 +328,7 @@ BENCHMARK(BM_StdUnorderedSetInsertReserved)->Range(1 << 10, 1 << 20);
 
 // Benchmark mixed operations pattern
 static void BM_UnorderedSetMixedOps(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     std::vector<std::string> elements;
     std::random_device rd;
@@ -407,7 +407,7 @@ BENCHMARK(BM_StdUnorderedSetMixedOps)->Range(1 << 10, 1 << 20);
 
 // Benchmark collision handling (strings with same hash)
 static void BM_UnorderedSetCollisions(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     std::vector<std::string> colliding_strings;
 
@@ -460,7 +460,7 @@ BENCHMARK(BM_StdUnorderedSetCollisions)->Range(1 << 8, 1 << 16);
 
 // Benchmark load factor performance
 static void BM_UnorderedSetLoadFactor(benchmark::State &state) {
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     size_t target_size = state.range(0);
     unordered_set_reserve(set, target_size / 2);  // Force higher load factor

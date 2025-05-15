@@ -10,7 +10,7 @@ class ForwardListTest : public ::testing::Test {
 
     void TearDown() override { forward_list_destroy(list); }
 
-    dsc_forward_list_t *list;
+    dsc_forward_list *list;
 };
 
 TEST_F(ForwardListTest, Create) 

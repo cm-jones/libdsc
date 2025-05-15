@@ -3,10 +3,10 @@
 
 int main() {
     // Create a list of integers
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     if (!list) {
         printf("Failed to create list\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Push some values at the front
@@ -110,5 +110,5 @@ int main() {
 
     // Clean up
     list_destroy(list);
-    return 0;
+    return EXIT_SUCCESS;
 }

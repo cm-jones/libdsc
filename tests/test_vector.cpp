@@ -10,7 +10,7 @@ class VectorTest : public ::testing::Test {
 
     void TearDown() override { vector_destroy(vec); }
 
-    dsc_vector_t *vec;
+    dsc_vector *vec;
 };
 
 TEST_F(VectorTest, Create) {

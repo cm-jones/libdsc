@@ -7,7 +7,7 @@
 
 #define INITIAL_CAPACITY 16
 
-static dsc_error_t grow_stack(dsc_stack_t *stack) {
+static dsc_error grow_stack(dsc_stack *stack) {
     size_t new_capacity = stack->capacity * 2;
     void *new_data = realloc(stack->data, new_capacity * stack->element_size);
     if (!new_data) {
@@ -19,12 +19,12 @@ static dsc_error_t grow_stack(dsc_stack_t *stack) {
     return DSC_SUCCESS;
 }
 
-dsc_stack_t *stack_create(size_t element_size) {
+dsc_stack *stack_create(size_t element_size) {
     if (element_size == 0) {
         return NULL;
     }
 
-    dsc_stack_t *stack = malloc(sizeof(dsc_stack_t));
+    dsc_stack *stack = malloc(sizeof(dsc_stack));
     if (!stack) {
         return NULL;
     }
@@ -42,7 +42,7 @@ dsc_stack_t *stack_create(size_t element_size) {
     return stack;
 }
 
-void stack_destroy(dsc_stack_t *stack) {
+void stack_destroy(dsc_stack *stack) {
     if (!stack) {
         return;
     }
@@ -51,19 +51,19 @@ void stack_destroy(dsc_stack_t *stack) {
     free(stack);
 }
 
-size_t stack_size(dsc_stack_t const *stack) { return stack ? stack->size : 0; }
+size_t stack_size(dsc_stack const *stack) { return stack ? stack->size : 0; }
 
-bool stack_empty(dsc_stack_t const *stack) {
+bool stack_empty(dsc_stack const *stack) {
     return !stack || stack->size == 0;
 }
 
-dsc_error_t stack_push(dsc_stack_t *stack, void const *element) {
+dsc_error stack_push(dsc_stack *stack, void const *element) {
     if (!stack || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
     if (stack->size == stack->capacity) {
-        dsc_error_t err = grow_stack(stack);
+        dsc_error err = grow_stack(stack);
         if (err != DSC_SUCCESS) {
             return err;
         }
@@ -76,7 +76,7 @@ dsc_error_t stack_push(dsc_stack_t *stack, void const *element) {
     return DSC_SUCCESS;
 }
 
-dsc_error_t stack_pop(dsc_stack_t *stack) {
+dsc_error stack_pop(dsc_stack *stack) {
     if (!stack) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -89,7 +89,7 @@ dsc_error_t stack_pop(dsc_stack_t *stack) {
     return DSC_SUCCESS;
 }
 
-void *dsc_stack_top(dsc_stack_t const *stack) {
+void *dsc_stackop(dsc_stack const *stack) {
     if (!stack || stack->size == 0) {
         return NULL;
     }
@@ -97,13 +97,13 @@ void *dsc_stack_top(dsc_stack_t const *stack) {
     return (char *)stack->data + (stack->size - 1) * stack->element_size;
 }
 
-void stack_clear(dsc_stack_t *stack) {
+void stack_clear(dsc_stack *stack) {
     if (stack) {
         stack->size = 0;
     }
 }
 
-dsc_error_t stack_reserve(dsc_stack_t *stack, size_t capacity) {
+dsc_error stack_reserve(dsc_stack *stack, size_t capacity) {
     if (!stack) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }

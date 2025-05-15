@@ -34,7 +34,7 @@ class UnorderedMapTest : public ::testing::Test {
         }
     }
 
-    dsc_unordered_map_t *map;
+    dsc_unordered_map *map;
 };
 
 TEST_F(UnorderedMapTest, Create) {

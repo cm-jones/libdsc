@@ -3,10 +3,10 @@
 
 int main() {
     // Create a queue of integers
-    dsc_queue_t *queue = queue_create(sizeof(int));
+    dsc_queue *queue = queue_create(sizeof(int));
     if (!queue) {
         printf("Failed to create queue\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Push some values
@@ -66,5 +66,5 @@ int main() {
 
     // Clean up
     queue_destroy(queue);
-    return 0;
+    return EXIT_SUCCESS;
 }

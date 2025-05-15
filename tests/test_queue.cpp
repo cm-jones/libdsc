@@ -17,7 +17,7 @@ class QueueTest : public ::testing::Test {
         }
     }
 
-    dsc_queue_t *queue;
+    dsc_queue *queue;
 };
 
 TEST_F(QueueTest, Create) {

@@ -22,11 +22,11 @@ static int string_compare(void const *a, void const *b) {
 
 int main() {
     // Create a set of strings
-    dsc_unordered_set_t *set =
+    dsc_unordered_set *set =
         unordered_set_create(sizeof(char *), string_hash, string_compare);
     if (!set) {
         printf("Failed to create set\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Insert some elements
@@ -76,5 +76,5 @@ int main() {
 
     // Clean up
     unordered_set_destroy(set);
-    return 0;
+    return EXIT_SUCCESS;
 }

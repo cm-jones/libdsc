@@ -4,10 +4,10 @@
 
 int main() {
     // Create a stack of integers
-    dsc_stack_t *stack = stack_create(sizeof(int));
+    dsc_stack *stack = stack_create(sizeof(int));
     if (!stack) {
         printf("Failed to create stack\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Push some values
@@ -24,7 +24,7 @@ int main() {
     printf("\nStack size: %zu\n", stack_size(stack));
 
     // Print top element
-    int *top = (int *)dsc_stack_top(stack);
+    int *top = (int *)dsc_stackop(stack);
     if (top) {
         printf("Top element: %d\n", *top);
     }
@@ -32,7 +32,7 @@ int main() {
     // Pop and print all values
     printf("\nPopping values:\n");
     while (!stack_empty(stack)) {
-        top = (int *)dsc_stack_top(stack);
+        top = (int *)dsc_stackop(stack);
         if (top) {
             printf("Popping %d\n", *top);
         }
@@ -66,5 +66,5 @@ int main() {
 
     // Clean up
     stack_destroy(stack);
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -3,10 +3,10 @@
 
 int main() {
     // Create a forward list of integers
-    dsc_forward_list_t *list = forward_list_create(sizeof(int));
+    dsc_forward_list *list = forward_list_create(sizeof(int));
     if (!list) {
         printf("Failed to create forward list\n");
-        return 1;
+        return EXIT_FAILURE;
     }
 
     // Push some values at the front
@@ -16,6 +16,7 @@ int main() {
             printf("Failed to push %d\n", values[i]);
             continue;
         }
+
         printf("Pushed %d at front\n", values[i]);
     }
 
@@ -93,5 +94,5 @@ int main() {
 
     // Clean up
     forward_list_destroy(list);
-    return 0;
+    return EXIT_SUCCESS;
 }

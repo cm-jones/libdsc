@@ -10,7 +10,7 @@ class ListTest : public ::testing::Test {
 
     void TearDown() override { list_destroy(list); }
 
-    dsc_list_t *list;
+    dsc_list *list;
 };
 
 TEST_F(ListTest, Create) {

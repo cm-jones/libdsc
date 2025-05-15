@@ -6,7 +6,7 @@
 
 // Benchmark push_front
 static void BM_ListPushFront(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -30,7 +30,7 @@ BENCHMARK(BM_StdListPushFront)->Range(1, 1 << 20);
 
 // Benchmark push_back
 static void BM_ListPushBack(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -54,7 +54,7 @@ BENCHMARK(BM_StdListPushBack)->Range(1, 1 << 20);
 
 // Benchmark push_front and pop_front
 static void BM_ListPushPopFront(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -79,7 +79,7 @@ BENCHMARK(BM_StdListPushPopFront)->Range(1, 1 << 20);
 
 // Benchmark push_back and pop_back
 static void BM_ListPushPopBack(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
 
     for (auto _ : state) {
         int value = 42;
@@ -104,7 +104,7 @@ BENCHMARK(BM_StdListPushPopBack)->Range(1, 1 << 20);
 
 // Benchmark front access
 static void BM_ListFront(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     list_push_front(list, &value);
 
@@ -129,7 +129,7 @@ BENCHMARK(BM_StdListFront)->Range(1 << 10, 1 << 20);
 
 // Benchmark back access
 static void BM_ListBack(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     list_push_back(list, &value);
 
@@ -154,7 +154,7 @@ BENCHMARK(BM_StdListBack)->Range(1 << 10, 1 << 20);
 
 // Benchmark size operation
 static void BM_ListSize(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         list_push_front(list, &value);
@@ -183,7 +183,7 @@ BENCHMARK(BM_StdListSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_ListEmpty(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(list_empty(list));
@@ -205,7 +205,7 @@ BENCHMARK(BM_StdListEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark insert operation
 static void BM_ListInsert(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     
     for (auto _ : state) {
@@ -240,7 +240,7 @@ BENCHMARK(BM_StdListInsert)->Range(1 << 10, 1 << 20);
 
 // Benchmark erase operation
 static void BM_ListErase(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     list_push_back(list, &value);
     list_push_back(list, &value);
@@ -276,7 +276,7 @@ BENCHMARK(BM_StdListErase)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation
 static void BM_ListClear(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
 
     for (auto _ : state) {
@@ -313,7 +313,7 @@ BENCHMARK(BM_StdListClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark forward iterator traversal
 static void BM_ListForwardTraversal(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         list_push_back(list, &value);
@@ -348,7 +348,7 @@ BENCHMARK(BM_StdListForwardTraversal)->Range(1 << 10, 1 << 20);
 
 // Benchmark reverse iterator traversal
 static void BM_ListReverseTraversal(benchmark::State &state) {
-    dsc_list_t *list = list_create(sizeof(int));
+    dsc_list *list = list_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         list_push_back(list, &value);

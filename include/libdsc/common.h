@@ -21,15 +21,15 @@ typedef enum {
     DSC_ERROR_NOT_FOUND,
     DSC_ERROR_DUPLICATE,
     DSC_ERROR_OVERFLOW,
-} dsc_error_t;
+} dsc_error;
 
 // Memory allocation wrapper with error checking
 static inline void *dsc_malloc(size_t size) {
     void *ptr = malloc(size);
     if (!ptr) {
-        // Handle out of memory
         return NULL;
     }
+
     return ptr;
 }
 
@@ -37,9 +37,9 @@ static inline void *dsc_malloc(size_t size) {
 static inline void *dsc_realloc(void *ptr, size_t size) {
     void *new_ptr = realloc(ptr, size);
     if (!new_ptr) {
-        // Handle out of memory
         return NULL;
     }
+
     return new_ptr;
 }
 
@@ -76,6 +76,16 @@ static inline int dsc_compare_int(void const *a, void const *b) {
 // Default comparison function for strings
 static inline int dsc_compare_string(void const *a, void const *b) {
     return strcmp(*(char const **)a, *(char const **)b);
+}
+
+static inline bool dsc_safe_memcpy(void *dest, const void *src,
+                                   size_t dest_size, size_t src_size) {
+    if (!dest || !src || dest_size < src_size) {
+        return false;
+    }
+
+    memcpy(dest, src, src_size);
+    return true;
 }
 
 #ifdef __cplusplus
