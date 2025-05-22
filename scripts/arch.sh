@@ -29,6 +29,8 @@ log() {
     esac
 }
 
+cd "${PROJECT_ROOT}"
+
 # Check if we're in the correct directory
 if [ ! -f "PKGBUILD" ]; then
     log "ERROR" "PKGBUILD not found"
