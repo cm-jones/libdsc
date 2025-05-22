@@ -55,6 +55,22 @@ runs:
         echo "::set-output name=rpm_version::$RPM_VERSION"
 
     - if: inputs.distribution == 'debian'
+      name: Setup Debian packaging tools
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y devscripts debhelper pkg-config
+        # Make debian.sh executable
+        chmod +x scripts/debian.sh
+        # Initialize changelog directory
+        mkdir -p debian
+        echo "libdsc (${{ steps.version.outputs.deb_version }}) unstable; urgency=medium" > debian/changelog
+        echo "" >> debian/changelog
+        echo "  * Initial release" >> debian/changelog
+        echo "" >> debian/changelog
+        echo " -- libdsc Team <libdsc@example.com>  $(date -R)" >> debian/changelog
+
+    - if: inputs.distribution == 'debian'
       name: Update Debian changelog
       shell: bash
       run: |
@@ -65,18 +81,11 @@ runs:
             "Release ${{ inputs.version }}"
 
     - if: inputs.distribution == 'debian'
-      name: Setup Debian packaging tools
-      shell: bash
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y devscripts debhelper pkg-config
-
-    - if: inputs.distribution == 'debian'
       name: Build Debian package
       shell: bash
       run: |
         cd ${{ github.workspace }}
-        ./scripts/debian.sh
+        DEB_VERSION="${{ steps.version.outputs.deb_version }}" ./scripts/debian.sh
 
     - if: inputs.distribution == 'rpm'
       name: Setup RPM packaging environment

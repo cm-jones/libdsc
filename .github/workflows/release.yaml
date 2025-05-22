@@ -26,20 +26,6 @@ jobs:
             include/libdsc
 
       - if: steps.tests.outputs.passed == 'true'
-        id: debian-package
-        uses: ./.github/actions/package
-        with:
-          distribution: debian
-          version: ${{ github.ref_name }}
-
-      - if: steps.tests.outputs.passed == 'true'
-        id: rpm-package
-        uses: ./.github/actions/package
-        with:
-          distribution: rpm
-          version: ${{ github.ref_name }}
-
-      - if: steps.tests.outputs.passed == 'true'
         id: arch-package
         uses: ./.github/actions/package
         with:
@@ -51,7 +37,5 @@ jobs:
         with:
           files: |
             libdsc-${{ github.ref_name }}.tar.gz
-            ${{ steps.debian-package.outputs.package-path }}
-            ${{ steps.rpm-package.outputs.package-path }}
             ${{ steps.arch-package.outputs.package-path }}
           generate_release_notes: true
