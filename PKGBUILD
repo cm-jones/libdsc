@@ -2,7 +2,7 @@
 
 pkgbase=libdsc
 pkgname=('libdsc' 'libdsc-docs' 'libdsc-debug')
-pkgver=0.1.0_alpha
+pkgver=0.1.0
 pkgrel=1
 pkgdesc="High-performance data structures library for C"
 arch=('x86_64' 'aarch64' 'armv7h')
