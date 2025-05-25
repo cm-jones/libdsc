@@ -29,21 +29,21 @@ runs:
           PRERELEASE=""
         fi
 
-        # Format for Debian: 0.1.0~alpha1
+        # Format for Debian:
         if [ -n "$PRERELEASE" ]; then
           DEB_VERSION="${BASE_VERSION}~${PRERELEASE}1"
         else
           DEB_VERSION="$BASE_VERSION"
         fi
 
-        # Format for Arch: 0.1.0_alpha
+        # Format for Arch:
         if [ -n "$PRERELEASE" ]; then
           ARCH_VERSION="${BASE_VERSION}_${PRERELEASE}"
         else
           ARCH_VERSION="$BASE_VERSION"
         fi
 
-        # Format for RPM: 0.1.0~alpha
+        # Format for RPM:
         if [ -n "$PRERELEASE" ]; then
           RPM_VERSION="${BASE_VERSION}~${PRERELEASE}"
         else
