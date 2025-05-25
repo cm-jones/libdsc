@@ -9,114 +9,195 @@
 [![Codecov](https://codecov.io/gh/cm-jones/libdsc/branch/main/graph/badge.svg)](https://codecov.io/gh/cm-jones/libdsc)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-libdsc is a free and open-source C library featuring generic implementations of various containers provided by the C++ Standard Library.
+libdsc is a free and open-source C library that provides generic implementations of various containers from the C++ Standard Library. It brings modern container functionality to the C programming language with well-tested, memory-safe, and high-performance implementations.
 
 ## Features
 
-libdsc currently reimplements the following containers:
+libdsc currently implements the following containers:
 
-### Sequence containers
+### Sequence Containers
 
-- `std::vector`
+- `dsc_vector`: dynamic array equivalent to `std::vector`
 
-- `std::forward_list`
+- `dsc_forward_list`: singly-linked list equivalent to `std::forward_list`
 
-- `std::list`
+- `dsc_list`: doubly-linked list equivalent to `std::list`
 
-### Unordered associative containers
+### Unordered Associative Containers
 
-- `std::unordered_map`
+- `dsc_unordered_map`: hash table with key-value pairs equivalent to `std::unordered_map`
 
-- `std::unordered_set`
+- `dsc_unordered_set`: hash table for unique elements equivalent to `std::unordered_set`
 
-### Container adaptors
+### Container Adaptors
 
-- `std::stack`
+- `stack`: LIFO container adapter equivalent to `std::stack`
 
-- `std::queue`
+- `queue`: FIFO container adapter equivalent to `std::queue`
 
-All of these (re)implementations are generic (can store any data type), memory-safe, and benchmarked against their counterparts in the C++ Standard Library.
+### Key Benefits
+- **Generic**: Can store any data type using `void*` and element size
+- **Memory-safe**: Comprehensive error handling and bounds checking
+- **High-performance**: Benchmarked against C++ STL equivalents
+- **Well-tested**: Extensive unit tests with Google Test
+- **Professional**: Follows industry best practices for C libraries
 
-See [ROADMAP.md](ROADMAP.md) for a list of containers we plan to (re)implement in the future.
+See [ROADMAP.md](ROADMAP.md) for containers planned for future releases.
 
-## Installing from source
+## Quick Start
 
-First, build the project:
+### Basic Example
 
-```bash
-mkdir -p build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_BENCHMARKS=OFF -DBUILD_EXAMPLES=OFF
-make
+```c
+#include <libdsc/vector.h>
+#include <stdio.h>
+
+int main() {
+    // Create a vector of integers
+    dsc_vector *vec = vector_create(sizeof(int));
+    if (!vec) return 1;
+    
+    // Add some elements
+    int values[] = {1, 2, 3, 4, 5};
+    for (size_t i = 0; i < 5; i++) {
+        vector_push_back(vec, &values[i]);
+    }
+    
+    // Access elements
+    printf("Vector size: %zu\n", vector_size(vec));
+    int *first = (int*)vector_at(vec, 0);
+    printf("First element: %d\n", *first);
+    
+    // Clean up
+    vector_destroy(vec);
+    return 0;
+}
 ```
 
-Then, to install the library system-wide:
+More complete examples can be found in the [`examples/`](examples/) directory.
+
+## Installation
+
+### From Source
+
+#### Prerequisites
+
+- CMake 3.14 or higher
+
+- C11-compatible compiler (GCC, Clang, MSVC)
+
+- Git
+
+#### Build and Install
 
 ```bash
+# Clone the repository
+git clone https://github.com/cm-jones/libdsc.git
+cd libdsc
+
+# Create build directory
+mkdir -p build && cd build
+
+# Configure and build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF -DBUILD_BENCHMARKS=OFF -DBUILD_EXAMPLES=OFF
+make -j$(nproc)
+
+# Install system-wide (optional)
 sudo make install
 ```
 
-This will install:
-
+This installs:
 - Library files to `/usr/local/lib`
-
 - Header files to `/usr/local/include/libdsc`
-
 - CMake configuration files to `/usr/local/lib/cmake/libdsc`
 
-## Installing from package
+### From Packages
 
-On Debian-based Linux distributions (e.g., Debian, Ubuntu, Linux Mint):
-
+#### Debian/Ubuntu
 ```bash
 sudo dpkg -i libdsc-*.deb
 ```
 
-On RPM-based Linux distributions (e.g., Fedora, Red Hat):
-
+#### Fedora/RHEL/CentOS
 ```bash
-
+sudo rpm -i libdsc-*.rpm
 ```
 
-## Usage
-
-Simply include the relevant headers in your project, like so:
-
-```c
-#include <libdsc/vector.h>
-#include <libdsc/list.h>
+#### Arch Linux
+```bash
+sudo pacman -U libdsc-*.pkg.tar.zst
 ```
 
-Complete examples can be found in the `examples/` directory.
+### Using CMake
 
-## Testing
+Add to your `CMakeLists.txt`:
 
-Google Test is used for unit testing. To run the tests, after building the project:
+```cmake
+find_package(libdsc REQUIRED)
+target_link_libraries(your_target libdsc::dsc)
+```
+
+## Documentation
+
+- **API Reference**: Generated with Doxygen in [`docs/`](docs/)
+
+- **Examples**: Complete usage examples in [`examples/`](examples/)
+
+- **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+- **Security**: See [SECURITY.md](SECURITY.md)
+
+- **Code of Conduct**: See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+
+## Development
+
+### Building with Tests
 
 ```bash
-cd build
+mkdir build && cd build
+cmake .. -DBUILD_TESTS=ON
+make -j$(nproc)
 ctest --output-on-failure
 ```
 
-## Benchmarking
-
-Google Benchmark is used to measure the performance of libdsc's containers against their equivalents in the C++ Standard Library. Benchmarks are run weekly automatically via GitHub Actions.  You can also run the benchmarks locally:
-
-Benchmarks are automatica
+### Running Benchmarks
 
 ```bash
-mkdir -p build
-cd build
+mkdir build && cd build
 cmake .. -DBUILD_BENCHMARKS=ON
-make
+make -j$(nproc)
 cd benchmarks
-./benchmark_*
+./benchmark_vector
+./benchmark_list
+# ... other benchmarks
 ```
+
+### Code Quality
+
+```bash
+# Format code
+./scripts/format.sh
+
+# Run linter
+./scripts/lint.sh
+
+# Generate documentation
+./scripts/docs.sh
+```
+
+## Performance
+
+libdsc containers are regularly benchmarked against their C++ STL equivalents. Performance results are available in our [CI benchmarks](https://github.com/cm-jones/libdsc/actions).
+
+Key performance characteristics:
+- **Vector**: Amortized O(1) push_back, O(1) random access
+- **List**: O(1) insertion/deletion, O(n) search
+- **Hash containers**: Average O(1) insertion/lookup, O(n) worst case
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) carefully before you attempt to make any contributions to this project.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) carefully before attempting to make any contributions.
 
 ## License
 
-This project is licensed under the GPLv3. See [LICENSE](LICENSE) for details.
+This project is licensed under the GNU General Public License v3.0. See [LICENSE](LICENSE) for details.
