@@ -1,0 +1,36 @@
+Source: libdsc
+Section: libs
+Priority: optional
+Maintainer: Cody M. Jones <codymjones@pm.me>
+Build-Depends: debhelper-compat (= 13),
+               cmake (>= 3.14),
+               build-essential,
+               pkg-config
+Standards-Version: 4.6.0
+Homepage: https://github.com/cm-jones/libdsc
+Vcs-Git: https://github.com/cm-jones/libdsc.git
+Vcs-Browser: https://github.com/cm-jones/libdsc
+
+Package: libdsc0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Generic data structure containers for C - runtime library
+ libdsc is a free and open-source C library that provides generic
+ implementations of various containers from the C++ Standard Library.
+ The project aims to bring modern container functionality to C programming
+ with memory-safe, well-tested implementations.
+ .
+ This package contains the shared library.
+
+Package: libdsc-dev
+Section: libdevel
+Architecture: any
+Depends: libdsc0 (= ${binary:Version}), ${misc:Depends}
+Description: Generic data structure containers for C - development files
+ libdsc is a free and open-source C library that provides generic
+ implementations of various containers from the C++ Standard Library.
+ The project aims to bring modern container functionality to C programming
+ with memory-safe, well-tested implementations.
+ .
+ This package contains the development files (headers, static library,
+ pkg-config file, and CMake configuration).

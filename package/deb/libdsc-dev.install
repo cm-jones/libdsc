@@ -1,0 +1,5 @@
+usr/include/libdsc/
+usr/lib/*/libdsc.so
+usr/lib/*/libdsc.a
+usr/lib/*/pkgconfig/libdsc.pc
+usr/lib/*/cmake/libdsc/

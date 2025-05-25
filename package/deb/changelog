@@ -1,0 +1,11 @@
+libdsc (0.1.0-1) unstable; urgency=medium
+
+  * Initial release of libdsc
+  * Generic data structure containers for C
+  * Implements vector, list, forward_list, stack, queue, unordered_map, unordered_set
+  * Memory-safe implementations with comprehensive error handling
+  * Modern CMake build system with pkg-config support
+  * Comprehensive API documentation and examples
+  * Professional project structure following industry best practices
+
+ -- libdsc Team <codymjones@pm.me>  Thu, 22 May 2025 18:37:00 -0500
