@@ -19,8 +19,8 @@ jobs:
         uses: ./.github/actions/run-tests
 
       - if: steps.tests.outputs.passed == 'true'
-        name: Create source archive
-        run: |
+ 
+      
           tar czf libdsc-${{ github.ref_name }}.tar.gz \
             build/libdsc.* \
             include/libdsc

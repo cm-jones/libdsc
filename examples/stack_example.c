@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "libdsc/stack.h"
 
 int main() {
     // Create a stack of integers
-    dsc_stack *stack = stack_create(sizeof(int));
+    DSCStack *stack = stack_create(sizeof(int));
     if (!stack) {
         printf("Failed to create stack\n");
         return EXIT_FAILURE;
@@ -24,7 +25,7 @@ int main() {
     printf("\nStack size: %zu\n", stack_size(stack));
 
     // Print top element
-    int *top = (int *)dsc_stackop(stack);
+    int *top = (int *)stack_top(stack);
     if (top) {
         printf("Top element: %d\n", *top);
     }
@@ -32,7 +33,7 @@ int main() {
     // Pop and print all values
     printf("\nPopping values:\n");
     while (!stack_empty(stack)) {
-        top = (int *)dsc_stackop(stack);
+        top = (int *)stack_top(stack);
         if (top) {
             printf("Popping %d\n", *top);
         }

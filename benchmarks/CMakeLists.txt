@@ -1,11 +1,22 @@
 # Configure Google Benchmark
 include(FetchContent)
+
+# Set FetchContent options for better reliability
+set(FETCHCONTENT_QUIET OFF)
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+
+# Configure benchmark options before fetching
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+set(BENCHMARK_ENABLE_GTEST_TESTS OFF CACHE BOOL "" FORCE)
+set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
+
 FetchContent_Declare(
     benchmark
     GIT_REPOSITORY https://github.com/google/benchmark.git
-    GIT_TAG v1.7.1
+    GIT_TAG v1.8.3
+    GIT_SHALLOW TRUE
+    FIND_PACKAGE_ARGS NAMES benchmark
 )
-set(BENCHMARK_ENABLE_TESTING OFF)
 
 # Add relaxed warning flags for benchmark
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang|AppleClang")

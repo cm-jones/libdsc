@@ -1,0 +1,21 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Check if the targets are already defined
+if(NOT TARGET libdsc::dsc)
+    include("${CMAKE_CURRENT_LIST_DIR}/libdsc-targets.cmake")
+endif()
+
+# Set variables for compatibility
+set(libdsc_FOUND TRUE)
+set(libdsc_VERSION "@PROJECT_VERSION@")
+set(libdsc_VERSION_MAJOR "@PROJECT_VERSION_MAJOR@")
+set(libdsc_VERSION_MINOR "@PROJECT_VERSION_MINOR@")
+set(libdsc_VERSION_PATCH "@PROJECT_VERSION_PATCH@")
+
+# Provide legacy variables for older CMake usage
+set(libdsc_LIBRARIES libdsc::dsc)
+get_target_property(libdsc_INCLUDE_DIRS libdsc::dsc INTERFACE_INCLUDE_DIRECTORIES)
+
+check_required_components(libdsc)

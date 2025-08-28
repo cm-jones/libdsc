@@ -22,8 +22,8 @@ static int string_compare(void const *a, void const *b) {
 
 int main() {
     // Create a map with string keys and integer values
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
     if (!map) {
         printf("Failed to create map\n");
         return EXIT_FAILURE;

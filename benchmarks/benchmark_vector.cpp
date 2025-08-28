@@ -6,7 +6,7 @@
 
 // Benchmark size operation
 static void BM_VectorSize(benchmark::State &state) {
-    dsc_vector *vec = vector_create(sizeof(int));
+    DSCVector *vec = vector_create(sizeof(int));
     int value = 42;
     for (size_t i = 0; i < 1000; ++i) {
         vector_push_back(vec, &value);
@@ -35,7 +35,7 @@ BENCHMARK(BM_StdVectorSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_VectorEmpty(benchmark::State &state) {
-    dsc_vector *vec = vector_create(sizeof(int));
+    DSCVector *vec = vector_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(vector_empty(vec));
@@ -57,7 +57,7 @@ BENCHMARK(BM_StdVectorEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark capacity check
 static void BM_VectorCapacity(benchmark::State &state) {
-    dsc_vector *vec = vector_create(sizeof(int));
+    DSCVector *vec = vector_create(sizeof(int));
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(vector_capacity(vec));
@@ -79,7 +79,7 @@ BENCHMARK(BM_StdVectorCapacity)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation - Improved version that should not hang
 static void BM_VectorClear(benchmark::State &state) {
-    dsc_vector *vec = vector_create(sizeof(int));
+    DSCVector *vec = vector_create(sizeof(int));
     int value = 42;
     size_t const size = state.range(0);
 
@@ -128,7 +128,7 @@ BENCHMARK(BM_StdVectorClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark push_back operation
 static void BM_VectorPushBack(benchmark::State &state) {
-    dsc_vector *vec = vector_create(sizeof(int));
+    DSCVector *vec = vector_create(sizeof(int));
     int value = state.range(0);
 
     for (auto _ : state) {

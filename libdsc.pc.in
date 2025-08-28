@@ -1,0 +1,11 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${exec_prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+
+Name: libdsc
+Description: Generic data structure containers for C
+Version: @PROJECT_VERSION@
+URL: https://github.com/cm-jones/libdsc
+Libs: -L${libdir} -ldsc
+Cflags: -I${includedir}

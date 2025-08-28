@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define INITIAL_CAPACITY 16
+#define DSC_UNORDERED_SET_INITIAL_CAPACITY 16
 #define LOAD_FACTOR 0.75f
 
-static size_t find_slot(dsc_unordered_set const *set, void const *element,
+static size_t find_slot(DSCUnorderedSet const *set, void const *element,
                         size_t hash) {
     size_t mask = set->capacity - 1;
     size_t idx = hash & mask;
@@ -24,7 +24,7 @@ static size_t find_slot(dsc_unordered_set const *set, void const *element,
     return idx;
 }
 
-static dsc_error rehash(dsc_unordered_set *set) {
+static DSCError rehash(DSCUnorderedSet *set) {
     size_t old_capacity = set->capacity;
     void *old_elements = set->elements;
     size_t *old_hashes = set->hashes;
@@ -60,14 +60,14 @@ static dsc_error rehash(dsc_unordered_set *set) {
     return DSC_ERROR_OK;
 }
 
-dsc_unordered_set *unordered_set_create(size_t element_size,
-                                          size_t (*hash_fn)(void const *),
-                                          int (*compare_fn)(void const *,
-                                                            void const *)) {
-    dsc_unordered_set *set = malloc(sizeof(dsc_unordered_set));
+DSCUnorderedSet *unordered_set_create(size_t element_size,
+                                        size_t (*hash_fn)(void const *),
+                                        int (*compare_fn)(void const *,
+                                                          void const *)) {
+    DSCUnorderedSet *set = malloc(sizeof(DSCUnorderedSet));
     if (!set) return NULL;
 
-    set->capacity = INITIAL_CAPACITY;
+    set->capacity = DSC_UNORDERED_SET_INITIAL_CAPACITY;
     set->size = 0;
     set->element_size = element_size;
     set->hash_fn = hash_fn;
@@ -86,27 +86,26 @@ dsc_unordered_set *unordered_set_create(size_t element_size,
     return set;
 }
 
-void unordered_set_destroy(dsc_unordered_set *set) {
+void unordered_set_destroy(DSCUnorderedSet *set) {
     if (!set) return;
     free(set->elements);
     free(set->hashes);
     free(set);
 }
 
-size_t unordered_set_size(dsc_unordered_set const *set) {
+size_t unordered_set_size(DSCUnorderedSet const *set) {
     return set ? set->size : 0;
 }
 
-bool unordered_set_empty(dsc_unordered_set const *set) {
+bool unordered_set_empty(DSCUnorderedSet const *set) {
     return !set || set->size == 0;
 }
 
-dsc_error unordered_set_insert(dsc_unordered_set *set,
-                                 void const *element) {
+DSCError unordered_set_insert(DSCUnorderedSet *set, void const *element) {
     if (!set || !element) return DSC_ERROR_INVALID_ARGUMENT;
 
     if ((float)set->size / set->capacity >= LOAD_FACTOR) {
-        dsc_error err = rehash(set);
+        DSCError err = rehash(set);
         if (err != DSC_ERROR_OK) return err;
     }
 
@@ -124,7 +123,7 @@ dsc_error unordered_set_insert(dsc_unordered_set *set,
     return DSC_ERROR_OK;
 }
 
-void *unordered_set_find(dsc_unordered_set *set, void const *element) {
+void *unordered_set_find(DSCUnorderedSet *set, void const *element) {
     if (!set || !element) return NULL;
 
     size_t hash = set->hash_fn(element);
@@ -135,7 +134,7 @@ void *unordered_set_find(dsc_unordered_set *set, void const *element) {
     return (char *)set->elements + idx * set->element_size;
 }
 
-dsc_error unordered_set_erase(dsc_unordered_set *set, void const *element) {
+DSCError unordered_set_erase(DSCUnorderedSet *set, void const *element) {
     if (!set || !element) return DSC_ERROR_INVALID_ARGUMENT;
 
     size_t hash = set->hash_fn(element);
@@ -170,14 +169,14 @@ dsc_error unordered_set_erase(dsc_unordered_set *set, void const *element) {
     return DSC_ERROR_OK;
 }
 
-void unordered_set_clear(dsc_unordered_set *set) {
+void unordered_set_clear(DSCUnorderedSet *set) {
     if (!set) return;
 
     memset(set->hashes, 0, set->capacity * sizeof(size_t));
     set->size = 0;
 }
 
-dsc_error unordered_set_reserve(dsc_unordered_set *set, size_t n) {
+DSCError unordered_set_reserve(DSCUnorderedSet *set, size_t n) {
     if (!set) return DSC_ERROR_INVALID_ARGUMENT;
 
     if (n <= set->capacity) return DSC_ERROR_OK;

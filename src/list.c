@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-static list_node_t *create_node(void const *element, size_t element_size) {
-    list_node_t *node = malloc(sizeof(list_node_t));
+static DSCListNode *create_node(void const *element, size_t element_size) {
+    DSCListNode *node = malloc(sizeof(DSCListNode));
     if (!node) {
         return NULL;
     }
@@ -23,13 +23,13 @@ static list_node_t *create_node(void const *element, size_t element_size) {
     return node;
 }
 
-dsc_list *list_create(size_t element_size) {
+DSCList *list_create(size_t element_size) {
     if (element_size == 0) {
         return NULL;
     }
 
-    dsc_list *list = malloc(sizeof(dsc_list));
-    if (!list) {
+    DSCList *list = malloc(sizeof(DSCList));
+    if (list == NULL) {
         return NULL;
     }
 
@@ -41,8 +41,8 @@ dsc_list *list_create(size_t element_size) {
     return list;
 }
 
-void list_destroy(dsc_list *list) {
-    if (!list) {
+void list_destroy(DSCList *list) {
+    if (list == NULL) {
         return;
     }
 
@@ -50,16 +50,20 @@ void list_destroy(dsc_list *list) {
     free(list);
 }
 
-size_t list_size(dsc_list const *list) { return list ? list->size : 0; }
+size_t list_size(const DSCList *list) {
+    return list ? list->size : 0;
+}
 
-bool list_empty(dsc_list const *list) { return !list || list->size == 0; }
+bool list_empty(const DSCList *list) {
+    return !list || list->size == 0;
+}
 
-dsc_error list_push_front(dsc_list *list, void const *element) {
+DSCError list_push_front(DSCList *list, const void *element) {
     if (!list || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    list_node_t *node = create_node(element, list->element_size);
+    DSCListNode *node = create_node(element, list->element_size);
     if (!node) {
         return DSC_ERROR_MEMORY;
     }
@@ -72,17 +76,18 @@ dsc_error list_push_front(dsc_list *list, void const *element) {
         list->head->prev = node;
         list->head = node;
     }
+
     ++(list->size);
 
     return DSC_ERROR_OK;
 }
 
-dsc_error list_push_back(dsc_list *list, void const *element) {
+DSCError list_push_back(DSCList *list, const void *element) {
     if (!list || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
 
-    list_node_t *node = create_node(element, list->element_size);
+    DSCListNode *node = create_node(element, list->element_size);
     if (!node) {
         return DSC_ERROR_MEMORY;
     }
@@ -95,12 +100,13 @@ dsc_error list_push_back(dsc_list *list, void const *element) {
         list->tail->next = node;
         list->tail = node;
     }
+
     ++(list->size);
 
     return DSC_ERROR_OK;
 }
 
-dsc_error list_pop_front(dsc_list *list) {
+DSCError list_pop_front(DSCList *list) {
     if (!list) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -109,7 +115,7 @@ dsc_error list_pop_front(dsc_list *list) {
         return DSC_ERROR_EMPTY;
     }
 
-    list_node_t *old_head = list->head;
+    DSCListNode *old_head = list->head;
     if (list->size == 1) {
         list->head = NULL;
         list->tail = NULL;
@@ -120,12 +126,12 @@ dsc_error list_pop_front(dsc_list *list) {
 
     free(old_head->data);
     free(old_head);
-    list->size--;
+    --(list->size);
 
     return DSC_ERROR_OK;
 }
 
-dsc_error list_pop_back(dsc_list *list) {
+DSCError list_pop_back(DSCList *list) {
     if (!list) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -134,7 +140,7 @@ dsc_error list_pop_back(dsc_list *list) {
         return DSC_ERROR_EMPTY;
     }
 
-    list_node_t *old_tail = list->tail;
+    DSCListNode *old_tail = list->tail;
     if (list->size == 1) {
         list->head = NULL;
         list->tail = NULL;
@@ -145,12 +151,12 @@ dsc_error list_pop_back(dsc_list *list) {
 
     free(old_tail->data);
     free(old_tail);
-    list->size--;
+    --(list->size);
 
     return DSC_ERROR_OK;
 }
 
-void *list_front(dsc_list const *list) {
+void *list_front(DSCList const *list) {
     if (!list || list->size == 0) {
         return NULL;
     }
@@ -158,7 +164,7 @@ void *list_front(dsc_list const *list) {
     return list->head->data;
 }
 
-void *list_back(dsc_list const *list) {
+void *list_back(DSCList const *list) {
     if (!list || list->size == 0) {
         return NULL;
     }
@@ -166,8 +172,7 @@ void *list_back(dsc_list const *list) {
     return list->tail->data;
 }
 
-dsc_error list_insert(dsc_list *list, list_node_t *pos,
-                        void const *element) {
+DSCError list_insert(DSCList *list, DSCListNode *pos, void const *element) {
     if (!list || !element) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -176,7 +181,7 @@ dsc_error list_insert(dsc_list *list, list_node_t *pos,
         return list_push_front(list, element);
     }
 
-    list_node_t *node = create_node(element, list->element_size);
+    DSCListNode *node = create_node(element, list->element_size);
     if (!node) {
         return DSC_ERROR_MEMORY;
     }
@@ -195,7 +200,7 @@ dsc_error list_insert(dsc_list *list, list_node_t *pos,
     return DSC_ERROR_OK;
 }
 
-dsc_error list_erase(dsc_list *list, list_node_t *pos) {
+DSCError list_erase(DSCList *list, DSCListNode *pos) {
     if (!list || !pos) {
         return DSC_ERROR_INVALID_ARGUMENT;
     }
@@ -213,19 +218,19 @@ dsc_error list_erase(dsc_list *list, list_node_t *pos) {
 
     free(pos->data);
     free(pos);
-    list->size--;
+    --(list->size);
 
     return DSC_ERROR_OK;
 }
 
-void list_clear(dsc_list *list) {
+void list_clear(DSCList *list) {
     if (!list) {
         return;
     }
 
-    list_node_t *current = list->head;
+    DSCListNode *current = list->head;
     while (current) {
-        list_node_t *next = current->next;
+        DSCListNode *next = current->next;
         free(current->data);
         free(current);
         current = next;
@@ -236,20 +241,20 @@ void list_clear(dsc_list *list) {
     list->size = 0;
 }
 
-list_node_t *list_begin(dsc_list const *list) {
+DSCListNode *list_begin(DSCList const *list) {
     return list ? list->head : NULL;
 }
 
-list_node_t *list_end(dsc_list const *list) {
-    (void)list;
+DSCListNode *list_end(DSCList const *list) {
+    (void) list;
     return NULL;
 }
 
-list_node_t *list_rbegin(dsc_list const *list) {
+DSCListNode *list_rbegin(DSCList const *list) {
     return list ? list->tail : NULL;
 }
 
-list_node_t *list_rend(dsc_list const *list) {
-    (void)list;
+DSCListNode *list_rend(DSCList const *list) {
+    (void) list;
     return NULL;
 }

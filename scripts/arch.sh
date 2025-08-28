@@ -31,6 +31,22 @@ log() {
 
 cd "${PROJECT_ROOT}"
 
+# Sync PKGBUILD files
+log "INFO" "Syncing PKGBUILD files..."
+if [ -f "PKGBUILD" ] && [ -f "package/arch/PKGBUILD" ]; then
+    if ! cmp -s "PKGBUILD" "package/arch/PKGBUILD"; then
+        log "WARN" "PKGBUILD files are out of sync. Using root PKGBUILD as source of truth."
+        cp "PKGBUILD" "package/arch/PKGBUILD"
+    fi
+elif [ -f "PKGBUILD" ] && [ ! -f "package/arch/PKGBUILD" ]; then
+    log "INFO" "Copying PKGBUILD to package/arch/"
+    mkdir -p "package/arch"
+    cp "PKGBUILD" "package/arch/PKGBUILD"
+elif [ ! -f "PKGBUILD" ] && [ -f "package/arch/PKGBUILD" ]; then
+    log "INFO" "Copying PKGBUILD from package/arch/ to root"
+    cp "package/arch/PKGBUILD" "PKGBUILD"
+fi
+
 # Check if we're in the correct directory
 if [ ! -f "PKGBUILD" ]; then
     log "ERROR" "PKGBUILD not found"
@@ -58,7 +74,7 @@ done
 
 # Clean any previous builds
 log "INFO" "Cleaning previous build artifacts..."
-rm -rf pkg src ./*glob*.tar../*glob* ./*glob*.pkg.tar.zst
+rm -rf pkg src ./*.tar.* ./*.pkg.tar.zst
 
 # Create necessary documentation
 if [ -x "$(command -v doxygen)" ]; then

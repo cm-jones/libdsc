@@ -40,8 +40,8 @@ static std::string random_string(size_t length) {
 
 // Benchmark insertion
 static void BM_UnorderedMapInsert(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
 
     for (auto _ : state) {
         std::string key = random_string(10);
@@ -66,8 +66,8 @@ BENCHMARK(BM_StdUnorderedMapInsert)->Range(1, 1 << 20);
 
 // Benchmark find
 static void BM_UnorderedMapFind(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
 
     // Pre-populate map
     std::vector<std::string> keys;
@@ -116,8 +116,8 @@ BENCHMARK(BM_StdUnorderedMapFind)->Range(1 << 10, 1 << 20);
 
 // Benchmark size operation
 static void BM_UnorderedMapSize(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
 
     // Pre-populate map
     for (size_t i = 0; i < 1000; ++i) {
@@ -151,8 +151,8 @@ BENCHMARK(BM_StdUnorderedMapSize)->Range(1 << 10, 1 << 20);
 
 // Benchmark empty check
 static void BM_UnorderedMapEmpty(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(unordered_map_empty(map));
@@ -174,8 +174,8 @@ BENCHMARK(BM_StdUnorderedMapEmpty)->Range(1 << 10, 1 << 20);
 
 // Benchmark clear operation
 static void BM_UnorderedMapClear(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
 
     for (auto _ : state) {
         state.PauseTiming();
@@ -213,8 +213,8 @@ BENCHMARK(BM_StdUnorderedMapClear)->Range(1 << 10, 1 << 20);
 
 // Benchmark reserve operation
 static void BM_UnorderedMapReserve(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
 
     for (auto _ : state) {
         benchmark::DoNotOptimize(unordered_map_reserve(map, state.range(0)));
@@ -237,8 +237,8 @@ BENCHMARK(BM_StdUnorderedMapReserve)->Range(1 << 10, 1 << 20);
 
 // Benchmark erase operation
 static void BM_UnorderedMapErase(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
     std::vector<std::string> keys;
 
     // Pre-populate map and keep track of keys
@@ -295,8 +295,8 @@ BENCHMARK(BM_StdUnorderedMapErase)->Range(1 << 10, 1 << 20);
 
 // Benchmark insert with pre-reserved capacity
 static void BM_UnorderedMapInsertReserved(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
     unordered_map_reserve(map, state.range(0));
 
     for (auto _ : state) {
@@ -334,8 +334,8 @@ BENCHMARK(BM_StdUnorderedMapInsertReserved)->Range(1 << 10, 1 << 20);
 
 // Benchmark mixed operations pattern
 static void BM_UnorderedMapMixedOps(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
     std::vector<std::string> keys;
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -415,8 +415,8 @@ BENCHMARK(BM_StdUnorderedMapMixedOps)->Range(1 << 10, 1 << 20);
 
 // Benchmark collision handling (keys with same hash)
 static void BM_UnorderedMapCollisions(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
     std::vector<std::string> colliding_keys;
 
     // Generate keys that will have hash collisions
@@ -469,8 +469,8 @@ BENCHMARK(BM_StdUnorderedMapCollisions)->Range(1 << 8, 1 << 16);
 
 // Benchmark load factor performance
 static void BM_UnorderedMapLoadFactor(benchmark::State &state) {
-    dsc_unordered_map *map = unordered_map_create(
-        sizeof(char *), sizeof(int), string_hash, string_compare);
+    dsc_unordered_map *map = unordered_map_create(sizeof(char *), sizeof(int),
+                                                  string_hash, string_compare);
     size_t target_size = state.range(0);
     unordered_map_reserve(map, target_size / 2);  // Force higher load factor
 

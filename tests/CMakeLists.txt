@@ -1,11 +1,23 @@
 # Configure Google Test
 include(FetchContent)
+
+# Set FetchContent options for better reliability
+set(FETCHCONTENT_QUIET OFF)
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
+
 FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.12.1
+    GIT_TAG v1.14.0
+    GIT_SHALLOW TRUE
+    FIND_PACKAGE_ARGS NAMES GTest
 )
+
+# Make googletest available
 FetchContent_MakeAvailable(googletest)
+
+# Prevent overriding the parent project's compiler/linker settings on Windows
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
 # Add test executables
 add_executable(test_vector test_vector.cpp)

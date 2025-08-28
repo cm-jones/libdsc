@@ -138,7 +138,7 @@ static void BM_QueuePush(benchmark::State &state) {
 
     for (auto _ : state) {
         int value = 42;
-        dsc_error result = queue_push(queue, &value);
+        DSCError result = queue_push(queue, &value);
         benchmark::DoNotOptimize(result);
     }
 
@@ -163,8 +163,8 @@ static void BM_QueuePushPop(benchmark::State &state) {
 
     for (auto _ : state) {
         int value = 42;
-        dsc_error push_result = queue_push(queue, &value);
-        dsc_error pop_result = queue_pop(queue);
+        DSCError push_result = queue_push(queue, &value);
+        DSCError pop_result = queue_pop(queue);
         benchmark::DoNotOptimize(push_result);
         benchmark::DoNotOptimize(pop_result);
     }
